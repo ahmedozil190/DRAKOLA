@@ -118,18 +118,22 @@ header h1 {
 }
 
 .card {
-    background-color: var(--bg-card);
+    background: rgba(28, 31, 46, 0.4); /* Transparent glassy background */
+    backdrop-filter: blur(12px);      /* Glassmorphism blur effect */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle glass border */
     border-radius: var(--radius);
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 110px;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:active {
     transform: scale(0.97);
+    background: rgba(28, 31, 46, 0.6);
 }
 
 .card-label {
@@ -142,7 +146,7 @@ header h1 {
 }
 
 .card-value {
-    font-size: 2.2rem;
+    font-size: 1.8rem; /* Slightly reduced as requested */
     font-weight: 700;
     line-height: 1;
 }
