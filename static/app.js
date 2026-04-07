@@ -299,47 +299,57 @@ function renderUsers(users) {
         card.onclick = () => tg.HapticFeedback.impactOccurred('light');
 
         card.innerHTML = `
-            <div class="user-info-list" style="margin-bottom: 12px;">
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Full Name</span>
-                    <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.first_name}</span>
-                </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
-                    <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${user.username || 'none'}</span>
-                </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
-                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4); font-family: monospace; font-weight: 600;">#${user.user_id}</span>
-                </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+            <div class="user-all-info-list">
+                <!-- Account Status (Now First) -->
+                <div class="user-stat-row" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
+                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: ${user.is_banned ? 'rgba(239, 68, 68, 0.05)' : 'rgba(46, 204, 113, 0.05)'}; 
+                            color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
+                            margin-bottom: 8px; cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'};
+                            transition: 0.3s;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
-                    <div class="status-badge" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
-                         style="background: ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'}; 
-                                color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
-                                padding: 4px 10px; border-radius: 6px; 
-                                display: flex; align-items: center; gap: 6px;
-                                cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.15)' : 'rgba(46, 204, 113, 0.15)'};
-                                transition: 0.3s; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;">
+                    <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
                         <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
                         ${user.is_banned ? 'BANNED' : 'ACTIVE'}
                     </div>
                 </div>
-            </div>
-            
-            <div class="user-stats-list" style="margin-bottom: 12px;">
+
+                <!-- Full Name -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Full Name</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">${user.first_name}</span>
+                </div>
+
+                <!-- Username -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${user.username || 'none'}</span>
+                </div>
+
+                <!-- User ID -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">#${user.user_id}</span>
+                </div>
+
+                <!-- Balance -->
                 <div class="user-stat-row" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px; cursor: pointer;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Balance</span>
                     <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${user.points}</span>
                 </div>
+
+                <!-- Spent -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Spent</span>
                     <span style="font-size: 0.95rem; font-weight: 700; color: #ef4444;">${user.points_used || 0}</span>
                 </div>
+
+                <!-- Earned -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Earned</span>
                     <span style="font-size: 0.95rem; font-weight: 700; color: #2ecc71;">${user.points + (user.points_used || 0)}</span>
                 </div>
+
+                <!-- Orders Made -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Orders Made</span>
                     <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.transfers_count}</span>
