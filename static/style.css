@@ -22,6 +22,26 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4f73ff;
+}
+
 body {
     background-color: var(--bg-darker);
     color: var(--text-main);
