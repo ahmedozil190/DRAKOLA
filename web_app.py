@@ -13,6 +13,11 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 async def get_stats(request):
     async for session in get_session():
         stats = await crud.get_admin_stats(session)
+        # Mock user growth for the chart
+        stats["user_growth"] = {
+            "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "values": [5, 12, 8, 15, 20, 18, 25]
+        }
         return web.json_response(stats)
 
 async def get_settings_data(request):

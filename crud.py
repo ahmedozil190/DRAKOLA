@@ -26,16 +26,37 @@ async def update_user_points(session: AsyncSession, user_id: int, points_to_add:
     return user
 
 async def get_admin_stats(session: AsyncSession):
-    q_users = await session.execute(select(func.count(User.user_id)))
-    total_users = q_users.scalar()
+    # User Stats
+    q_total_users = await session.execute(select(func.count(User.user_id)))
+    total_users = q_total_users.scalar() or 0
+    
+    q_banned_users = await session.execute(select(func.count(User.user_id)).where(User.is_banned == True))
+    banned_users = q_banned_users.scalar() or 0
+    
     q_points = await session.execute(select(func.sum(User.points)))
     total_points = q_points.scalar() or 0
-    q_orders = await session.execute(select(func.count(Order.id)).where(Order.status == 'active'))
-    active_orders = q_orders.scalar()
+    
+    # Order/Task Stats
+    q_total_orders = await session.execute(select(func.count(Order.id)))
+    total_orders = q_total_orders.scalar() or 0
+    
+    q_active_orders = await session.execute(select(func.count(Order.id)).where(Order.status == 'active'))
+    active_orders = q_active_orders.scalar() or 0
+    
+    q_completed_orders = await session.execute(select(func.count(Order.id)).where(Order.status == 'completed'))
+    completed_orders = q_completed_orders.scalar() or 0
+    
+    q_cancelled_orders = await session.execute(select(func.count(Order.id)).where(Order.status == 'cancelled'))
+    cancelled_orders = q_cancelled_orders.scalar() or 0
+    
     return {
         "total_users": total_users,
+        "banned_users": banned_users,
         "total_points": total_points,
-        "active_orders": active_orders
+        "total_orders": total_orders,
+        "active_orders": active_orders,
+        "completed_orders": completed_orders,
+        "cancelled_orders": cancelled_orders
     }
 
 async def get_mandatory_channels(session: AsyncSession):

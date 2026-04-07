@@ -12,6 +12,7 @@ class User(Base):
     points = Column(Integer, default=0)
     last_daily_gift = Column(DateTime, nullable=True)
     is_admin = Column(Boolean, default=False)
+    is_banned = Column(Boolean, default=False)
     
     # Stats fields
     transfers_count = Column(Integer, default=0)
