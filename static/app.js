@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // -- Instant Rendering from Cache (v58) --
     const cachedStats = localStorage.getItem('last_stats');
     const cachedUsers = localStorage.getItem('last_users');
-    
+
     if (cachedStats && cachedUsers) {
         try {
             console.log("🚀 Rendering instant data from cache...");
@@ -102,7 +102,7 @@ async function loadInitialData(silent = false) {
 
         populateStats(stats);
         populateSettings(settings);
-        
+
         // Cache stats for next time
         localStorage.setItem('last_stats', JSON.stringify(stats));
     } catch (err) {
@@ -129,7 +129,7 @@ function populateSettings(settings) {
     document.getElementById('transfer-fee-input').value = settings.transfer_fee;
     document.getElementById('daily-gift-input').value = settings.daily_gift_amount;
     document.getElementById('min-transfer-input').value = settings.min_transfer_amount;
-    
+
     // Bot Name (v59)
     if (document.getElementById('bot-name-input')) {
         document.getElementById('bot-name-input').value = settings.bot_name || "Billion Bot";
@@ -187,15 +187,15 @@ async function saveSettings() {
 function showSettingsSubView(viewId) {
     tg.HapticFeedback.impactOccurred('medium');
     document.getElementById('settings-main-menu').style.display = 'none';
-    
+
     // Hide all subviews first
     document.getElementById('subview-bot-name').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
-    
+
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
-    
+
     // If channels, sync them
     if (viewId === 'channels-config') {
         syncChannelsToSubview();
@@ -224,18 +224,18 @@ function syncChannelsToSubview() {
 async function addNewChannelSubview() {
     const channelId = document.getElementById('subview-new-channel-id').value;
     const channelLink = document.getElementById('subview-new-channel-link').value;
-    
+
     if (!channelId || !channelLink) return;
 
     // Reuse main function logic by setting its inputs and calling it
     document.getElementById('new-channel-id').value = channelId;
     document.getElementById('new-channel-link').value = channelLink;
     await addNewChannel();
-    
+
     // Clear subview inputs
     document.getElementById('subview-new-channel-id').value = '';
     document.getElementById('subview-new-channel-link').value = '';
-    
+
     // Refresh subview list after a short delay
     setTimeout(syncChannelsToSubview, 800);
 }
@@ -244,7 +244,7 @@ async function addNewChannelSubview() {
 async function sendBroadcast(mode) {
     let endpoint = '/api/broadcast/all';
     let data = {};
-    
+
     if (mode === 'all') {
         const msg = document.getElementById('broadcast-all-msg').value;
         if (!msg) return tg.showAlert("Please enter a message!");
@@ -267,14 +267,14 @@ async function sendBroadcast(mode) {
             body: JSON.stringify(data)
         });
         const result = await res.json();
-        
+
         if (res.ok) {
-            const successMsg = mode === 'all' 
-                ? `Broadcast sent to all users! ✨` 
+            const successMsg = mode === 'all'
+                ? `Broadcast sent to all users! ✨`
                 : "Message delivered! ✈️";
-            
+
             showSuccessPopup("Broadcast Sent!", successMsg);
-            
+
             if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
             else {
                 document.getElementById('broadcast-user-id').value = '';
@@ -473,12 +473,11 @@ function renderUsers(users) {
             <div class="user-all-info-list">
                 <!-- Account Status (Now First) -->
                 <div class="user-stat-row" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
-                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: ${user.is_banned ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)'}; 
-                            color: ${user.is_banned ? '#ef4444' : '#ffffff'}; 
-                            margin-bottom: 8px; cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)'};
+                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); 
+                            margin-bottom: 8px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05);
                             transition: 0.3s;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
-                    <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+                    <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; color: ${user.is_banned ? '#ef4444' : '#2ecc71'};">
                         <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
                         ${user.is_banned ? 'BANNED' : 'ACTIVE'}
                     </div>
@@ -588,10 +587,10 @@ function hideLoader() {
 function showSuccessPopup(title, message) {
     document.getElementById('success-title').innerText = title;
     document.getElementById('success-msg').innerText = message;
-    
+
     // Add active class to show overlay and animate card
     document.getElementById('success-modal').classList.add('active');
-    
+
     // Success haptic feedback
     tg.HapticFeedback.notificationOccurred('success');
 }
