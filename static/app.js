@@ -33,10 +33,10 @@ function switchNav(viewId) {
     
     // Update Title
     const titles = {
-        'overview': 'Overview',
-        'settings': 'Settings',
-        'channels': 'Channels',
-        'users': 'Users'
+        'overview': 'الرئيسية',
+        'settings': 'الإعدادات',
+        'channels': 'القنوات',
+        'users': 'المستخدمين'
     };
     pageTitle.innerText = titles[viewId];
     
@@ -75,15 +75,10 @@ async function loadInitialData() {
 }
 
 function populateStats(stats) {
-    // Mapping our backend stats to the Gmail Farmer Style IDs
     document.getElementById('stat-total-users').innerText = stats.total_users || 0;
     document.getElementById('stat-banned-users').innerText = stats.banned_users || 0;
-    
-    // Tasks section mapping
-    document.getElementById('stat-total-tasks').innerText = stats.total_orders || 0;
     document.getElementById('stat-completed-tasks').innerText = stats.completed_orders || 0;
     document.getElementById('stat-active-tasks').innerText = stats.active_orders || 0;
-    document.getElementById('stat-cancelled-tasks').innerText = stats.cancelled_orders || 0;
 }
 
 function populateSettings(settings) {
@@ -98,17 +93,17 @@ function renderChannels(channels) {
     list.innerHTML = '';
     channels.forEach(ch => {
         const div = document.createElement('div');
-        div.className = 'card';
+        div.className = 'glass-card';
         div.style.padding = '15px';
         div.style.marginBottom = '10px';
-        div.style.flexDirection = 'row';
-        div.style.minHeight = 'auto';
+        div.style.display = 'flex';
+        div.style.justifyContent = 'space-between';
         div.innerHTML = `
-            <div style="flex: 1;">
+            <div>
                 <p style="font-size: 0.9rem; font-weight: 600;">${ch.id}</p>
-                <p style="font-size: 0.7rem; color: #8b8e9f;">${ch.link}</p>
+                <p style="font-size: 0.7rem; opacity: 0.5;">${ch.link}</p>
             </div>
-            <i class="fas fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteChannel('${ch.id}')"></i>
+            <i class="fas fa-trash" style="color: var(--danger); cursor: pointer;" onclick="deleteChannel('${ch.id}')"></i>
         `;
         list.appendChild(div);
     });
@@ -128,7 +123,7 @@ async function saveSettings() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     });
-    if (res.ok) tg.showAlert("Configuration saved successfully! ✨");
+    if (res.ok) tg.showAlert("تم حفظ الإعدادات بنجاح! ✨");
 }
 
 async function addNewChannel() {
@@ -145,7 +140,7 @@ async function addNewChannel() {
 }
 
 async function deleteChannel(id) {
-    if (confirm("Delete this channel?")) {
+    if (confirm("هل تريد حذف هذه القناة؟")) {
         await fetch('/api/channels/delete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -163,13 +158,6 @@ async function loadUsers() {
     try {
         const res = await fetch('/api/users');
         allUsers = await res.json();
-        
-        // Update top stats
-        const total = allUsers.length;
-        const banned = allUsers.filter(u => u.is_banned).length;
-        document.getElementById('user-stat-total').innerText = total;
-        document.getElementById('user-stat-banned').innerText = banned;
-        
         applyUserFilter();
     } catch (err) {
         console.error("Users fetch error:", err);
@@ -181,18 +169,8 @@ async function loadUsers() {
 function setUserFilter(filter) {
     userFilter = filter;
     tg.HapticFeedback.selectionChanged();
-    
-    // Update active tab UI
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`tab-${filter}`).classList.add('active');
-    
-    // Styling the inactive/active tabs manually if needed, but classes are better
-    document.getElementById('tab-all').style.background = filter === 'all' ? 'var(--clr-blue)' : 'rgba(255,255,255,0.05)';
-    document.getElementById('tab-all').style.color = filter === 'all' ? '#fff' : 'var(--text-muted)';
-    
-    document.getElementById('tab-banned').style.background = filter === 'banned' ? 'var(--clr-blue)' : 'rgba(255,255,255,0.05)';
-    document.getElementById('tab-banned').style.color = filter === 'banned' ? '#fff' : 'var(--text-muted)';
-    
     applyUserFilter();
 }
 
@@ -216,7 +194,6 @@ function applyUserFilter() {
 }
 
 function filterUsers() {
-    tg.HapticFeedback.impactOccurred('light');
     applyUserFilter();
 }
 
@@ -225,12 +202,7 @@ function renderUsers(users) {
     list.innerHTML = '';
     
     if (users.length === 0) {
-        list.innerHTML = `
-            <div class="no-users-msg" style="padding: 60px 20px;">
-                <i class="fas fa-users-slash"></i>
-                No users matched your criteria.
-            </div>
-        `;
+        list.innerHTML = `<div style="text-align:center; padding:2rem; opacity:0.6;">لا يوجد مستخدمين.</div>`;
         return;
     }
 
@@ -242,8 +214,8 @@ function renderUsers(users) {
         card.innerHTML = `
             <div class="user-card-header">
                 <div class="user-card-title">${user.first_name}</div>
-                <div class="verified-icon" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" style="background: ${user.is_banned ? '#ef4444' : '#2ecc71'}; cursor: pointer;">
-                    <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
+                <div class="verified-icon" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" style="cursor: pointer;">
+                    <i class="fa-solid fa-circle-${user.is_banned ? 'xmark' : 'check'}" style="color: ${user.is_banned ? 'var(--danger)' : 'var(--success)'};"></i>
                 </div>
             </div>
             
@@ -252,26 +224,24 @@ function renderUsers(users) {
                 <div class="user-card-id">ID: ${user.user_id}</div>
             </div>
             
-            <div class="user-card-divider"></div>
-            
             <div class="user-stats-grid">
                 <div class="user-stat-item" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();">
-                    <div class="user-stat-label">Balance</div>
-                    <div class="user-stat-value balance">$${(user.points / 100).toFixed(2)}</div>
+                    <span class="user-stat-label">Balance</span>
+                    <span class="user-stat-value balance">$${(user.points / 100).toFixed(2)}</span>
                 </div>
                 <div class="user-stat-item">
-                    <div class="user-stat-label">Hold</div>
-                    <div class="user-stat-value hold">$0.00</div>
+                    <span class="user-stat-label">Hold</span>
+                    <span class="user-stat-value hold">$0.00</span>
                 </div>
                 <div class="user-stat-item">
-                    <div class="user-stat-label">Tasks</div>
-                    <div class="user-stat-value tasks">${user.transfers_count}</div>
+                    <span class="user-stat-label">Tasks</span>
+                    <span class="user-stat-value tasks">${user.transfers_count}</span>
                 </div>
             </div>
             
             <div class="user-card-dashed">
-                <div class="withdrawn-label">Total Withdrawn:</div>
-                <div class="withdrawn-value">$${((user.points_used || 0) / 100).toFixed(2)}</div>
+                <span class="withdrawn-label">إجمالي السحوبات:</span>
+                <span class="withdrawn-value">$${((user.points_used || 0) / 100).toFixed(2)}</span>
             </div>
         `;
         list.appendChild(card);
@@ -280,37 +250,29 @@ function renderUsers(users) {
 
 async function toggleBan(userId) {
     tg.HapticFeedback.impactOccurred('medium');
-    try {
-        const res = await fetch('/api/users/ban', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: userId })
-        });
-        if (res.ok) {
-            loadUsers();
-        }
-    } catch (err) {
-        console.error("Ban toggle error:", err);
+    const res = await fetch('/api/users/ban', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+    });
+    if (res.ok) {
+        loadUsers();
     }
 }
 
 async function promptAddPoints(userId) {
-    const points = prompt("Enter points to add (negative to remove):");
+    const points = prompt("أدخل النقاط (استخدم علامة - للخصم):");
     if (points === null || points === "" || isNaN(points)) return;
 
     tg.HapticFeedback.impactOccurred('medium');
-    try {
-        const res = await fetch('/api/users/points', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: userId, points: parseInt(points) })
-        });
-        if (res.ok) {
-            tg.showAlert("Points updated! ✨");
-            loadUsers();
-        }
-    } catch (err) {
-        console.error("Add points error:", err);
+    const res = await fetch('/api/users/points', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, points: parseInt(points) })
+    });
+    if (res.ok) {
+        tg.showAlert("تم تحديث النقاط! ✨");
+        loadUsers();
     }
 }
 

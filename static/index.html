@@ -1,200 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gmail Farmer Plus Style Dashboard</title>
+    <title>Billion Bot - Admin Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=11">
+    <link rel="stylesheet" href="/static/style.css?v=12">
 </head>
 
 <body>
-    <!-- Full-screen Loader -->
+    <!-- Full Screen Loader -->
     <div id="loader" class="loader">
-        <div
-            style="width: 50px; height: 50px; border: 3px solid #1c1f2e; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite;">
-        </div>
+        <div class="avatar" style="width: 60px; height: 60px; font-size: 1.5rem;">B</div>
     </div>
 
-    <!-- Side Menu Overlay -->
-    <div id="menu-overlay" class="menu-overlay" onclick="toggleMenu()"></div>
-
-    <!-- Side Menu Sidebar -->
-    <div id="side-menu" class="side-menu">
-        <div class="side-menu-header">
-            <h3 class="side-menu-title">Billion Bot Plus</h3>
-            <div class="close-circle" onclick="toggleMenu()">
-                <i class="fas fa-times"></i>
-            </div>
-        </div>
-        <div class="menu-item active" onclick="switchNav('overview')">
-            <i class="fas fa-chart-pie"></i> <span>Home</span>
-        </div>
-        <div class="menu-item" onclick="switchNav('users')">
-            <i class="fas fa-users"></i> <span>Users</span>
-        </div>
-        <div class="menu-item" onclick="switchNav('settings')">
-            <i class="fas fa-cog"></i> <span>Settings</span>
-        </div>
-        <div class="menu-item" onclick="switchNav('channels')">
-            <i class="fas fa-bullhorn"></i> <span>Channels</span>
-        </div>
-    </div>
-
-    <!-- Top Navigation Bar -->
+    <!-- Header / Page Title -->
     <header>
         <div class="menu-btn" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
+            <i class="fa-solid fa-bars"></i>
         </div>
-        <h1 id="page-title">Overview</h1>
-        <div class="avatar" id="avatar-circle">B</div>
+        <h1 id="page-title">لوحة التحكم</h1>
+        <div class="avatar" id="avatar-circle">A</div>
     </header>
 
-    <div class="container">
-        <!-- Dashboard View -->
-        <section id="overview-section" class="view-section active">
-            <!-- Users Section -->
-            <div class="section-header">
-                <i class="fas fa-users"></i>
-                <h2>Users</h2>
-            </div>
-            <div class="stats-grid">
-                <div class="card">
-                    <span class="card-label">Total Users</span>
-                    <span class="card-value val-blue" id="stat-total-users">0</span>
-                </div>
-                <div class="card">
-                    <span class="card-label">Banned</span>
-                    <span class="card-value val-red" id="stat-banned-users">0</span>
-                </div>
-            </div>
+    <!-- Side Menu Overlay -->
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
 
-            <!-- Tasks Section -->
-            <div class="section-header">
-                <i class="fas fa-envelope"></i>
-                <h2>Orders</h2>
+    <!-- Side Menu -->
+    <nav class="side-menu" id="side-menu">
+        <div class="side-menu-header">
+            <span class="side-menu-title">Billion Bot</span>
+            <div class="close-circle" onclick="toggleMenu()">
+                <i class="fa-solid fa-xmark"></i>
             </div>
+        </div>
+        <div class="menu-nav" style="padding: 10px;">
+            <div class="menu-item active" onclick="switchNav('overview')">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>الرئيسية</span>
+            </div>
+            <div class="menu-item" onclick="switchNav('users')">
+                <i class="fa-solid fa-users"></i>
+                <span>المستخدمين</span>
+            </div>
+            <div class="menu-item" onclick="switchNav('channels')">
+                <i class="fa-solid fa-link"></i>
+                <span>القنوات</span>
+            </div>
+            <div class="menu-item" onclick="switchNav('settings')">
+                <i class="fa-solid fa-gear"></i>
+                <span>الإعدادات</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        
+        <!-- Overview Section -->
+        <div id="overview-section" class="view-section active">
             <div class="stats-grid">
-                <div class="card">
-                    <span class="card-label">Total Orders</span>
-                    <span class="card-value val-purple" id="stat-total-tasks">0</span>
+                <div class="glass-card stat-card blue">
+                    <div class="stat-title">المستخدمين</div>
+                    <div class="stat-value" id="stat-total-users">0</div>
                 </div>
-                <div class="card">
-                    <span class="card-label">Approved</span>
-                    <span class="card-value val-green" id="stat-completed-tasks">0</span>
+                <div class="glass-card stat-card purple">
+                    <div class="stat-title">المحظورين</div>
+                    <div class="stat-value" id="stat-banned-users">0</div>
                 </div>
-                <div class="card" style="margin-top: 12px;">
-                    <span class="card-label">Pending</span>
-                    <span class="card-value val-orange" id="stat-active-tasks">0</span>
+                <div class="glass-card stat-card green">
+                    <div class="stat-title">المهام المكتملة</div>
+                    <div class="stat-value" id="stat-completed-tasks">0</div>
                 </div>
-                <div class="card" style="margin-top: 12px;">
-                    <span class="card-label">Rejected</span>
-                    <span class="card-value val-red" id="stat-cancelled-tasks">0</span>
+                <div class="glass-card stat-card amber">
+                    <div class="stat-title">قيد التنفيذ</div>
+                    <div class="stat-value" id="stat-active-tasks">0</div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Users Section -->
-        <section id="users-section" class="view-section">
-            <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                <div class="card" style="padding: 15px; min-height: 80px; background: rgba(79, 115, 255, 0.05); border: 1px solid rgba(79, 115, 255, 0.2);">
-                    <div class="card-label">Total Users</div>
-                    <div class="card-value" id="user-stat-total" style="font-size: 1.5rem; color: #4f73ff;">0</div>
-                </div>
-                <div class="card" style="padding: 15px; min-height: 80px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2);">
-                    <div class="card-label">Banned</div>
-                    <div class="card-value" id="user-stat-banned" style="font-size: 1.5rem; color: #ef4444;">0</div>
-                </div>
-            </div>
-
-            <div class="card" style="padding: 15px; margin-bottom: 20px;">
-                <div class="tabs-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')" style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: var(--clr-blue); color: #fff; font-weight: 600; font-size: 0.85rem;">All</button>
-                    <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')" style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; font-size: 0.85rem;">Banned</button>
+        <div id="users-section" class="view-section">
+            <div class="glass-card" style="padding: 1.25rem; margin-bottom: 2rem;">
+                <!-- Filter Tabs -->
+                <div style="display: flex; gap: 4px; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <button id="tab-all" class="tab-btn active" onclick="setUserFilter('all')">الكل</button>
+                    <button id="tab-banned" class="tab-btn" onclick="setUserFilter('banned')">المحظورين</button>
                 </div>
 
-                <div class="search-box-v2" style="display: flex; flex-direction: column; gap: 10px;">
-                    <input type="text" id="user-search" placeholder="Search users..." 
-                           style="width: 100%; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.95rem;">
-                    <button onclick="filterUsers()" class="gradient-btn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #4f73ff, #a855f7); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-search"></i> Find
+                <!-- Search Box -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="position: relative;">
+                        <input type="text" id="user-search" placeholder="ابحث بالاسم أو الآيدي..." class="form-control" oninput="filterUsers()">
+                    </div>
+                    <button class="primary-btn" onclick="filterUsers()" style="height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>بحث</span>
                     </button>
                 </div>
             </div>
 
-            <div class="card" style="padding: 2px; background: transparent; border: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px;">
-                    <h3 style="font-size: 1rem; font-weight: 700;">User Management</h3>
-                    <span id="users-count-badge" style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; color: var(--text-muted);">0 results</span>
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0; font-size: 1.1rem; color: #fff;">إدارة المستخدمين</h2>
+                    <span id="users-count-badge" style="font-size: 0.75rem; opacity: 0.6; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px;">0 results</span>
                 </div>
-                
-                <div id="users-list">
-                    <!-- Premium cards will be injected here -->
+                <div id="users-list" class="table-container">
+                    <!-- Cards will be injected by app.js -->
                 </div>
+            </div>
+        </div>
 
-                <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button class="nav-arrow" style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: var(--text-muted);"><i class="fas fa-chevron-left"></i></button>
-                    <span style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button class="nav-arrow" style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: var(--text-muted);"><i class="fas fa-chevron-right"></i></button>
+        <!-- Settings Section Task: placeholder items -->
+        <div id="settings-section" class="view-section">
+            <div class="glass-card">
+                <h2>إعدادات البوت</h2>
+                <div class="form-group">
+                    <label>عمولة التحويل</label>
+                    <input type="number" id="transfer-fee-input" class="form-control">
                 </div>
+                <div class="form-group">
+                    <label>الهدية اليومية</label>
+                    <input type="number" id="daily-gift-input" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>الحد الأدنى للتحويل</label>
+                    <input type="number" id="min-transfer-input" class="form-control">
+                </div>
+                <button class="primary-btn" onclick="saveSettings()">حفظ التغييرات</button>
             </div>
-        </section>
+        </div>
 
-        <!-- Settings View -->
-        <section id="settings-section" class="view-section">
-            <div class="section-header">
-                <i class="fas fa-cog"></i>
-                <h2>General Settings</h2>
+        <!-- Channels Section -->
+        <div id="channels-section" class="view-section">
+            <div class="glass-card">
+                <h2>إضافة قناة جديدة</h2>
+                <div class="form-group">
+                    <label>آيدي القناة</label>
+                    <input type="text" id="new-channel-id" class="form-control" placeholder="-100...">
+                </div>
+                <div class="form-group">
+                    <label>رابط القناة</label>
+                    <input type="text" id="new-channel-link" class="form-control" placeholder="https://t.me/...">
+                </div>
+                <button class="primary-btn" onclick="addNewChannel()">إضافة القناة</button>
             </div>
-            <div class="card" style="min-height: auto; padding: 25px;">
-                <div class="form-group">
-                    <label>Transfer Fee (%)</label>
-                    <input type="number" id="transfer-fee-input" class="input-field">
-                </div>
-                <div class="form-group">
-                    <label>Daily Gift (Points)</label>
-                    <input type="number" id="daily-gift-input" class="input-field">
-                </div>
-                <div class="form-group">
-                    <label>Min Transfer Amount</label>
-                    <input type="number" id="min-transfer-input" class="input-field">
-                </div>
-                <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
-            </div>
-        </section>
+            <div id="channels-list"></div>
+        </div>
 
-        <!-- Channels View -->
-        <section id="channels-section" class="view-section">
-            <div class="section-header">
-                <i class="fas fa-bullhorn"></i>
-                <h2>Mandatory Channels</h2>
-            </div>
-            <div id="channels-list">
-                <!-- Injected via JS -->
-            </div>
-            <div class="card" style="margin-top: 20px; min-height: auto;">
-                <div class="form-group">
-                    <label>Add New Channel</label>
-                    <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
-                        style="margin-bottom: 10px;">
-                    <input type="text" id="new-channel-link" class="input-field" placeholder="https://t.me/...">
-                </div>
-                <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
-            </div>
-        </section>
     </div>
 
-
-    <style>
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    <script src="/static/app.js?v=10"></script>
+    <script src="/static/app.js?v=12"></script>
 </body>
 
 </html>
