@@ -228,10 +228,10 @@ header h1 {
     width: 280px;
     height: 100vh;
     background: #181d29; /* Deep dark slate from screenshot */
-    border-right: 1px solid rgba(255, 255, 255, 0.05); /* very subtle border */
+    border-right: 1px solid rgba(255, 255, 255, 0.15); /* أوضح خط في نهاية حافة القائمة الجانبية من اليمين */
     z-index: 2001;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 20px;
+    padding: 20px 10px; /* تقليل المسافة الجانبية لتحريك العناصر لليسار */
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -245,9 +245,9 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* الخط الفاصل */
-    padding-bottom: 25px;
-    margin-bottom: 25px;
+    margin: -20px -10px 15px -10px; /* تمديد العرض بالكامل من اليسار واليمين وتحريك القائمة للأعلى */
+    padding: 25px 15px 20px 15px; /* المسافات الداخلية بعد التمديد */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* الخط الفاصل أوضح */
 }
 
 .side-menu-title {
@@ -282,11 +282,11 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 14px 20px;
+    padding: 12px 15px;
     border-radius: 12px;
     color: #94a3b8; /* Gray text for unselected */
     text-decoration: none;
-    margin-bottom: 8px;
+    margin-bottom: 4px; /* تقليل المسافة السفلية لتحريكهم للأعلى */
     cursor: pointer;
     transition: 0.2s;
     font-weight: 600;
