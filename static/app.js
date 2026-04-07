@@ -467,12 +467,13 @@ function renderUsers(users) {
     users.forEach(user => {
         const card = document.createElement('div');
         card.className = 'user-card';
-        card.onclick = () => tg.HapticFeedback.impactOccurred('light');
+        // Open management modal on card click (v66)
+        card.onclick = () => openUserManageModal(user);
 
         card.innerHTML = `
             <div class="user-all-info-list">
                 <!-- Account Status (Now First) -->
-                <div class="user-stat-row" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
+                <div class="user-stat-row" 
                      style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); 
                             margin-bottom: 8px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05);
                             transition: 0.3s;">
@@ -502,7 +503,7 @@ function renderUsers(users) {
                 </div>
 
                 <!-- Balance -->
-                <div class="user-stat-row" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px; cursor: pointer;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px; cursor: pointer;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Balance</span>
                     <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${user.points}</span>
                 </div>
@@ -598,4 +599,88 @@ function showSuccessPopup(title, message) {
 function closeSuccessPopup() {
     tg.HapticFeedback.impactOccurred('light');
     document.getElementById('success-modal').classList.remove('active');
+}
+
+// ========== Custom User Management Modal (v66) ==========
+let currentManagingUser = null;
+
+function openUserManageModal(user) {
+    currentManagingUser = user;
+    tg.HapticFeedback.impactOccurred('medium');
+
+    document.getElementById('modal-user-name').innerText = user.first_name;
+    document.getElementById('modal-user-id').innerText = `ID: ${user.user_id}`;
+    document.getElementById('modal-points-input').value = '';
+    
+    // Update Status Badge
+    const badge = document.getElementById('modal-status-badge');
+    badge.innerText = user.is_banned ? 'BANNED' : 'ACTIVE';
+    badge.className = `modal-status-badge ${user.is_banned ? 'modal-status-banned' : 'modal-status-active'}`;
+
+    // Update Ban Button
+    const banBtn = document.getElementById('modal-ban-btn');
+    banBtn.innerHTML = user.is_banned ? '<i class="fas fa-undo"></i> Unban Account' : '<i class="fas fa-ban"></i> Ban Account';
+    banBtn.className = `modal-action-btn btn-ban ${user.is_banned ? 'unban' : ''}`;
+
+    document.getElementById('user-manage-modal').classList.add('active');
+}
+
+function closeUserManageModal() {
+    tg.HapticFeedback.impactOccurred('light');
+    document.getElementById('user-manage-modal').classList.remove('active');
+}
+
+async function modalUpdatePoints(type) {
+    if (!currentManagingUser) return;
+    
+    const inputVal = document.getElementById('modal-points-input').value;
+    if (!inputVal || isNaN(inputVal)) return tg.showAlert("Please enter a valid number!");
+    
+    let points = parseInt(inputVal);
+    if (type === 'sub') points = -points; // Negative for subtraction
+
+    tg.HapticFeedback.impactOccurred('medium');
+    showLoader(true);
+
+    try {
+        const res = await fetch('/api/users/points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: currentManagingUser.user_id, points: points })
+        });
+        if (res.ok) {
+            closeUserManageModal(); // Auto-close (v66)
+            showSuccessPopup("Updated!", `${Math.abs(points)} points ${type === 'add' ? 'added' : 'subtracted'} successfully. ✨`);
+            loadUsers();
+        }
+    } catch (err) {
+        console.error("Points update error:", err);
+    } finally {
+        hideLoader();
+    }
+}
+
+async function modalToggleBan() {
+    if (!currentManagingUser) return;
+    
+    tg.HapticFeedback.impactOccurred('medium');
+    showLoader(true);
+
+    try {
+        const res = await fetch('/api/users/ban', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: currentManagingUser.user_id })
+        });
+        if (res.ok) {
+            closeUserManageModal(); // Auto-close (v66)
+            const newStatus = !currentManagingUser.is_banned;
+            showSuccessPopup(newStatus ? "User Banned!" : "User Active!", `The account has been ${newStatus ? 'restricted' : 'restored'}. 🛡️`);
+            loadUsers();
+        }
+    } catch (err) {
+        console.error("Ban toggle error:", err);
+    } finally {
+        hideLoader();
+    }
 }
