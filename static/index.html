@@ -101,40 +101,40 @@
             <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
                 <!-- Total Users Card -->
                 <div class="card" 
-                    style="padding: 10px; text-align: center; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(96, 165, 250, 0.1); border-radius: 14px; display: flex; flex-direction: column; justify-content: center; min-height: 65px;">
-                    <div class="card-label" style="font-size: 0.6rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">TOTAL USERS</div>
-                    <div class="card-value" id="user-stat-total" style="font-size: 1.45rem; color: #60a5fa; font-weight: 800;">14</div>
+                    style="padding: 10px; text-align: center; background: rgba(96, 165, 250, 0.08); border: 1px solid rgba(96, 165, 250, 0.1); border-radius: 14px; display: flex; flex-direction: column; justify-content: center; min-height: 65px;">
+                    <div class="card-label" style="font-size: 0.6rem; color: var(--text-secondary); font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">TOTAL USERS</div>
+                    <div class="card-value" id="user-stat-total" style="font-size: 1.45rem; color: var(--accent-blue); font-weight: 800;">14</div>
                 </div>
                 <!-- Banned Users Card -->
                 <div class="card" 
-                    style="padding: 10px; text-align: center; background: rgba(69, 10, 10, 0.15); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 14px; display: flex; flex-direction: column; justify-content: center; min-height: 65px;">
-                    <div class="card-label" style="font-size: 0.6rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">BANNED</div>
-                    <div class="card-value" id="user-stat-banned" style="font-size: 1.45rem; color: #ef4444; font-weight: 800;">1</div>
+                    style="padding: 10px; text-align: center; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 14px; display: flex; flex-direction: column; justify-content: center; min-height: 65px;">
+                    <div class="card-label" style="font-size: 0.6rem; color: var(--text-secondary); font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">BANNED</div>
+                    <div class="card-value" id="user-stat-banned" style="font-size: 1.45rem; color: var(--danger); font-weight: 800;">1</div>
                 </div>
             </div>
 
             <!-- Search & Tabs Consolidated Container -->
-            <div class="card" style="padding: 22px; margin-bottom: 25px; background: rgba(28, 31, 46, 0.4); backdrop-filter: blur(12px); border: 1px solid var(--border-card); border-radius: 20px;">
+            <div class="card" style="padding: 22px; margin-bottom: 25px; background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-card); border-radius: 20px;">
                 <!-- Tabs (Connected) -->
-                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 20px; background: rgba(0, 0, 0, 0.2); padding: 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 20px; background: rgba(0, 0, 0, 0.2); padding: 5px; border-radius: 12px; border: 1px solid var(--border-card);">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
-                        style="flex: 1; padding: 12px; border-radius: 10px 0 0 10px; border: none; background: #60a5fa; color: #fff; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">All</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px 0 0 10px; border: none; background: var(--accent-blue); color: #fff; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
-                        style="flex: 1; padding: 12px; border-radius: 0 10px 10px 0; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">Banned</button>
+                        style="flex: 1; padding: 12px; border-radius: 0 10px 10px 0; border: none; background: transparent; color: var(--text-secondary); font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">Banned</button>
                 </div>
 
                 <!-- Search Input -->
                 <div class="search-box-v2" style="margin-bottom: 18px;">
                     <style>
-                        #user-search::placeholder { color: #757575 !important; opacity: 1; }
+                        #user-search::placeholder { color: var(--text-secondary) !important; opacity: 0.6; }
                     </style>
                     <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()"
-                        style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #94a3b8; border-radius: 12px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s;">
+                        style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-card); border-radius: 12px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s;">
                 </div>
 
                 <!-- Find Button -->
                 <button onclick="filterUsers()" class="gradient-btn"
-                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, #60a5fa, #a855f7); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
+                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
                     <i class="fas fa-search"></i> Find
                 </button>
             </div>

@@ -1,24 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --bg-darker: #0d0f1a;
-    --bg-dark: #141726;
-    --bg-card: #1c1f2e;
-    --text-main: #ffffff;
-    --text-muted: #8b8e9f;
-    --clr-blue: #3b82f6;
-    --clr-red: #ef4444;
-    --clr-green: #22c55e;
-    --clr-purple: #a855f7;
-    --clr-orange: #f59e0b;
-    --radius: 16px;
+    --bg-main: #0a0b10;
+    --bg-card: rgba(22, 24, 33, 0.7);
+    --border-card: rgba(255, 255, 255, 0.08);
+    --accent-blue: #60a5fa;
+    --accent-purple: #a855f7;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --nav-bg: rgba(15, 17, 26, 0.95);
+    --radius: 18px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -43,29 +44,42 @@
 }
 
 body {
-    background-color: var(--bg-darker);
-    color: var(--text-main);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     padding-bottom: 60px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(96, 165, 250, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Header */
 header {
-    background-color: var(--bg-dark);
+    background-color: var(--nav-bg);
     padding: 12px 20px;
-    /* Reduced by another 1px as requested */
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    /* Added bottom line */
+    border-bottom: 1px solid var(--border-card);
+    backdrop-filter: blur(20px);
 }
 
 .menu-btn {
     font-size: 1.5rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     cursor: pointer;
 }
 
@@ -103,7 +117,7 @@ header h1 {
     align-items: center;
     gap: 10px;
     margin: 25px 0 15px 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
 
 .section-header i {
@@ -124,13 +138,10 @@ header h1 {
 }
 
 .card {
-    background: rgba(28, 31, 46, 0.4);
-    /* Transparent glassy background */
+    background: var(--bg-card);
     backdrop-filter: blur(12px);
-    /* Glassmorphism blur effect */
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    /* Subtle glass border */
+    border: 1px solid var(--border-card);
     border-radius: var(--radius);
     padding: 20px;
     display: flex;
@@ -138,6 +149,7 @@ header h1 {
     justify-content: space-between;
     min-height: 110px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card:active {
@@ -148,7 +160,7 @@ header h1 {
 .card-label {
     font-size: 0.65rem;
     font-weight: 700;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.8px;
     margin-bottom: 8px;
@@ -162,23 +174,23 @@ header h1 {
 
 /* Color Classes */
 .val-blue {
-    color: var(--clr-blue);
+    color: var(--accent-blue);
 }
 
 .val-red {
-    color: var(--clr-red);
+    color: var(--danger);
 }
 
 .val-green {
-    color: var(--clr-green);
+    color: var(--success);
 }
 
 .val-purple {
-    color: var(--clr-purple);
+    color: var(--accent-purple);
 }
 
 .val-orange {
-    color: var(--clr-orange);
+    color: var(--warning);
 }
 
 /* Footer Wrapper */
@@ -218,12 +230,15 @@ header h1 {
     top: 0;
     left: -100%;
     width: 280px;
-    height: 100%;
-    background: #141726;
+    height: 100vh;
+    background: var(--nav-bg);
+    border-right: 1px solid var(--border-card);
     z-index: 2001;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
 }
 
 .side-menu.active {
@@ -240,8 +255,10 @@ header h1 {
 .side-menu-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #4f73ff;
-    /* Deep blue from image */
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .close-circle {
@@ -281,19 +298,18 @@ header h1 {
     width: 24px;
     text-align: center;
     font-size: 1.1rem;
-    color: #adb5bd;
-    /* Default muted icon color */
+    color: var(--text-secondary);
 }
 
 .menu-item.active {
-    background: #232a4e;
-    color: #4f73ff;
-    border-left: 4px solid #4f73ff;
+    background: rgba(96, 165, 250, 0.1);
+    color: var(--accent-blue);
+    border-left: 4px solid var(--accent-blue);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .menu-item.active i {
-    color: #4f73ff;
+    color: var(--accent-blue);
 }
 
 /* Overlay */
@@ -343,7 +359,7 @@ header h1 {
 .form-group label {
     display: block;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-bottom: 8px;
 }
 
@@ -358,18 +374,19 @@ header h1 {
 }
 
 .input-field:focus {
-    border-color: var(--clr-blue);
+    border-color: var(--accent-blue);
 }
 
 .primary-btn {
     width: 100%;
     padding: 14px;
-    background: var(--clr-blue);
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
     color: #fff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);
 }
 
 /* ========== Users Management Page (Glassmorphism Premium) ========== */
@@ -442,8 +459,7 @@ header h1 {
 
 .user-card-username {
     font-size: 0.9rem;
-    color: #3b82f6;
-    /* Accent blue from screenshot */
+    color: var(--accent-blue);
     font-weight: 600;
 }
 
