@@ -165,6 +165,9 @@ async function deleteChannel(id) {
 
 let allUsers = [];
 let userFilter = 'all';
+let currentPage = 1;
+const usersPerPage = 5;
+let totalFilteredCount = 0;
 
 async function loadUsers() {
     showLoader(true);
@@ -219,8 +222,57 @@ function applyUserFilter() {
         );
     }
 
-    document.getElementById('users-count-badge').innerText = `${filtered.length} results`;
-    renderUsers(filtered);
+    totalFilteredCount = filtered.length;
+    const totalPages = Math.ceil(totalFilteredCount / usersPerPage);
+    if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+
+    // Slice for pagination
+    const start = (currentPage - 1) * usersPerPage;
+    const end = start + usersPerPage;
+    const pagedUsers = filtered.slice(start, end);
+
+    document.getElementById('users-count-badge').innerText = `${totalFilteredCount} results`;
+    
+    // Pagination UI Updates
+    const paginationContainer = document.getElementById('pagination-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const pageInfo = document.getElementById('page-info');
+
+    if (totalFilteredCount > usersPerPage) {
+        paginationContainer.style.display = 'flex';
+        pageInfo.innerText = `Page ${currentPage} of ${totalPages || 1}`;
+        
+        // Dim disabled arrows
+        prevBtn.style.opacity = currentPage === 1 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = currentPage === 1 ? 'none' : 'auto';
+        
+        nextBtn.style.opacity = (currentPage === totalPages || totalPages === 0) ? '0.3' : '1';
+        nextBtn.style.pointerEvents = (currentPage === totalPages || totalPages === 0) ? 'none' : 'auto';
+    } else {
+        paginationContainer.style.display = 'none';
+    }
+
+    renderUsers(pagedUsers);
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        tg.HapticFeedback.impactOccurred('light');
+        applyUserFilter();
+        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+    }
+}
+
+function nextPage() {
+    const totalPages = Math.ceil(totalFilteredCount / usersPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        tg.HapticFeedback.impactOccurred('light');
+        applyUserFilter();
+        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+    }
 }
 
 function filterUsers() {
@@ -234,9 +286,8 @@ function renderUsers(users) {
 
     if (users.length === 0) {
         list.innerHTML = `
-            <div class="no-users-msg" style="padding: 60px 20px;">
-                <i class="fas fa-users-slash"></i>
-                No users matched your criteria.
+            <div style="padding: 40px 20px; text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; font-weight: 500;">
+                No users found.
             </div>
         `;
         return;
