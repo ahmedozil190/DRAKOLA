@@ -10,8 +10,6 @@ class User(Base):
     first_name = Column(String, nullable=True)
     username = Column(String, nullable=True)
     points = Column(Integer, default=0)
-    total_earned = Column(Integer, default=0) # v73: Track all activity-based earnings
-    joined_at = Column(DateTime, default=datetime.datetime.utcnow) # v73: For newest sorting
     last_daily_gift = Column(DateTime, nullable=True)
     is_admin = Column(Boolean, default=False)
     is_banned = Column(Boolean, default=False)
