@@ -7,8 +7,9 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN")
 ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))
 
 # Define sqlite database path
-# /data folder will be created locally, and it is usually a mapped volume on Railway.
-DB_PATH = "sqlite+aiosqlite:///data/bot_database.sqlite3"
+# Using absolute path for better Railway Volume compatibility
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = f"sqlite+aiosqlite:///{os.path.join(BASE_DIR, 'data', 'bot_database.sqlite3')}"
 
 # Mandatory subscription channels
 MANDATORY_CHANNELS = [
