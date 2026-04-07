@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>لوحة تحكم Billion Bot</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="loader" class="loader-container">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="app-container" style="display: none;">
+        <header>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=random" id="admin-avatar" alt="Avatar">
+                <div class="welcome-text">
+                    <h1 id="admin-name">أهلاً بك، أدمن</h1>
+                    <p>إدارة البوت الشاملة</p>
+                </div>
+            </div>
+            <button id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+        </header>
+
+        <main>
+            <!-- Stats Section -->
+            <section class="stats-grid">
+                <div class="stat-card glass">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <span class="label">المستخدمين</span>
+                        <h2 id="total-users">0</h2>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <i class="fas fa-coins"></i>
+                    <div class="stat-info">
+                        <span class="label">إجمالي النقاط</span>
+                        <h2 id="total-points">0</h2>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <i class="fas fa-box-open"></i>
+                    <div class="stat-info">
+                        <span class="label">التمويلات</span>
+                        <h2 id="active-orders">0</h2>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="chart-container glass">
+                <h3>📊 نشاط البوت</h3>
+                <canvas id="statsChart"></canvas>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="settings-section">
+                <h3>⚙️ الإعدادات العامة</h3>
+                <div class="settings-grid">
+                    <div class="input-group glass">
+                        <label>عمولة التحويل</label>
+                        <input type="number" id="transfer_fee" placeholder="0">
+                    </div>
+                    <div class="input-group glass">
+                        <label>الهدية اليومية</label>
+                        <input type="number" id="daily_gift_amount" placeholder="0">
+                    </div>
+                    <div class="input-group glass">
+                        <label>الحد الأدنى للتحويل</label>
+                        <input type="number" id="min_transfer_amount" placeholder="0">
+                    </div>
+                </div>
+                <button id="save-settings" class="primary-btn">حفظ الإعدادات</button>
+            </section>
+
+            <!-- Channels Section -->
+            <section class="channels-section glass">
+                <h3>📺 القنوات الإجبارية</h3>
+                <div id="channels-list" class="channels-list">
+                    <!-- Channels will be loaded here -->
+                </div>
+                <div class="add-channel-form">
+                    <input type="text" id="new-ch-id" placeholder="ID القناة (@...)">
+                    <input type="text" id="new-ch-link" placeholder="رابط القناة">
+                    <button id="add-channel-btn"><i class="fas fa-plus"></i></button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>تم التطوير بواسطة Antigravity AI Engine 🚀</p>
+        </footer>
+    </div>
+
+    <script src="static/app.js"></script>
+</body>
+</html>
