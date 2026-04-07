@@ -8,7 +8,7 @@ async def get_user(session: AsyncSession, user_id: int):
 
 async def get_all_users(session: AsyncSession, limit: int = 100, offset: int = 0):
     result = await session.execute(
-        select(User).order_by(User.joined_at.desc()).limit(limit).offset(offset) # v73: Newest first
+        select(User).order_by(User.user_id.desc()).limit(limit).offset(offset) # v73: Newest first (by ID)
     )
     return result.scalars().all()
 
