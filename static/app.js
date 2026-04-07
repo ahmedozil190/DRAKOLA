@@ -275,6 +275,25 @@ function nextPage() {
     }
 }
 
+function triggerSearch() {
+    const query = document.getElementById('user-search').value.trim();
+    const resetBtn = document.getElementById('reset-search-container');
+    
+    if (query) {
+        resetBtn.style.display = 'flex';
+    } else {
+        resetBtn.style.display = 'none';
+    }
+    
+    filterUsers();
+}
+
+function resetSearch() {
+    document.getElementById('user-search').value = '';
+    document.getElementById('reset-search-container').style.display = 'none';
+    filterUsers();
+}
+
 function filterUsers() {
     tg.HapticFeedback.impactOccurred('light');
     applyUserFilter();
@@ -328,7 +347,7 @@ function renderUsers(users) {
                 <!-- User ID -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">#${user.user_id}</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${user.user_id}</span>
                 </div>
 
                 <!-- Balance -->

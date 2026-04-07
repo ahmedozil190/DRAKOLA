@@ -36,6 +36,12 @@ async def get_or_create_user(session: AsyncSession, user_id: int, first_name: st
     user = await get_user(session, user_id)
     if not user:
         user = await create_user(session, user_id, first_name, username)
+    else:
+        # Update user info if it changed
+        if user.first_name != first_name or user.username != username:
+            user.first_name = first_name
+            user.username = username
+            await session.commit()
     return user
 
 async def update_user_points(session: AsyncSession, user_id: int, points_to_add: int):
