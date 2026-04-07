@@ -24,18 +24,18 @@
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-darker);
+    background: transparent; /* Floating effect */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1e293b;
-    border-radius: 10px;
-    transition: 0.3s;
+    background: #334155; 
+    border-radius: 20px;
+    border: 2px solid var(--bg-darker); /* Adds gap around thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
