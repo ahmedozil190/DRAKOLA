@@ -140,6 +140,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                     referrer = await crud.get_user(session, referrer_id)
                     if referrer:
                         referrer.points += 100
+                        referrer.total_earned = (referrer.total_earned or 0) + 100  # v73
                         referrer.invites_count = (referrer.invites_count or 0) + 1
                         await session.commit()
                         

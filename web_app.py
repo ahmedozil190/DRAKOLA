@@ -59,6 +59,7 @@ async def get_users(request):
             "first_name": u.first_name or "Unknown",
             "username": u.username or "",
             "points": u.points,
+            "total_earned": u.total_earned or 0,  # v73
             "is_banned": u.is_banned,
             "invites_count": u.invites_count or 0,
             "transfers_count": u.transfers_count or 0,

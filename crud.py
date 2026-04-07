@@ -8,7 +8,7 @@ async def get_user(session: AsyncSession, user_id: int):
 
 async def get_all_users(session: AsyncSession, limit: int = 100, offset: int = 0):
     result = await session.execute(
-        select(User).order_by(User.points.desc()).limit(limit).offset(offset)
+        select(User).order_by(User.joined_at.desc()).limit(limit).offset(offset) # v73: Newest first
     )
     return result.scalars().all()
 
@@ -27,7 +27,8 @@ async def add_points_to_user(session: AsyncSession, user_id: int, points: int):
     return user
 
 async def create_user(session: AsyncSession, user_id: int, first_name: str, username: str = None):
-    user = User(user_id=user_id, first_name=first_name, username=username)
+    import datetime
+    user = User(user_id=user_id, first_name=first_name, username=username, joined_at=datetime.datetime.utcnow())
     session.add(user)
     await session.commit()
     return user

@@ -19,14 +19,30 @@ async def set_commands(bot: Bot):
 async def init_db():
     from config import DATA_DIR
     import os
+    import sqlite3
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR, exist_ok=True)
         logging.info(f"Created persistent data directory at: {DATA_DIR}")
     
     async with engine.begin() as conn:
-        # Create tables if not exists
         await conn.run_sync(Base.metadata.create_all)
     logging.info("Database initialized successfully.")
+    
+    # v73: Auto-migration for new columns
+    from config import DB_PATH
+    db_file = DB_PATH.replace("sqlite+aiosqlite:///", "")
+    if os.path.exists(db_file):
+        conn_sync = sqlite3.connect(db_file)
+        cur = conn_sync.cursor()
+        for col, definition in [("total_earned", "INTEGER DEFAULT 0"), ("joined_at", "DATETIME DEFAULT CURRENT_TIMESTAMP")]:
+            try:
+                cur.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
+                logging.info(f"Migration v73: Added column '{col}'")
+            except Exception:
+                pass  # Column already exists
+        conn_sync.commit()
+        conn_sync.close()
+        logging.info("Migration v73 complete.")
 
 async def main():
     await init_db()

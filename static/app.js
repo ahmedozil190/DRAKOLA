@@ -610,7 +610,8 @@ function openUserManageModal(user) {
 
     document.getElementById('modal-user-name').innerText = user.first_name;
     document.getElementById('modal-user-id').innerText = user.user_id;
-    document.getElementById('modal-current-bal').innerText = Math.floor(user.points); // Raw number only (v69)
+    document.getElementById('modal-current-bal').innerText = Math.floor(user.points);
+    document.getElementById('modal-total-earned').innerText = user.total_earned || 0; // v73
     document.getElementById('modal-points-input').value = '';
 
     // Update Ban Button
