@@ -51,7 +51,7 @@ async def main():
     import os
     logging.info("Starting Web Dashboard server...")
     from web_app import setup_web_app, start_web_server
-    app = setup_web_app()
+    app = setup_web_app(bot)
     port = int(os.environ.get("PORT", 8080))
     asyncio.create_task(start_web_server(app, port=port)) # Run web server in background
     
