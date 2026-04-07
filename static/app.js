@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('avatar-circle').innerText = user.first_name?.[0]?.toUpperCase() || 'A';
     }
 
+    // Restore last view or default to overview
+    const savedView = localStorage.getItem('currentView') || 'overview';
+    switchNav(savedView);
+    
     loadInitialData();
 });
 
@@ -30,6 +34,9 @@ function switchNav(viewId) {
     // Smoothly close menu and overlay
     sideMenu.classList.remove('active');
     menuOverlay.classList.remove('active');
+
+    // Save current view for persistence
+    localStorage.setItem('currentView', viewId);
 
     // Update Title
     const titles = {
