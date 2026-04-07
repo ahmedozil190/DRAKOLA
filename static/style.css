@@ -804,3 +804,77 @@ header h1 {
     margin-left: 5px;
 }
 
+
+/* ========== Modal Visual Updates (v67) ========== */
+.modal-header-new {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.modal-header-new h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.modal-header-new p {
+    margin: 5px 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.modal-current-bal {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.adjust-balance-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.adjust-input-field {
+    flex: 1;
+    background: #11141b;
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.adjust-btn-square {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-sq-add {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #fff;
+}
+
+.btn-sq-sub {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.adjust-btn-square:active { transform: scale(0.92); }
+
