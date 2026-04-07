@@ -286,7 +286,7 @@ function renderUsers(users) {
 
     if (users.length === 0) {
         list.innerHTML = `
-            <div style="padding: 40px 20px; text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; font-weight: 500;">
+            <div style="padding: 40px 20px; text-align: center; color: #ffffff; font-size: 1.05rem; font-weight: 500;">
                 No users found.
             </div>
         `;
