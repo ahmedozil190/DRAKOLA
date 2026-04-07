@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=4">
+    <link rel="stylesheet" href="/static/style.css?v=2">
 </head>
+
 <body>
     <!-- Full-screen Loader -->
     <div id="loader" class="loader">
-        <div style="width: 50px; height: 50px; border: 3px solid #1c1f2e; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+        <div
+            style="width: 50px; height: 50px; border: 3px solid #1c1f2e; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite;">
+        </div>
     </div>
 
     <!-- Side Menu Overlay -->
@@ -124,7 +128,8 @@
             <div class="card" style="margin-top: 20px; min-height: auto;">
                 <div class="form-group">
                     <label>Add New Channel</label>
-                    <input type="text" id="new-channel-id" class="input-field" placeholder="@username" style="margin-bottom: 10px;">
+                    <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
+                        style="margin-bottom: 10px;">
                     <input type="text" id="new-channel-link" class="input-field" placeholder="https://t.me/...">
                 </div>
                 <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
@@ -134,8 +139,13 @@
 
 
     <style>
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <script src="/static/app.js"></script>
 </body>
+
 </html>
