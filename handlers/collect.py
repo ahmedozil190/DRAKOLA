@@ -153,7 +153,10 @@ async def turbo_verify(call: CallbackQuery):
                             session.add(sub)
                         
                         user.points = (user.points or 0) + 10
-                        user.total_earned = (user.total_earned or 0) + 10  # v73
+                        try:
+                            user.total_earned = (user.total_earned or 0) + 10  # v73
+                        except Exception:
+                            pass
                         order.current_members = (order.current_members or 0) + 1
                         if order.current_members >= order.required_members:
                             order.status = 'completed'
@@ -300,7 +303,10 @@ async def skip_channel(call: CallbackQuery):
                         
                         user = await crud.get_user(session, call.from_user.id)
                         user.points = (user.points or 0) + 10
-                        user.total_earned = (user.total_earned or 0) + 10  # v73
+                        try:
+                            user.total_earned = (user.total_earned or 0) + 10  # v73
+                        except Exception:
+                            pass
                         order.current_members = (order.current_members or 0) + 1
                         if order.current_members >= order.required_members:
                             order.status = 'completed'
@@ -356,7 +362,10 @@ async def verify_sub(call: CallbackQuery):
                     session.add(sub)
                 
                 user.points = (user.points or 0) + 10
-                user.total_earned = (user.total_earned or 0) + 10  # v73
+                try:
+                    user.total_earned = (user.total_earned or 0) + 10  # v73
+                except Exception:
+                    pass
                 order.current_members = (order.current_members or 0) + 1
                 if order.current_members >= order.required_members:
                     order.status = 'completed'

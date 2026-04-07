@@ -36,7 +36,10 @@ async def daily_gift(call: CallbackQuery):
                 
         settings = await crud.get_settings(session)
         user.points += settings.daily_gift_amount
-        user.total_earned = (user.total_earned or 0) + settings.daily_gift_amount  # v73
+        try:
+            user.total_earned = (user.total_earned or 0) + settings.daily_gift_amount  # v73
+        except Exception:
+            pass
         user.last_daily_gift = datetime.datetime.utcnow()
         user.daily_gifts_count = (user.daily_gifts_count or 0) + 1
         await session.commit()

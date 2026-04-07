@@ -28,7 +28,11 @@ async def add_points_to_user(session: AsyncSession, user_id: int, points: int):
 
 async def create_user(session: AsyncSession, user_id: int, first_name: str, username: str = None):
     import datetime
-    user = User(user_id=user_id, first_name=first_name, username=username, joined_at=datetime.datetime.utcnow())
+    user = User(user_id=user_id, first_name=first_name, username=username)
+    try:
+        user.joined_at = datetime.datetime.utcnow()  # v73: safe set
+    except Exception:
+        pass
     session.add(user)
     await session.commit()
     return user
