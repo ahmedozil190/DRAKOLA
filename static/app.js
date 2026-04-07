@@ -278,6 +278,42 @@ function renderUsers(users) {
     });
 }
 
+async function toggleBan(userId) {
+    tg.HapticFeedback.impactOccurred('medium');
+    try {
+        const res = await fetch('/api/users/ban', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId })
+        });
+        if (res.ok) {
+            loadUsers();
+        }
+    } catch (err) {
+        console.error("Ban toggle error:", err);
+    }
+}
+
+async function promptAddPoints(userId) {
+    const points = prompt("Enter points to add (negative to remove):");
+    if (points === null || points === "" || isNaN(points)) return;
+
+    tg.HapticFeedback.impactOccurred('medium');
+    try {
+        const res = await fetch('/api/users/points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, points: parseInt(points) })
+        });
+        if (res.ok) {
+            tg.showAlert("Points updated! ✨");
+            loadUsers();
+        }
+    } catch (err) {
+        console.error("Add points error:", err);
+    }
+}
+
 function showLoader(show) {
     loader.style.display = show ? 'flex' : 'none';
 }

@@ -60,7 +60,8 @@ async def get_users(request):
             "points": u.points,
             "is_banned": u.is_banned,
             "invites_count": u.invites_count or 0,
-            "transfers_count": u.transfers_count or 0
+            "transfers_count": u.transfers_count or 0,
+            "points_used": u.points_used or 0
         } for u in users])
 
 async def toggle_ban(request):
