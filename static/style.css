@@ -365,73 +365,84 @@ header h1 {
     cursor: pointer;
 }
 
-/* ========== Users Management Page (Premium) ========== */
-.user-card {
-    background: rgba(28, 31, 46, 0.4);
+/* ========== Users Management Page (Glassmorphism Premium) ========== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 18px;
     padding: 20px;
-    margin-bottom: 15px;
+}
+
+.user-card {
+    background: rgba(28, 31, 46, 0.3); /* Even more transparent as in Gmail Farmer */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 18px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-card:active {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .user-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .user-card-title {
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: #fff;
+    letter-spacing: 0.3px;
 }
 
 .verified-icon {
-    width: 22px;
-    height: 22px;
-    background: #2ecc71;
+    width: 24px;
+    height: 24px;
+    background: #10b981; /* Success green from screenshot */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #000;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
 }
 
 .user-card-sub {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .user-card-username {
-    font-size: 0.85rem;
-    color: #4f73ff;
-    font-weight: 500;
+    font-size: 0.9rem;
+    color: #3b82f6; /* Accent blue from screenshot */
+    font-weight: 600;
 }
 
 .user-card-id {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.user-card-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.05);
-    margin: 10px 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .user-stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin: 15px 0;
+    gap: 12px;
+    margin: 18px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 15px;
 }
 
 .user-stat-item {
@@ -439,64 +450,52 @@ header h1 {
 }
 
 .user-stat-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-    text-transform: capitalize;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .user-stat-value {
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 800;
 }
 
-.user-stat-value.balance { color: #2ecc71; }
-.user-stat-value.hold { color: #f39c12; }
-.user-stat-value.tasks { color: #9b59b6; }
+.user-stat-value.balance { color: #10b981; }
+.user-stat-value.hold { color: #f59e0b; }
+.user-stat-value.tasks { color: #a855f7; }
 
 .user-card-dashed {
     border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    margin: 15px 0;
-    padding-top: 15px;
+    margin-top: 15px;
+    padding-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .withdrawn-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
 }
 
 .withdrawn-value {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #2ecc71;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #10b981;
 }
 
-/* Tabs & Navigation */
-.tab-btn {
-    transition: all 0.3s ease;
-    cursor: pointer;
+/* Tabs & UI Elements */
+.tabs-row button {
+    background: rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
 }
 
-.tab-btn:not(.active):hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.nav-arrow {
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.nav-arrow:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.nav-arrow:active {
-    transform: scale(0.9);
-}
-
-.gradient-btn:active {
-    transform: scale(0.98);
+.tabs-row button.active {
+    background: #3b82f6 !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
