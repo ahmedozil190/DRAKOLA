@@ -14,17 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('avatar-circle').innerText = user.first_name?.[0]?.toUpperCase() || 'A';
     }
 
-    // Instant Render for stats only (Zero Flicker)
-    if (window.serverStats) {
-        console.log("🚀 Preloaded stats detected. Rendering instantly.");
-        renderStats(window.serverStats);
+    // -- Instant Rendering from Cache (v58) --
+    const cachedStats = localStorage.getItem('last_stats');
+    const cachedUsers = localStorage.getItem('last_users');
+    
+    if (cachedStats && cachedUsers) {
+        try {
+            console.log("🚀 Rendering instant data from cache...");
+            const stats = JSON.parse(cachedStats);
+            allUsers = JSON.parse(cachedUsers);
+            renderStats(stats);
+            applyUserFilter();
+            // hideLoader() will clear the infinite spinner safely (v58)
+            hideLoader();
+        } catch (e) {
+            console.error("Cache corrupted:", e);
+        }
     }
+
+    // Safety fallback: ensure loader is hidden after 4s no matter what
+    setTimeout(() => hideLoader(), 4000);
 
     // Restore last view
     const savedView = localStorage.getItem('currentView') || 'overview';
     switchNav(savedView);
 
-    // Silent background load to refresh everything
+    // Fetch fresh data in background
     loadInitialData(true);
 });
 
@@ -81,10 +96,14 @@ async function loadInitialData(silent = false) {
 
         populateStats(stats);
         populateSettings(settings);
+        
+        // Cache stats for next time
+        localStorage.setItem('last_stats', JSON.stringify(stats));
     } catch (err) {
         console.error("Data fetch error:", err);
     } finally {
-        if (!silent) setTimeout(() => showLoader(false), 500);
+        // Always ensure loader is hidden after initial load
+        hideLoader();
     }
 }
 
@@ -422,5 +441,18 @@ async function promptAddPoints(userId) {
 }
 
 function showLoader(show) {
-    loader.style.display = show ? 'flex' : 'none';
+    if (show) {
+        loader.style.display = 'flex';
+        loader.style.opacity = '1';
+    } else {
+        hideLoader();
+    }
+}
+
+function hideLoader() {
+    if (!loader) return;
+    loader.style.opacity = '0';
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 300);
 }

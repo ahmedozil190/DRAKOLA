@@ -51,27 +51,8 @@ async def delete_channel(request):
         return web.json_response({"status": "ok"})
 
 async def get_users(request):
-    bot = request.app['bot']
     async for session in get_session():
         users = await crud.get_all_users(session)
-        
-        # Simple sync: update info for everyone on load (safe for reasonable user counts)
-        # For large bots, this should be batches, but keeping it simple as requested
-        for u in users:
-            try:
-                # Use a small timeout or try to avoid blocking if many users
-                chat = await bot.get_chat(u.user_id)
-                new_name = chat.full_name
-                new_username = chat.username
-                
-                if u.first_name != new_name or u.username != new_username:
-                    u.first_name = new_name
-                    u.username = new_username
-                    await session.commit()
-            except Exception as e:
-                # User might have blocked the bot or chat not found, skip
-                continue
-
         return web.json_response([{
             "user_id": u.user_id,
             "first_name": u.first_name or "Unknown",
@@ -100,22 +81,7 @@ async def add_points(request):
         return web.json_response({"status": "error"}, status=404)
 
 async def handle_index(request):
-    async for session in get_session():
-        # Fetch ONLY stats for rapid injection
-        stats = await crud.get_admin_stats(session)
-        
-        try:
-            with open(os.path.join(STATIC_DIR, "index.html"), "r", encoding="utf-8") as f:
-                content = f.read()
-            
-            # Inject only stats as a JS object
-            script_tag = f"<script>window.serverStats = {json.dumps(stats)};</script>"
-            content = content.replace("<!-- STATS_INJECTION -->", script_tag)
-            
-            return web.Response(text=content, content_type='text/html')
-        except Exception as e:
-            logging.error(f"Error injecting stats: {e}")
-            return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
+    return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 def setup_web_app(bot):
     app = web.Application()
