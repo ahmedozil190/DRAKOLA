@@ -58,7 +58,7 @@
             <!-- Users Section -->
             <div class="section-header">
                 <i class="fas fa-users"></i>
-                <h2>User Management</h2>
+                <h2>Users</h2>
             </div>
             <div class="stats-grid">
                 <div class="card">
@@ -99,31 +99,41 @@
         <!-- Users Section -->
         <section id="users-section" class="view-section">
             <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                <div class="card"
-                    style="padding: 20px; min-height: 100px; background: rgba(79, 115, 255, 0.08); border: 1px solid rgba(79, 115, 255, 0.2); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <div class="card-label" style="font-size: 0.75rem; color: #fff; font-weight: 700; opacity: 1; margin-bottom: 8px;">TOTAL USERS</div>
-                    <div class="card-value" id="user-stat-total" style="font-size: 1.8rem; color: #4f73ff; font-weight: 800;">0</div>
+                <!-- Total Users Card -->
+                <div class="card" 
+                    style="padding: 18px; text-align: center; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 20px; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="card-label" style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">TOTAL USERS</div>
+                    <div class="card-value" id="user-stat-total" style="font-size: 1.8rem; color: #60a5fa; font-weight: 800;">14</div>
                 </div>
-                <div class="card"
-                    style="padding: 20px; min-height: 100px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <div class="card-label" style="font-size: 0.75rem; color: #fff; font-weight: 700; opacity: 1; margin-bottom: 8px;">BANNED</div>
-                    <div class="card-value" id="user-stat-banned" style="font-size: 1.8rem; color: #ef4444; font-weight: 800;">0</div>
+                <!-- Banned Users Card -->
+                <div class="card" 
+                    style="padding: 18px; text-align: center; background: rgba(69, 10, 10, 0.2); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 20px; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="card-label" style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">BANNED</div>
+                    <div class="card-value" id="user-stat-banned" style="font-size: 1.8rem; color: #ef4444; font-weight: 800;">1</div>
                 </div>
             </div>
 
-            <div class="card" style="padding: 20px; margin-bottom: 25px; background: rgba(15, 17, 26, 0.6); border: 1px solid rgba(255,255,255,0.05);">
-                <div class="tabs-row" style="display: flex; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px;">
+            <!-- Search & Tabs Consolidated Container -->
+            <div class="card" style="padding: 25px; margin-bottom: 25px; background: #0f111a; border: 1px solid rgba(255,255,255,0.03); border-radius: 24px;">
+                <!-- Tabs -->
+                <div class="tabs-row" style="display: flex; gap: 8px; margin-bottom: 25px; background: rgba(0,0,0,0.4); padding: 6px; border-radius: 14px;">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.9rem;">All</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: #60a5fa; color: #fff; font-weight: 700; font-size: 0.95rem;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.9rem;">Banned</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 0.95rem;">Banned</button>
                 </div>
 
-                <div class="search-box-v2" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3);"></i>
+                <!-- Search Input -->
+                <div class="search-box-v2" style="margin-bottom: 18px;">
                     <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()"
-                        style="width: 100%; padding: 16px 16px 16px 45px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                        style="width: 100%; padding: 15px; background: #0a0b11; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: #fff; font-size: 1rem; outline: none;">
                 </div>
+
+                <!-- Find Button -->
+                <button onclick="filterUsers()" class="gradient-btn"
+                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, #60a5fa, #a855f7); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
+                    <i class="fas fa-search"></i> Find
+                </button>
             </div>
 
             <div class="card" style="margin-top: 20px;">
