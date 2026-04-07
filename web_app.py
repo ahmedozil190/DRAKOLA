@@ -6,6 +6,8 @@ import crud
 from config import ADMIN_ID
 import asyncio
 import logging
+from sqlalchemy import select, func
+from models import Order
 
 # Directory for static files (Frontend)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
@@ -54,15 +56,23 @@ async def delete_channel(request):
 async def get_users(request):
     async for session in get_session():
         users = await crud.get_all_users(session)
+        
+        # Get orders count per user
+        orders_q = await session.execute(
+            select(Order.user_id, func.count(Order.id).label('cnt')).group_by(Order.user_id)
+        )
+        orders_map = {row.user_id: row.cnt for row in orders_q}
+        
         return web.json_response([{
             "user_id": u.user_id,
             "first_name": u.first_name or "Unknown",
             "username": u.username or "",
             "points": u.points,
-            "total_earned": (u.invites_count or 0) * 100,  # Earned from referrals
+            "total_earned": (u.invites_count or 0) * 100,
             "is_banned": u.is_banned,
             "invites_count": u.invites_count or 0,
             "transfers_count": u.transfers_count or 0,
+            "orders_count": orders_map.get(u.user_id, 0),
             "points_used": u.points_used or 0
         } for u in users])
 
