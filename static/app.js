@@ -299,30 +299,28 @@ function renderUsers(users) {
         card.onclick = () => tg.HapticFeedback.impactOccurred('light');
 
         card.innerHTML = `
-            <div class="user-info-list" style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 12px;">
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Full Name</span>
-                    <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.first_name}</span>
+            <div class="user-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 12px;">
+                <div class="user-stat-row" style="padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.02); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;">Full Name</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${user.first_name}</span>
                 </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
-                    <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${user.username || 'none'}</span>
+                <div class="user-stat-row" style="padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.02); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;">Username</span>
+                    <span style="font-size: 0.8rem; font-weight: 600; color: #60a5fa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@${user.username || 'none'}</span>
                 </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
-                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4); font-family: monospace; font-weight: 600;">#${user.user_id}</span>
+                <div class="user-stat-row" style="padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.02); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 500; text-transform: uppercase; margin-bottom: 4px;">User ID</span>
+                    <span style="font-size: 0.7rem; color: rgba(255,255,255,0.4); font-family: monospace; font-weight: 600;">#${user.user_id}</span>
                 </div>
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
-                    <div class="status-badge" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
-                         style="background: ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'}; 
-                                color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
-                                padding: 4px 10px; border-radius: 6px; 
-                                display: flex; align-items: center; gap: 6px;
-                                cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.15)' : 'rgba(46, 204, 113, 0.15)'};
-                                transition: 0.3s; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;">
-                        <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
-                        ${user.is_banned ? 'BANNED' : 'ACTIVE'}
+                <div class="user-stat-row" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
+                     style="padding: 10px; border-radius: 12px; background: ${user.is_banned ? 'rgba(239, 68, 68, 0.05)' : 'rgba(46, 204, 113, 0.05)'}; 
+                            color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
+                            display: flex; flex-direction: column; align-items: center; justify-content: center;
+                            cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'};
+                            transition: 0.3s; text-align: center;">
+                    <span style="font-size: 0.6rem; color: #94a3b8; font-weight: 500; text-transform: uppercase; margin-bottom: 3px;">Status</span>
+                    <div style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;">
+                        <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i> ${user.is_banned ? 'BANNED' : 'ACTIVE'}
                     </div>
                 </div>
             </div>
