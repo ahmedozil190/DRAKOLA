@@ -116,7 +116,7 @@
             <!-- Search & Tabs Consolidated Container (Compact) -->
             <div class="card" style="padding: 18px; margin-bottom: 30px; background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-card); border-radius: 20px;">
                 <!-- Tabs (Connected) -->
-                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 26px; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: 8px; border: 1px solid var(--border-card);">
+                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 26px; background: #0f1116; padding: 4px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15);">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
                         style="flex: 1; padding: 10px; border-radius: 10px 0 0 10px; border: none; background: var(--accent-blue); color: #fff; font-weight: 700; font-size: 0.85rem; transition: 0.3s; box-shadow: none;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
@@ -129,12 +129,12 @@
                         #user-search::placeholder { color: var(--text-secondary) !important; opacity: 0.6; }
                     </style>
                     <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()"
-                        style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid var(--border-card); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s;">
+                        style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s;">
                 </div>
 
                 <!-- Find Button -->
                 <button onclick="filterUsers()" class="gradient-btn"
-                    style="width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
+                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
                     <i class="fas fa-search"></i> Find
                 </button>
             </div>
