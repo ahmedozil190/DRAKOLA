@@ -361,7 +361,19 @@
             }
         }
     </style>
-    <script src="/static/app.js?v=10"></script>
+    <!-- Success Popup Modal (v62) -->
+    <div id="success-modal" class="modal-overlay" onclick="closeSuccessPopup()">
+        <div class="success-card" onclick="event.stopPropagation()">
+            <div class="success-icon-wrap">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 id="success-title">Success!</h3>
+            <p id="success-msg">Your action was completed successfully.</p>
+            <button class="success-close-btn" onclick="closeSuccessPopup()">Dismiss</button>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=11"></script>
 </body>
 
 </html>

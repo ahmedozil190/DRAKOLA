@@ -175,7 +175,9 @@ async function saveSettings() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        if (res.ok) tg.showAlert("Configuration saved successfully! ✨");
+        if (res.ok) {
+            showSuccessPopup("Settings Saved!", "Your configuration has been updated successfully. ✨");
+        }
     } catch (err) {
         console.error("Save error:", err);
     }
@@ -267,7 +269,12 @@ async function sendBroadcast(mode) {
         const result = await res.json();
         
         if (res.ok) {
-            tg.showAlert(mode === 'all' ? `Broadcast sent to ${result.sent_count} users! ✨` : "Message delivered! ✈️");
+            const successMsg = mode === 'all' 
+                ? `Broadcast sent to ${result.sent_count} users! ✨` 
+                : "Message delivered! ✈️";
+            
+            showSuccessPopup("Broadcast Sent!", successMsg);
+            
             if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
             else {
                 document.getElementById('broadcast-user-id').value = '';
@@ -552,7 +559,7 @@ async function promptAddPoints(userId) {
             body: JSON.stringify({ user_id: userId, points: parseInt(points) })
         });
         if (res.ok) {
-            tg.showAlert("Points updated! ✨");
+            showSuccessPopup("Points Updated!", "User points have been successfully updated. ✨");
             loadUsers();
         }
     } catch (err) {
@@ -575,4 +582,21 @@ function hideLoader() {
     setTimeout(() => {
         loader.style.display = 'none';
     }, 300);
+}
+
+// ========== Custom Success Modal Logic (v62) ==========
+function showSuccessPopup(title, message) {
+    document.getElementById('success-title').innerText = title;
+    document.getElementById('success-msg').innerText = message;
+    
+    // Add active class to show overlay and animate card
+    document.getElementById('success-modal').classList.add('active');
+    
+    // Success haptic feedback
+    tg.HapticFeedback.notificationOccurred('success');
+}
+
+function closeSuccessPopup() {
+    tg.HapticFeedback.impactOccurred('light');
+    document.getElementById('success-modal').classList.remove('active');
 }
