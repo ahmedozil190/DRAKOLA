@@ -608,11 +608,15 @@ function openUserManageModal(user) {
     currentManagingUser = user;
     tg.HapticFeedback.impactOccurred('medium');
 
-    document.getElementById('modal-user-name').innerText = `Name: ${user.first_name}`;
+    document.getElementById('modal-user-name').innerText = user.first_name;
     document.getElementById('modal-user-id').innerText = `ID: ${user.user_id}`;
-    document.getElementById('modal-current-bal').innerText = `Balance: $${user.points.toFixed(2)}`;
     document.getElementById('modal-points-input').value = '';
-    
+
+    // Update Status Badge
+    const badge = document.getElementById('modal-status-badge');
+    badge.innerText = user.is_banned ? 'BANNED' : 'ACTIVE';
+    badge.className = `modal-status-badge ${user.is_banned ? 'modal-status-banned' : 'modal-status-active'}`;
+
     // Update Ban Button
     const banBtn = document.getElementById('modal-ban-btn');
     banBtn.innerHTML = user.is_banned ? '<i class="fas fa-undo"></i> Unban Account' : '<i class="fas fa-ban"></i> Ban Account';
@@ -628,10 +632,10 @@ function closeUserManageModal() {
 
 async function modalUpdatePoints(type) {
     if (!currentManagingUser) return;
-    
+
     const inputVal = document.getElementById('modal-points-input').value;
     if (!inputVal || isNaN(inputVal)) return tg.showAlert("Please enter a valid number!");
-    
+
     let points = parseInt(inputVal);
     if (type === 'sub') points = -points; // Negative for subtraction
 
@@ -658,7 +662,7 @@ async function modalUpdatePoints(type) {
 
 async function modalToggleBan() {
     if (!currentManagingUser) return;
-    
+
     tg.HapticFeedback.impactOccurred('medium');
     showLoader(true);
 

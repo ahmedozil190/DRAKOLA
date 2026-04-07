@@ -289,7 +289,8 @@
                         <label>Add New Channel</label>
                         <input type="text" id="subview-new-channel-id" class="input-field" placeholder="@username"
                             style="margin-bottom: 10px;">
-                        <input type="text" id="subview-new-channel-link" class="input-field" placeholder="https://t.me/...">
+                        <input type="text" id="subview-new-channel-link" class="input-field"
+                            placeholder="https://t.me/...">
                     </div>
                     <button class="primary-btn" onclick="addNewChannelSubview()">Add Channel</button>
                 </div>
@@ -302,15 +303,18 @@
                 <i class="fas fa-bullhorn"></i>
                 <h2>Broadcast Control</h2>
             </div>
-            
+
             <!-- Global Broadcast Card -->
             <div class="card" style="margin-bottom: 20px; padding: 25px;">
                 <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Send to All</h3>
                 <div class="form-group">
                     <label>Message Content (HTML)</label>
-                    <textarea id="broadcast-all-msg" class="input-field" style="min-height: 150px; resize: vertical; padding: 15px;" placeholder="Type your global message here..."></textarea>
+                    <textarea id="broadcast-all-msg" class="input-field"
+                        style="min-height: 150px; resize: vertical; padding: 15px;"
+                        placeholder="Type your global message here..."></textarea>
                 </div>
-                <button class="primary-btn pulse-glow" onclick="sendBroadcast('all')" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <button class="primary-btn pulse-glow" onclick="sendBroadcast('all')"
+                    style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                     <i class="fas fa-bullhorn"></i> Send Message
                 </button>
             </div>
@@ -324,9 +328,12 @@
                 </div>
                 <div class="form-group">
                     <label>Message Content (HTML)</label>
-                    <textarea id="broadcast-user-msg" class="input-field" style="min-height: 120px; resize: vertical; padding: 15px;" placeholder="Type your private message here..."></textarea>
+                    <textarea id="broadcast-user-msg" class="input-field"
+                        style="min-height: 120px; resize: vertical; padding: 15px;"
+                        placeholder="Type your private message here..."></textarea>
                 </div>
-                <button class="primary-btn" onclick="sendBroadcast('user')" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <button class="primary-btn" onclick="sendBroadcast('user')"
+                    style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
                     <i class="fas fa-paper-plane"></i> Send Message
                 </button>
             </div>
@@ -376,34 +383,33 @@
     <!-- User Management Modal (v66) -->
     <div id="user-manage-modal" class="modal-overlay" onclick="closeUserManageModal()">
         <div class="manage-card" onclick="event.stopPropagation()">
-            <!-- NEW Header Style (v67) -->
-            <div class="modal-header-new">
-                <h4 id="modal-user-name">User Name</h4>
-                <p id="modal-user-id">ID: 0</p>
-                <div id="modal-current-bal" class="modal-current-bal">Balance: 0.00</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="modal-user-name" style="font-size: 1.1rem; color: #fff;">User Name</h3>
+                <span id="modal-user-id" class="modal-user-id">ID: 0</span>
             </div>
 
-            <div style="text-align: left; padding: 0 5px;">
-                <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Adjust Balance</label>
-                <div class="adjust-balance-wrap">
-                    <input type="number" id="modal-points-input" class="adjust-input-field" placeholder="Amount...">
-                    <button class="adjust-btn-square btn-sq-add" onclick="modalUpdatePoints('add')">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <button class="adjust-btn-square btn-sq-sub" onclick="modalUpdatePoints('sub')">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
+            <div id="modal-status-badge" class="modal-status-badge modal-status-active">ACTIVE</div>
+
+            <div class="modal-input-group">
+                <label>Adjust Balance (Points)</label>
+                <input type="number" id="modal-points-input" class="input-field" placeholder="0"
+                    style="margin-bottom: 0;">
             </div>
 
-            <!-- Ban Section -->
-            <div style="margin-top: 25px; padding: 0 5px;">
-                <button id="modal-ban-btn" class="modal-action-btn btn-ban" style="width: 100%; border-radius: 16px;" onclick="modalToggleBan()">
+            <div class="modal-actions-grid">
+                <button class="modal-action-btn btn-add" onclick="modalUpdatePoints('add')">
+                    <i class="fas fa-plus-circle"></i> Add
+                </button>
+                <button class="modal-action-btn btn-sub" onclick="modalUpdatePoints('sub')">
+                    <i class="fas fa-minus-circle"></i> Subtract
+                </button>
+                <button id="modal-ban-btn" class="modal-action-btn btn-ban" onclick="modalToggleBan()">
                     <i class="fas fa-ban"></i> Ban Account
                 </button>
             </div>
 
-            <button class="success-close-btn" onclick="closeUserManageModal()" style="margin-top: 20px; background: transparent; color: #64748b; font-size: 0.9rem;">Close</button>
+            <button class="success-close-btn" onclick="closeUserManageModal()"
+                style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
         </div>
     </div>
 
