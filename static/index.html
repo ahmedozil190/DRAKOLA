@@ -101,32 +101,35 @@
             <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
                 <!-- Total Users Card -->
                 <div class="card" 
-                    style="padding: 18px; text-align: center; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 20px; display: flex; flex-direction: column; justify-content: center;">
-                    <div class="card-label" style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">TOTAL USERS</div>
-                    <div class="card-value" id="user-stat-total" style="font-size: 1.8rem; color: #60a5fa; font-weight: 800;">14</div>
+                    style="padding: 12px; text-align: center; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(96, 165, 250, 0.1); border-radius: 16px; display: flex; flex-direction: column; justify-content: center; min-height: 80px;">
+                    <div class="card-label" style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-bottom: 4px; text-transform: uppercase;">TOTAL USERS</div>
+                    <div class="card-value" id="user-stat-total" style="font-size: 1.5rem; color: #60a5fa; font-weight: 800;">14</div>
                 </div>
                 <!-- Banned Users Card -->
                 <div class="card" 
-                    style="padding: 18px; text-align: center; background: rgba(69, 10, 10, 0.2); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 20px; display: flex; flex-direction: column; justify-content: center;">
-                    <div class="card-label" style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">BANNED</div>
-                    <div class="card-value" id="user-stat-banned" style="font-size: 1.8rem; color: #ef4444; font-weight: 800;">1</div>
+                    style="padding: 12px; text-align: center; background: rgba(69, 10, 10, 0.15); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 16px; display: flex; flex-direction: column; justify-content: center; min-height: 80px;">
+                    <div class="card-label" style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-bottom: 4px; text-transform: uppercase;">BANNED</div>
+                    <div class="card-value" id="user-stat-banned" style="font-size: 1.5rem; color: #ef4444; font-weight: 800;">1</div>
                 </div>
             </div>
 
             <!-- Search & Tabs Consolidated Container -->
-            <div class="card" style="padding: 25px; margin-bottom: 25px; background: #0f111a; border: 1px solid rgba(255,255,255,0.03); border-radius: 24px;">
+            <div class="card" style="padding: 22px; margin-bottom: 25px; background: #0f111a; border: 1px solid rgba(255,255,255,0.03); border-radius: 20px;">
                 <!-- Tabs -->
-                <div class="tabs-row" style="display: flex; gap: 8px; margin-bottom: 25px; background: rgba(0,0,0,0.4); padding: 6px; border-radius: 14px;">
+                <div class="tabs-row" style="display: flex; gap: 4px; margin-bottom: 20px; background: #0e1116; padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.02);">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: #60a5fa; color: #fff; font-weight: 700; font-size: 0.95rem;">All</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: #60a5fa; color: #fff; font-weight: 700; font-size: 0.9rem; transition: 0.3s;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 0.95rem;">Banned</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 0.9rem; transition: 0.3s;">Banned</button>
                 </div>
 
                 <!-- Search Input -->
                 <div class="search-box-v2" style="margin-bottom: 18px;">
+                    <style>
+                        #user-search::placeholder { color: #757575 !important; opacity: 1; }
+                    </style>
                     <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()"
-                        style="width: 100%; padding: 15px; background: #0a0b11; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: #fff; font-size: 1rem; outline: none;">
+                        style="width: 100%; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(96, 165, 250, 0.4); border-radius: 12px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s;">
                 </div>
 
                 <!-- Find Button -->
