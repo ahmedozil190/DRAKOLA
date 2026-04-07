@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Restore last view or default to overview
     const savedView = localStorage.getItem('currentView') || 'overview';
     switchNav(savedView);
-    
+
     // Silent load on refresh to avoid data "disappearing/appearing"
     loadInitialData(true);
 });
@@ -232,7 +232,7 @@ function applyUserFilter() {
     const pagedUsers = filtered.slice(start, end);
 
     document.getElementById('users-count-badge').innerText = `${totalFilteredCount} results`;
-    
+
     // Pagination UI Updates
     const paginationContainer = document.getElementById('pagination-container');
     const prevBtn = document.getElementById('prev-btn');
@@ -242,11 +242,11 @@ function applyUserFilter() {
     if (totalFilteredCount > usersPerPage) {
         paginationContainer.style.display = 'flex';
         pageInfo.innerText = `Page ${currentPage} of ${totalPages || 1}`;
-        
+
         // Dim disabled arrows
         prevBtn.style.opacity = currentPage === 1 ? '0.3' : '1';
         prevBtn.style.pointerEvents = currentPage === 1 ? 'none' : 'auto';
-        
+
         nextBtn.style.opacity = (currentPage === totalPages || totalPages === 0) ? '0.3' : '1';
         nextBtn.style.pointerEvents = (currentPage === totalPages || totalPages === 0) ? 'none' : 'auto';
     } else {
@@ -299,20 +299,20 @@ function renderUsers(users) {
         card.onclick = () => tg.HapticFeedback.impactOccurred('light');
 
         card.innerHTML = `
-            <div class="user-info-list" style="margin-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 15px;">
-                <div class="user-info-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div class="user-info-list" style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 12px;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Full Name</span>
-                    <span style="font-size: 1rem; font-weight: 700; color: #fff;">${user.first_name}</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.first_name}</span>
                 </div>
-                <div class="user-info-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
                     <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${user.username || 'none'}</span>
                 </div>
-                <div class="user-info-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
                     <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4); font-family: monospace; font-weight: 600;">#${user.user_id}</span>
                 </div>
-                <div class="user-info-row" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
                     <div class="status-badge" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
                          style="background: ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'}; 
