@@ -14,12 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('avatar-circle').innerText = user.first_name?.[0]?.toUpperCase() || 'A';
     }
 
+    // Instant Render using preloaded server data
+    if (window.serverData) {
+        console.log("🚀 Preloaded data detected. Rendering instantly.");
+        const { stats, users } = window.serverData;
+        allUsers = users;
+        renderStats(stats);
+        applyUserFilter();
+        
+        // Hide loader quickly since data is here
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 300);
+        }
+    }
+
     // Restore last view or default to overview
     const savedView = localStorage.getItem('currentView') || 'overview';
     switchNav(savedView);
 
-    // Silent load on refresh to avoid data "disappearing/appearing"
-    loadInitialData(true);
+    // Silent background load to ensure fresh data and name sync
+    loadInitialData(!!window.serverData);
 });
 
 // Sidebar & Navigation
