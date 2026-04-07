@@ -70,7 +70,8 @@ function switchNav(viewId) {
         'overview': 'Overview',
         'settings': 'Settings',
         'channels': 'Channels',
-        'users': 'User Management'
+        'users': 'User Management',
+        'broadcast': 'Broadcast'
     };
     pageTitle.innerText = titles[viewId];
 
@@ -235,6 +236,52 @@ async function addNewChannelSubview() {
     
     // Refresh subview list after a short delay
     setTimeout(syncChannelsToSubview, 800);
+}
+
+// ========== Broadcast Logic (v60) ==========
+async function sendBroadcast(mode) {
+    let endpoint = '/api/broadcast/all';
+    let data = {};
+    
+    if (mode === 'all') {
+        const msg = document.getElementById('broadcast-all-msg').value;
+        if (!msg) return tg.showAlert("Please enter a message!");
+        data = { message: msg };
+    } else {
+        const userId = document.getElementById('broadcast-user-id').value;
+        const msg = document.getElementById('broadcast-user-msg').value;
+        if (!userId || !msg) return tg.showAlert("Please fill id and message!");
+        endpoint = '/api/broadcast/user';
+        data = { user_id: userId, message: msg };
+    }
+
+    tg.HapticFeedback.impactOccurred('medium');
+    showLoader(true);
+
+    try {
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        
+        if (res.ok) {
+            tg.showAlert(mode === 'all' ? `Broadcast sent to ${result.sent_count} users! ✨` : "Message delivered! ✈️");
+            if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
+            else {
+                document.getElementById('broadcast-user-id').value = '';
+                document.getElementById('broadcast-user-msg').value = '';
+            }
+        } else {
+            tg.showAlert(`Error: ${result.message || "Something went wrong"}`);
+        }
+    } catch (err) {
+        console.error("Broadcast error:", err);
+        tg.showAlert("Failed to send broadcast.");
+    } finally {
+        hideLoader();
+    }
 }
 
 async function addNewChannel() {

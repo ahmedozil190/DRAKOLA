@@ -81,6 +81,36 @@ async def add_points(request):
             return web.json_response({"status": "ok", "points": user.points})
         return web.json_response({"status": "error"}, status=404)
 
+async def send_broadcast_all(request):
+    data = await request.json()
+    message = data.get('message')
+    bot = request.app['bot']
+    
+    async for session in get_session():
+        users = await crud.get_all_users(session)
+        count = 0
+        for u in users:
+            try:
+                await bot.send_message(u.user_id, message, parse_mode='HTML')
+                count += 1
+                # Small delay to keep Telegram happy
+                await asyncio.sleep(0.05) 
+            except Exception:
+                continue
+        return web.json_response({"status": "ok", "sent_count": count})
+
+async def send_broadcast_user(request):
+    data = await request.json()
+    user_id = data.get('user_id')
+    message = data.get('message')
+    bot = request.app['bot']
+    
+    try:
+        await bot.send_message(int(user_id), message, parse_mode='HTML')
+        return web.json_response({"status": "ok"})
+    except Exception as e:
+        return web.json_response({"status": "error", "message": str(e)}, status=400)
+
 async def handle_index(request):
     return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
@@ -99,6 +129,10 @@ def setup_web_app(bot):
     app.router.add_get('/api/users', get_users)
     app.router.add_post('/api/users/ban', toggle_ban)
     app.router.add_post('/api/users/points', add_points)
+    
+    # Broadcast API (v60)
+    app.router.add_post('/api/broadcast/all', send_broadcast_all)
+    app.router.add_post('/api/broadcast/user', send_broadcast_user)
     
     # Static Files
     app.router.add_get('/', handle_index)
