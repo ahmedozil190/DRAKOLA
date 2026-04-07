@@ -352,7 +352,7 @@ function renderUsers(users) {
                 <!-- Orders Made -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Orders Made</span>
-                    <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.transfers_count}</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #c084fc;">${user.transfers_count}</span>
                 </div>
             </div>
         `;

@@ -16,7 +16,7 @@ async def cancel_action_callback(call: CallbackQuery, state: FSMContext):
     async for session in get_session():
         user = await crud.get_user(session, call.from_user.id)
         
-        user_mention = f'{{<a href="tg://user?id={call.from_user.id}">{call.from_user.first_name}</a>}}'
+        user_mention = f'{{<a href="tg://user?id={call.from_user.id}">{call.from_user.full_name}</a>}}'
         greeting = f"<b>اهلاً بك </b>{user_mention}\n\n"
         greeting += "<b>ـ في بوت تمويل دراكولا➕🤖</b>\n\n"
         greeting += "<b>•البوت مخصص لتمويل القنوات</b>\n"
@@ -35,7 +35,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
         user = await crud.get_or_create_user(
             session, 
             user_id=message.from_user.id,
-            first_name=message.from_user.first_name,
+            first_name=message.from_user.full_name,
             username=message.from_user.username
         )
         
@@ -170,7 +170,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
             except:
                 pass
         
-        user_mention = f'{{<a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>}}'
+        user_mention = f'{{<a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>}}'
         greeting = f"<b>اهلاً بك </b>{user_mention}\n\n"
         greeting += "<b>ـ في بوت تمويل دراكولا➕🤖</b>\n\n"
         greeting += "<b>•البوت مخصص لتمويل القنوات</b>\n"
