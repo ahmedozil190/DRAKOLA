@@ -245,7 +245,9 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* الخط الفاصل */
+    padding-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .side-menu-title {
@@ -301,9 +303,8 @@ header h1 {
 .menu-item.active {
     background: #252840; /* Dark purple/blue tint */
     color: #60a5fa; /* Light blue text */
-    border-left: 3px solid #60a5fa; /* Active border color */
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-left: 5px solid #60a5fa; /* Active border line */
+    border-radius: 14px; /* دوران كامل من جميع الجهات بما فيها الناحية اليسرى */
     box-shadow: none;
 }
 
