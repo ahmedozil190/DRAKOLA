@@ -318,26 +318,23 @@ function renderUsers(users) {
                 </div>
             </div>
             
-            <div class="user-stats-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px;">
-                <div class="user-stat-item" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
-                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Balance</div>
-                    <div class="user-stat-value balance" style="font-size: 0.9rem; font-weight: 700; color: #60a5fa;">${user.points}</div>
+            <div class="user-stats-list" style="margin-bottom: 12px;">
+                <div class="user-stat-row" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px; cursor: pointer;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Balance</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${user.points}</span>
                 </div>
-                <div class="user-stat-item" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
-                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Spent</div>
-                    <div class="user-stat-value" style="font-size: 0.9rem; font-weight: 700; color: #ef4444;">${user.points_used || 0}</div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Spent</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #ef4444;">${user.points_used || 0}</span>
                 </div>
-                <div class="user-stat-item" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
-                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Earned</div>
-                    <div class="user-stat-value" style="font-size: 0.9rem; font-weight: 700; color: #2ecc71;">${user.points + (user.points_used || 0)}</div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px;">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Earned</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #2ecc71;">${user.points + (user.points_used || 0)}</span>
                 </div>
-            </div>
-            
-            <div class="user-card-divider" style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); margin-bottom: 12px;"></div>
-            
-            <div class="user-card-footer" style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="withdrawn-label" style="color: #94a3b8; font-size: 0.75rem; font-weight: 500;">Orders Made</div>
-                <div class="withdrawn-value" style="color: #fff; font-weight: 700; font-size: 0.85rem;">${user.transfers_count}</div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Orders Made</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${user.transfers_count}</span>
+                </div>
             </div>
         `;
         list.appendChild(card);
