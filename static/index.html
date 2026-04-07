@@ -383,8 +383,8 @@
     <!-- User Management Modal (v66) -->
     <div id="user-manage-modal" class="modal-overlay" onclick="closeUserManageModal()">
         <div class="manage-card" onclick="event.stopPropagation()">
-            <!-- NEW vertical info rows (v68) -->
-            <div style="margin-bottom: 25px;">
+            <!-- Info Rows (v69) -->
+            <div style="margin-bottom: 25px; text-align: left;">
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
                     <span style="font-size: 0.8rem; color: #94a3b8;">Full Name</span>
                     <span id="modal-user-name" style="font-size: 0.95rem; font-weight: 700; color: #fff;">-</span>
@@ -395,32 +395,30 @@
                 </div>
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02);">
                     <span style="font-size: 0.8rem; color: #94a3b8;">Balance</span>
-                    <span id="modal-current-bal" style="font-size: 1.1rem; font-weight: 800; color: #10b981;">0 .</span>
+                    <span id="modal-current-bal" style="font-size: 1.1rem; font-weight: 800; color: #10b981;">0</span>
                 </div>
             </div>
 
-            <!-- Adjust Balance Section -->
-            <div style="text-align: left; padding: 0 5px;">
-                <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Adjust Balance</label>
-                <div class="adjust-balance-wrap">
-                    <input type="number" id="modal-points-input" class="adjust-input-field" placeholder="Amount...">
-                    <button class="adjust-btn-square btn-sq-add" onclick="modalUpdatePoints('add')">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <button class="adjust-btn-square btn-sq-sub" onclick="modalUpdatePoints('sub')">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
+            <div class="modal-input-group">
+                <label>Adjust Balance (Points)</label>
+                <input type="number" id="modal-points-input" class="input-field" placeholder="0"
+                    style="margin-bottom: 0;">
             </div>
 
-            <!-- Ban Section -->
-            <div style="margin-top: 25px; padding: 0 5px;">
-                <button id="modal-ban-btn" class="modal-action-btn btn-ban" style="width: 100%; border-radius: 16px;" onclick="modalToggleBan()">
+            <div class="modal-actions-grid">
+                <button class="modal-action-btn btn-add" onclick="modalUpdatePoints('add')">
+                    <i class="fas fa-plus-circle"></i> Add
+                </button>
+                <button class="modal-action-btn btn-sub" onclick="modalUpdatePoints('sub')">
+                    <i class="fas fa-minus-circle"></i> Subtract
+                </button>
+                <button id="modal-ban-btn" class="modal-action-btn btn-ban" onclick="modalToggleBan()">
                     <i class="fas fa-ban"></i> Ban Account
                 </button>
             </div>
 
-            <button class="success-close-btn" onclick="closeUserManageModal()" style="margin-top: 20px; background: transparent; color: #64748b; font-size: 0.9rem;">Close</button>
+            <button class="success-close-btn" onclick="closeUserManageModal()"
+                style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
         </div>
     </div>
 
