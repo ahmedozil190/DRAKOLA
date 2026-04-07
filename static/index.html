@@ -144,16 +144,19 @@
                         style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
                 </div>
 
-                <!-- Reset Search Button (Hidden by default) -->
-                <div id="reset-search-container" style="display: none; justify-content: center; margin-bottom: 12px;">
-                    <button onclick="resetSearch()" style="background: none; border: none; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-decoration: underline; cursor: pointer; opacity: 0.7;">Reset Search Results</button>
-                </div>
-
                 <!-- Find Button -->
                 <button onclick="triggerSearch()" class="gradient-btn" id="find-btn"
-                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
+                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
                     <i class="fas fa-search"></i> Find
                 </button>
+
+                <!-- Reset Search Button (Styled like image) -->
+                <div id="reset-search-container" style="display: none;">
+                    <button onclick="resetSearch()" 
+                        style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 20px;">
+                        Reset
+                    </button>
+                </div>
             </div>
 
             <div class="card" style="margin-top: 35px;">
