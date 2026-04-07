@@ -609,14 +609,10 @@ function openUserManageModal(user) {
     tg.HapticFeedback.impactOccurred('medium');
 
     document.getElementById('modal-user-name').innerText = user.first_name;
-    document.getElementById('modal-user-id').innerText = `ID: ${user.user_id}`;
+    document.getElementById('modal-user-id').innerText = user.user_id;
+    document.getElementById('modal-current-bal').innerText = `${user.points.toFixed(0)} .`;
     document.getElementById('modal-points-input').value = '';
-
-    // Update Status Badge
-    const badge = document.getElementById('modal-status-badge');
-    badge.innerText = user.is_banned ? 'BANNED' : 'ACTIVE';
-    badge.className = `modal-status-badge ${user.is_banned ? 'modal-status-banned' : 'modal-status-active'}`;
-
+    
     // Update Ban Button
     const banBtn = document.getElementById('modal-ban-btn');
     banBtn.innerHTML = user.is_banned ? '<i class="fas fa-undo"></i> Unban Account' : '<i class="fas fa-ban"></i> Ban Account';
