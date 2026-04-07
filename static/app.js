@@ -612,7 +612,7 @@ function openUserManageModal(user) {
     document.getElementById('modal-user-id').innerText = user.user_id;
     document.getElementById('modal-current-bal').innerText = Math.floor(user.points); // Raw number only (v69)
     document.getElementById('modal-points-input').value = '';
-    
+
     // Update Ban Button
     const banBtn = document.getElementById('modal-ban-btn');
     banBtn.innerHTML = user.is_banned ? '<i class="fas fa-undo"></i> Unban Account' : '<i class="fas fa-ban"></i> Ban Account';
@@ -642,26 +642,18 @@ async function modalUpdatePoints(type) {
     showLoader(true);
 
     try {
-        const response = await fetch('/api/users/points', {
+        const res = await fetch('/api/users/points', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: currentManagingUser.user_id, points: points })
         });
-        
-        const res = await response.json();
-        
-        if (response.ok && res.status === 'ok') {
+        if (res.ok) {
             closeUserManageModal(); // Auto-close (v66)
-            showSuccessPopup("Updated!", `Balance adjusted successfully. New Total: ${res.points} ✨`);
+            showSuccessPopup("Updated!", `${Math.abs(points)} points ${type === 'add' ? 'added' : 'subtracted'} successfully. ✨`);
             loadUsers();
-            tg.HapticFeedback.notificationOccurred('success');
-        } else {
-            tg.showAlert(`Failed to update points: ${res.message || 'Error occurred'}`);
-            tg.HapticFeedback.notificationOccurred('error');
         }
     } catch (err) {
         console.error("Points update error:", err);
-        tg.showAlert("Server Connection Error. Please try again.");
     } finally {
         hideLoader();
     }

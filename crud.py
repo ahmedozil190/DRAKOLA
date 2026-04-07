@@ -22,11 +22,8 @@ async def toggle_ban_user(session: AsyncSession, user_id: int):
 async def add_points_to_user(session: AsyncSession, user_id: int, points: int):
     user = await get_user(session, user_id)
     if user:
-        # v71: Prevent negative balance and force sync
-        new_total = (user.points or 0) + points
-        user.points = max(0, new_total)
+        user.points += points
         await session.commit()
-        await session.refresh(user)
     return user
 
 async def create_user(session: AsyncSession, user_id: int, first_name: str, username: str = None):
@@ -50,11 +47,8 @@ async def get_or_create_user(session: AsyncSession, user_id: int, first_name: st
 async def update_user_points(session: AsyncSession, user_id: int, points_to_add: int):
     user = await get_user(session, user_id)
     if user:
-        # v71: Consistent safety logic
-        new_total = (user.points or 0) + points_to_add
-        user.points = max(0, new_total)
+        user.points += points_to_add
         await session.commit()
-        await session.refresh(user)
     return user
 
 async def get_admin_stats(session: AsyncSession):
