@@ -17,9 +17,16 @@ async def set_commands(bot: Bot):
     await bot.set_my_commands(commands)
 
 async def init_db():
+    from config import DATA_DIR
+    import os
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR, exist_ok=True)
+        logging.info(f"Created persistent data directory at: {DATA_DIR}")
+    
     async with engine.begin() as conn:
         # Create tables if not exists
         await conn.run_sync(Base.metadata.create_all)
+    logging.info("Database initialized successfully.")
 
 async def main():
     await init_db()
@@ -50,6 +57,8 @@ async def main():
     
     logging.info("Starting bot pooling...")
     await bot.delete_webhook(drop_pending_updates=True)
+    me = await bot.get_me()
+    logging.info(f"✅ Bot @{me.username} is now online and listening for updates!")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
