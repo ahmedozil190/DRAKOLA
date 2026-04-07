@@ -116,7 +116,7 @@
             <!-- Search & Tabs Consolidated Container (Compact) -->
             <div class="card" style="padding: 18px; margin-bottom: 30px; background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-card); border-radius: 20px;">
                 <!-- Tabs (Connected) -->
-                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 30px; background: rgba(0, 0, 0, 0.2); padding: 4px; border-radius: 12px; border: 1px solid var(--border-card);">
+                <div class="tabs-row" style="display: flex; gap: 0; margin-bottom: 24px; background: rgba(0, 0, 0, 0.2); padding: 4px; border-radius: 12px; border: 1px solid var(--border-card);">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
                         style="flex: 1; padding: 10px; border-radius: 10px 0 0 10px; border: none; background: var(--accent-blue); color: #fff; font-weight: 700; font-size: 0.85rem; transition: 0.3s; box-shadow: none;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
@@ -124,12 +124,12 @@
                 </div>
 
                 <!-- Search Input -->
-                <div class="search-box-v2" style="margin-bottom: 15px;">
+                <div class="search-box-v2" style="margin-bottom: 12px;">
                     <style>
                         #user-search::placeholder { color: var(--text-secondary) !important; opacity: 0.6; }
                     </style>
                     <input type="text" id="user-search" placeholder="Search users..." oninput="filterUsers()"
-                        style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-card); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s;">
+                        style="width: 100%; padding: 16px; background: #0f1116; border: 1px solid var(--border-card); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s;">
                 </div>
 
                 <!-- Find Button -->
