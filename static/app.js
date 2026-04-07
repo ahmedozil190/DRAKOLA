@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedView = localStorage.getItem('currentView') || 'overview';
     switchNav(savedView);
     
-    loadInitialData();
+    // Silent load on refresh to avoid data "disappearing/appearing"
+    loadInitialData(true);
 });
 
 // Sidebar & Navigation
@@ -63,8 +64,8 @@ function switchNav(viewId) {
     document.getElementById(`${viewId}-section`).classList.add('active');
 }
 
-async function loadInitialData() {
-    showLoader(true);
+async function loadInitialData(silent = false) {
+    if (!silent) showLoader(true);
     try {
         const statsRes = await fetch('/api/stats');
         const stats = await statsRes.json();
@@ -77,7 +78,7 @@ async function loadInitialData() {
     } catch (err) {
         console.error("Data fetch error:", err);
     } finally {
-        setTimeout(() => showLoader(false), 500);
+        if (!silent) setTimeout(() => showLoader(false), 500);
     }
 }
 
