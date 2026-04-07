@@ -6,6 +6,26 @@ async def get_user(session: AsyncSession, user_id: int):
     result = await session.execute(select(User).where(User.user_id == user_id))
     return result.scalar_one_or_none()
 
+async def get_all_users(session: AsyncSession, limit: int = 100, offset: int = 0):
+    result = await session.execute(
+        select(User).order_by(User.points.desc()).limit(limit).offset(offset)
+    )
+    return result.scalars().all()
+
+async def toggle_ban_user(session: AsyncSession, user_id: int):
+    user = await get_user(session, user_id)
+    if user:
+        user.is_banned = not user.is_banned
+        await session.commit()
+    return user
+
+async def add_points_to_user(session: AsyncSession, user_id: int, points: int):
+    user = await get_user(session, user_id)
+    if user:
+        user.points += points
+        await session.commit()
+    return user
+
 async def create_user(session: AsyncSession, user_id: int, first_name: str, username: str = None):
     user = User(user_id=user_id, first_name=first_name, username=username)
     session.add(user)

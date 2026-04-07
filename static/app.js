@@ -35,9 +35,14 @@ function switchNav(viewId) {
     const titles = {
         'overview': 'Overview',
         'settings': 'Settings',
-        'channels': 'Channels'
+        'channels': 'Channels',
+        'users': 'Users'
     };
     pageTitle.innerText = titles[viewId];
+    
+    if (viewId === 'users') {
+        loadUsers();
+    }
 
     // Update UI Active States
     document.querySelectorAll('.menu-item').forEach(item => {
@@ -147,6 +152,103 @@ async function deleteChannel(id) {
             body: JSON.stringify({ id })
         });
         loadInitialData();
+    }
+}
+
+let allUsers = [];
+
+async function loadUsers() {
+    showLoader(true);
+    try {
+        const res = await fetch('/api/users');
+        allUsers = await res.json();
+        renderUsers(allUsers);
+    } catch (err) {
+        console.error("Users fetch error:", err);
+    } finally {
+        showLoader(false);
+    }
+}
+
+function renderUsers(users) {
+    const list = document.getElementById('users-list');
+    list.innerHTML = '';
+    
+    if (users.length === 0) {
+        list.innerHTML = `
+            <div class="no-users-msg">
+                <i class="fas fa-users-slash"></i>
+                No users found.
+            </div>
+        `;
+        return;
+    }
+
+    users.forEach(user => {
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        const initial = user.first_name?.[0]?.toUpperCase() || 'U';
+        
+        card.innerHTML = `
+            <div class="user-avatar">${initial}</div>
+            <div class="user-info">
+                <div class="user-name">${user.first_name} ${user.username ? `(@${user.username})` : ''}</div>
+                <div class="user-id">ID: ${user.user_id}</div>
+                <div class="user-meta">
+                    <span><i class="fas fa-user-plus"></i> ${user.invites_count}</span>
+                    <span><i class="fas fa-exchange-alt"></i> ${user.transfers_count}</span>
+                </div>
+            </div>
+            <div class="user-actions">
+                <div class="user-points-badge" onclick="promptAddPoints('${user.user_id}')">${user.points} PTS</div>
+                <div class="user-status-badge ${user.is_banned ? 'banned' : 'active'}">
+                    ${user.is_banned ? 'Banned' : 'Active'}
+                </div>
+                <button class="ban-btn ${user.is_banned ? 'unban' : ''}" onclick="toggleBan('${user.user_id}')">
+                    ${user.is_banned ? 'Unban' : 'Ban'}
+                </button>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+}
+
+function filterUsers() {
+    const query = document.getElementById('user-search').value.toLowerCase();
+    const filtered = allUsers.filter(u => 
+        u.first_name.toLowerCase().includes(query) || 
+        u.user_id.toString().includes(query) || 
+        (u.username && u.username.toLowerCase().includes(query))
+    );
+    renderUsers(filtered);
+}
+
+async function toggleBan(userId) {
+    tg.HapticFeedback.impactOccurred('medium');
+    const res = await fetch('/api/users/ban', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+    });
+    if (res.ok) {
+        loadUsers();
+    }
+}
+
+async function promptAddPoints(userId) {
+    const points = prompt("Enter points to add (can be negative to remove):");
+    if (points === null || points === "" || isNaN(points)) return;
+
+    tg.HapticFeedback.impactOccurred('medium');
+    const res = await fetch('/api/users/points', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, points: parseInt(points) })
+    });
+    if (res.ok) {
+        tg.showScanQrPopup({ text: "Points added! ✨" }); // Just a way to show a quick toast if showAlert is too much
+        setTimeout(() => tg.closeScanQrPopup(), 1000);
+        loadUsers();
     }
 }
 

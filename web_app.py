@@ -50,6 +50,35 @@ async def delete_channel(request):
         await crud.delete_mandatory_channel(session, data['id'])
         return web.json_response({"status": "ok"})
 
+async def get_users(request):
+    async for session in get_session():
+        users = await crud.get_all_users(session)
+        return web.json_response([{
+            "user_id": u.user_id,
+            "first_name": u.first_name or "Unknown",
+            "username": u.username or "",
+            "points": u.points,
+            "is_banned": u.is_banned,
+            "invites_count": u.invites_count or 0,
+            "transfers_count": u.transfers_count or 0
+        } for u in users])
+
+async def toggle_ban(request):
+    data = await request.json()
+    async for session in get_session():
+        user = await crud.toggle_ban_user(session, int(data['user_id']))
+        if user:
+            return web.json_response({"status": "ok", "is_banned": user.is_banned})
+        return web.json_response({"status": "error"}, status=404)
+
+async def add_points(request):
+    data = await request.json()
+    async for session in get_session():
+        user = await crud.add_points_to_user(session, int(data['user_id']), int(data['points']))
+        if user:
+            return web.json_response({"status": "ok", "points": user.points})
+        return web.json_response({"status": "error"}, status=404)
+
 async def handle_index(request):
     return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
@@ -62,6 +91,11 @@ def setup_web_app():
     app.router.add_post('/api/settings/update', update_settings_data)
     app.router.add_post('/api/channels/add', add_channel)
     app.router.add_post('/api/channels/delete', delete_channel)
+    
+    # Users API
+    app.router.add_get('/api/users', get_users)
+    app.router.add_post('/api/users/ban', toggle_ban)
+    app.router.add_post('/api/users/points', add_points)
     
     # Static Files
     app.router.add_get('/', handle_index)
