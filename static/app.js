@@ -642,18 +642,26 @@ async function modalUpdatePoints(type) {
     showLoader(true);
 
     try {
-        const res = await fetch('/api/users/points', {
+        const response = await fetch('/api/users/points', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: currentManagingUser.user_id, points: points })
         });
-        if (res.ok) {
+        
+        const res = await response.json();
+        
+        if (response.ok && res.status === 'ok') {
             closeUserManageModal(); // Auto-close (v66)
-            showSuccessPopup("Updated!", `${Math.abs(points)} points ${type === 'add' ? 'added' : 'subtracted'} successfully. ✨`);
+            showSuccessPopup("Updated!", `Balance adjusted successfully. New Total: ${res.points} ✨`);
             loadUsers();
+            tg.HapticFeedback.notificationOccurred('success');
+        } else {
+            tg.showAlert(`Failed to update points: ${res.message || 'Error occurred'}`);
+            tg.HapticFeedback.notificationOccurred('error');
         }
     } catch (err) {
         console.error("Points update error:", err);
+        tg.showAlert("Server Connection Error. Please try again.");
     } finally {
         hideLoader();
     }

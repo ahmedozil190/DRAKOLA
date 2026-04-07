@@ -74,12 +74,20 @@ async def toggle_ban(request):
         return web.json_response({"status": "error"}, status=404)
 
 async def add_points(request):
-    data = await request.json()
-    async for session in get_session():
-        user = await crud.add_points_to_user(session, int(data['user_id']), int(data['points']))
-        if user:
-            return web.json_response({"status": "ok", "points": user.points})
-        return web.json_response({"status": "error"}, status=404)
+    try:
+        data = await request.json()
+        user_id = int(data['user_id'])
+        points_to_add = int(data['points'])
+        
+        async for session in get_session():
+            user = await crud.add_points_to_user(session, user_id, points_to_add)
+            if user:
+                logging.info(f"💰 Points Update: User {user_id} | Added: {points_to_add} | New Total: {user.points}")
+                return web.json_response({"status": "ok", "points": user.points})
+            return web.json_response({"status": "error", "message": "User not found"}, status=404)
+    except Exception as e:
+        logging.error(f"❌ Error updating points: {str(e)}")
+        return web.json_response({"status": "error", "message": str(e)}, status=500)
 
 async def send_broadcast_all(request):
     data = await request.json()
