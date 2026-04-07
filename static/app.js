@@ -299,38 +299,45 @@ function renderUsers(users) {
         card.onclick = () => tg.HapticFeedback.impactOccurred('light');
 
         card.innerHTML = `
-            <div class="user-card-header">
-                <div class="user-card-title">${user.first_name}</div>
-                <div class="verified-icon" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" style="background: ${user.is_banned ? '#ef4444' : '#2ecc71'}; cursor: pointer;">
-                    <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
+            <div class="user-card-header" style="justify-content: space-between; align-items: flex-start; margin-bottom: 22px; display: flex;">
+                <div style="flex: 1;">
+                    <div class="user-card-title" style="font-size: 1.1rem; margin-bottom: 4px; font-weight: 700; color: #fff;">${user.first_name}</div>
+                    <div class="user-card-username" style="color: #94a3b8; font-size: 0.85rem;">@${user.username || 'unknown'}</div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <div class="status-badge" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
+                         style="background: ${user.is_banned ? 'rgba(239, 68, 68, 0.12)' : 'rgba(46, 204, 113, 0.12)'}; 
+                                color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
+                                width: 22px; height: 22px; border-radius: 6px; 
+                                display: flex; align-items: center; justify-content: center; 
+                                cursor: pointer; margin-bottom: 8px; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.2)' : 'rgba(46, 204, 113, 0.2)'};
+                                transition: 0.3s; font-size: 0.75rem;">
+                        <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
+                    </div>
+                    <div class="user-card-id" style="color: rgba(255,255,255,0.3); font-size: 0.7rem; font-weight: 600;">ID: ${user.user_id}</div>
                 </div>
             </div>
             
-            <div class="user-card-sub">
-                <div class="user-card-username">@${user.username || 'unknown'}</div>
-                <div class="user-card-id">ID: ${user.user_id}</div>
-            </div>
-            
-            <div class="user-card-divider"></div>
-            
-            <div class="user-stats-grid">
-                <div class="user-stat-item" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();">
-                    <div class="user-stat-label">Balance</div>
-                    <div class="user-stat-value balance">$${(user.points / 100).toFixed(2)}</div>
+            <div class="user-stats-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px;">
+                <div class="user-stat-item" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Balance</div>
+                    <div class="user-stat-value balance" style="font-size: 0.9rem; font-weight: 700; color: #60a5fa;">${user.points}</div>
                 </div>
-                <div class="user-stat-item">
-                    <div class="user-stat-label">Hold</div>
-                    <div class="user-stat-value hold">$0.00</div>
+                <div class="user-stat-item" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Spent</div>
+                    <div class="user-stat-value" style="font-size: 0.9rem; font-weight: 700; color: #ef4444;">${user.points_used || 0}</div>
                 </div>
-                <div class="user-stat-item">
-                    <div class="user-stat-label">Tasks</div>
-                    <div class="user-stat-value tasks">${user.transfers_count}</div>
+                <div class="user-stat-item" style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="user-stat-label" style="font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Earned</div>
+                    <div class="user-stat-value" style="font-size: 0.9rem; font-weight: 700; color: #2ecc71;">${user.points + (user.points_used || 0)}</div>
                 </div>
             </div>
             
-            <div class="user-card-dashed">
-                <div class="withdrawn-label">Total Withdrawn:</div>
-                <div class="withdrawn-value">$${((user.points_used || 0) / 100).toFixed(2)}</div>
+            <div class="user-card-divider" style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); margin-bottom: 12px;"></div>
+            
+            <div class="user-card-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="withdrawn-label" style="color: #94a3b8; font-size: 0.75rem; font-weight: 500;">Orders Made</div>
+                <div class="withdrawn-value" style="color: #fff; font-weight: 700; font-size: 0.85rem;">${user.transfers_count}</div>
             </div>
         `;
         list.appendChild(card);
