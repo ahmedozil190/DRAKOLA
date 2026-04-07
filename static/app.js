@@ -36,7 +36,7 @@ function switchNav(viewId) {
         'overview': 'Overview',
         'settings': 'Settings',
         'channels': 'Channels',
-        'users': 'Users'
+        'users': 'User Management'
     };
     pageTitle.innerText = titles[viewId];
 
