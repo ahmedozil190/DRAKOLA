@@ -473,9 +473,9 @@ function renderUsers(users) {
             <div class="user-all-info-list">
                 <!-- Account Status (Now First) -->
                 <div class="user-stat-row" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" 
-                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: ${user.is_banned ? 'rgba(239, 68, 68, 0.05)' : 'rgba(46, 204, 113, 0.05)'}; 
-                            color: ${user.is_banned ? '#ef4444' : '#2ecc71'}; 
-                            margin-bottom: 8px; cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(46, 204, 113, 0.1)'};
+                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: ${user.is_banned ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)'}; 
+                            color: ${user.is_banned ? '#ef4444' : '#ffffff'}; 
+                            margin-bottom: 8px; cursor: pointer; border: 1px solid ${user.is_banned ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)'};
                             transition: 0.3s;">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
                     <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
