@@ -4,6 +4,7 @@ tg.expand();
 // DOM Elements
 const loader = document.getElementById('loader');
 const sideMenu = document.getElementById('side-menu');
+const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,11 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleMenu() {
     tg.HapticFeedback.impactOccurred('light');
     sideMenu.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
 }
 
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
+    
+    // Smoothly close menu and overlay
     sideMenu.classList.remove('active');
+    menuOverlay.classList.remove('active');
     
     // Update Title
     const titles = {

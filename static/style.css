@@ -160,12 +160,12 @@ header h1 {
     z-index: 2000;
 }
 
-/* Side Menu (Hidden by default) */
+/* Side Menu Sidebar */
 .side-menu {
     position: fixed;
     top: 0; left: -100%; width: 280px; height: 100%;
-    background: var(--bg-dark);
-    z-index: 1000;
+    background: #141726;
+    z-index: 2001;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
     box-shadow: 10px 0 30px rgba(0,0,0,0.5);
@@ -175,15 +175,86 @@ header h1 {
     left: 0;
 }
 
-.menu-item {
-    display: flex; align-items: center; gap: 15px;
-    padding: 15px; border-radius: 12px;
-    color: var(--text-muted); text-decoration: none;
-    margin-bottom: 5px; cursor: pointer;
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
-.menu-item.active { background: #1e293b; color: #fff; }
-.menu-item i { width: 20px; text-align: center; }
+.side-menu-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #4f73ff; /* Deep blue from image */
+}
+
+.close-circle {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.close-circle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Menu Items */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+.menu-item i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #adb5bd; /* Default muted icon color */
+}
+
+.menu-item.active {
+    background: #232a4e;
+    color: #4f73ff;
+    border-left: 4px solid #4f73ff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item.active i {
+    color: #4f73ff;
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 2000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; }
