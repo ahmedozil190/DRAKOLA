@@ -365,166 +365,138 @@ header h1 {
     cursor: pointer;
 }
 
-/* ========== Users Management Page ========== */
-.section-header {
-    margin-bottom: 20px;
-}
-
-.section-header h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-}
-
-.section-header p {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
-
+/* ========== Users Management Page (Premium) ========== */
 .user-card {
     background: rgba(28, 31, 46, 0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.user-card-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 14px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 5px;
 }
 
-.user-card:active {
-    transform: scale(0.98);
-    background: rgba(28, 31, 46, 0.6);
+.user-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
 }
 
-.user-avatar {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
-    background: linear-gradient(135deg, #4f73ff, #a855f7);
+.verified-icon {
+    width: 22px;
+    height: 22px;
+    background: #2ecc71;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #fff;
-    box-shadow: 0 0 12px rgba(79, 115, 255, 0.3);
-}
-
-.user-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.user-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.user-id {
+    color: #000;
     font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 2px;
 }
 
-.user-meta {
+.user-card-sub {
     display: flex;
-    gap: 10px;
-    margin-top: 6px;
-}
-
-.user-meta span {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 4px;
+    margin-bottom: 15px;
 }
 
-.user-meta span i {
-    font-size: 0.6rem;
-}
-
-.user-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-}
-
-.user-points-badge {
-    background: rgba(79, 115, 255, 0.15);
+.user-card-username {
+    font-size: 0.85rem;
     color: #4f73ff;
-    padding: 4px 10px;
-    border-radius: 20px;
+    font-weight: 500;
+}
+
+.user-card-id {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.user-card-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 10px 0;
+}
+
+.user-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.user-stat-item {
+    text-align: center;
+}
+
+.user-stat-label {
     font-size: 0.7rem;
-    font-weight: 700;
-    white-space: nowrap;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: capitalize;
 }
 
-.user-status-badge {
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 0.6rem;
+.user-stat-value {
+    font-size: 0.95rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-.user-status-badge.active {
-    background: rgba(46, 204, 113, 0.15);
+.user-stat-value.balance { color: #2ecc71; }
+.user-stat-value.hold { color: #f39c12; }
+.user-stat-value.tasks { color: #9b59b6; }
+
+.user-card-dashed {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    margin: 15px 0;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.withdrawn-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.withdrawn-value {
+    font-size: 0.95rem;
+    font-weight: 700;
     color: #2ecc71;
 }
 
-.user-status-badge.banned {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
+/* Tabs & Navigation */
+.tab-btn {
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.ban-btn {
-    background: none;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 0.65rem;
-    font-weight: 600;
+.tab-btn:not(.active):hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-arrow {
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.ban-btn:active {
-    background: rgba(239, 68, 68, 0.2);
+.nav-arrow:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.ban-btn.unban {
-    border-color: rgba(46, 204, 113, 0.3);
-    color: #2ecc71;
+.nav-arrow:active {
+    transform: scale(0.9);
 }
 
-.ban-btn.unban:active {
-    background: rgba(46, 204, 113, 0.2);
-}
-
-.no-users-msg {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-.no-users-msg i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    display: block;
-    opacity: 0.4;
+.gradient-btn:active {
+    transform: scale(0.98);
 }

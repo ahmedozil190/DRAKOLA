@@ -98,21 +98,47 @@
 
         <!-- Users Section -->
         <section id="users-section" class="view-section">
-            <div class="section-header">
-                <h2>User Management</h2>
-                <p>Manage users, points, and account status.</p>
-            </div>
-
-            <div class="card" style="padding: 15px; margin-bottom: 20px;">
-                <div class="search-box" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" id="user-search" placeholder="Search by name, ID or username..." oninput="filterUsers()" 
-                           style="width: 100%; padding: 12px 12px 12px 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.9rem;">
+            <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                <div class="card" style="padding: 15px; min-height: 80px; background: rgba(79, 115, 255, 0.05); border: 1px solid rgba(79, 115, 255, 0.2);">
+                    <div class="card-label">Total Users</div>
+                    <div class="card-value" id="user-stat-total" style="font-size: 1.5rem; color: #4f73ff;">0</div>
+                </div>
+                <div class="card" style="padding: 15px; min-height: 80px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <div class="card-label">Banned</div>
+                    <div class="card-value" id="user-stat-banned" style="font-size: 1.5rem; color: #ef4444;">0</div>
                 </div>
             </div>
 
-            <div id="users-list">
-                <!-- User rows will be injected here -->
+            <div class="card" style="padding: 15px; margin-bottom: 20px;">
+                <div class="tabs-row" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')" style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: var(--clr-blue); color: #fff; font-weight: 600; font-size: 0.85rem;">All</button>
+                    <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')" style="flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; font-size: 0.85rem;">Banned</button>
+                </div>
+
+                <div class="search-box-v2" style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" id="user-search" placeholder="Search users..." 
+                           style="width: 100%; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.95rem;">
+                    <button onclick="filterUsers()" class="gradient-btn" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #4f73ff, #a855f7); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-search"></i> Find
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 2px; background: transparent; border: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px;">
+                    <h3 style="font-size: 1rem; font-weight: 700;">User Management</h3>
+                    <span id="users-count-badge" style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; color: var(--text-muted);">0 results</span>
+                </div>
+                
+                <div id="users-list">
+                    <!-- Premium cards will be injected here -->
+                </div>
+
+                <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                    <button class="nav-arrow" style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: var(--text-muted);"><i class="fas fa-chevron-left"></i></button>
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
+                    <button class="nav-arrow" style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: var(--text-muted);"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
         </section>
 

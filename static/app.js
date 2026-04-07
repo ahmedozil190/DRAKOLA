@@ -156,18 +156,68 @@ async function deleteChannel(id) {
 }
 
 let allUsers = [];
+let userFilter = 'all';
 
 async function loadUsers() {
     showLoader(true);
     try {
         const res = await fetch('/api/users');
         allUsers = await res.json();
-        renderUsers(allUsers);
+        
+        // Update top stats
+        const total = allUsers.length;
+        const banned = allUsers.filter(u => u.is_banned).length;
+        document.getElementById('user-stat-total').innerText = total;
+        document.getElementById('user-stat-banned').innerText = banned;
+        
+        applyUserFilter();
     } catch (err) {
         console.error("Users fetch error:", err);
     } finally {
         showLoader(false);
     }
+}
+
+function setUserFilter(filter) {
+    userFilter = filter;
+    tg.HapticFeedback.selectionChanged();
+    
+    // Update active tab UI
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`tab-${filter}`).classList.add('active');
+    
+    // Styling the inactive/active tabs manually if needed, but classes are better
+    document.getElementById('tab-all').style.background = filter === 'all' ? 'var(--clr-blue)' : 'rgba(255,255,255,0.05)';
+    document.getElementById('tab-all').style.color = filter === 'all' ? '#fff' : 'var(--text-muted)';
+    
+    document.getElementById('tab-banned').style.background = filter === 'banned' ? 'var(--clr-blue)' : 'rgba(255,255,255,0.05)';
+    document.getElementById('tab-banned').style.color = filter === 'banned' ? '#fff' : 'var(--text-muted)';
+    
+    applyUserFilter();
+}
+
+function applyUserFilter() {
+    let filtered = allUsers;
+    if (userFilter === 'banned') {
+        filtered = allUsers.filter(u => u.is_banned);
+    }
+    
+    const query = document.getElementById('user-search').value.toLowerCase();
+    if (query) {
+        filtered = filtered.filter(u => 
+            u.first_name.toLowerCase().includes(query) || 
+            u.user_id.toString().includes(query) || 
+            (u.username && u.username.toLowerCase().includes(query))
+        );
+    }
+    
+    document.getElementById('users-count-badge').innerText = `${filtered.length} results`;
+    renderUsers(filtered);
+}
+
+function filterUsers() {
+    tg.HapticFeedback.impactOccurred('light');
+    applyUserFilter();
 }
 
 function renderUsers(users) {
@@ -176,9 +226,9 @@ function renderUsers(users) {
     
     if (users.length === 0) {
         list.innerHTML = `
-            <div class="no-users-msg">
+            <div class="no-users-msg" style="padding: 60px 20px;">
                 <i class="fas fa-users-slash"></i>
-                No users found.
+                No users matched your criteria.
             </div>
         `;
         return;
@@ -187,69 +237,45 @@ function renderUsers(users) {
     users.forEach(user => {
         const card = document.createElement('div');
         card.className = 'user-card';
-        const initial = user.first_name?.[0]?.toUpperCase() || 'U';
+        card.onclick = () => tg.HapticFeedback.impactOccurred('light');
         
         card.innerHTML = `
-            <div class="user-avatar">${initial}</div>
-            <div class="user-info">
-                <div class="user-name">${user.first_name} ${user.username ? `(@${user.username})` : ''}</div>
-                <div class="user-id">ID: ${user.user_id}</div>
-                <div class="user-meta">
-                    <span><i class="fas fa-user-plus"></i> ${user.invites_count}</span>
-                    <span><i class="fas fa-exchange-alt"></i> ${user.transfers_count}</span>
+            <div class="user-card-header">
+                <div class="user-card-title">${user.first_name}</div>
+                <div class="verified-icon" onclick="toggleBan('${user.user_id}'); event.stopPropagation();" style="background: ${user.is_banned ? '#ef4444' : '#2ecc71'}; cursor: pointer;">
+                    <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
                 </div>
             </div>
-            <div class="user-actions">
-                <div class="user-points-badge" onclick="promptAddPoints('${user.user_id}')">${user.points} PTS</div>
-                <div class="user-status-badge ${user.is_banned ? 'banned' : 'active'}">
-                    ${user.is_banned ? 'Banned' : 'Active'}
+            
+            <div class="user-card-sub">
+                <div class="user-card-username">@${user.username || 'unknown'}</div>
+                <div class="user-card-id">ID: ${user.user_id}</div>
+            </div>
+            
+            <div class="user-card-divider"></div>
+            
+            <div class="user-stats-grid">
+                <div class="user-stat-item" onclick="promptAddPoints('${user.user_id}'); event.stopPropagation();">
+                    <div class="user-stat-label">Balance</div>
+                    <div class="user-stat-value balance">$${(user.points / 100).toFixed(2)}</div>
                 </div>
-                <button class="ban-btn ${user.is_banned ? 'unban' : ''}" onclick="toggleBan('${user.user_id}')">
-                    ${user.is_banned ? 'Unban' : 'Ban'}
-                </button>
+                <div class="user-stat-item">
+                    <div class="user-stat-label">Hold</div>
+                    <div class="user-stat-value hold">$0.00</div>
+                </div>
+                <div class="user-stat-item">
+                    <div class="user-stat-label">Tasks</div>
+                    <div class="user-stat-value tasks">${user.transfers_count}</div>
+                </div>
+            </div>
+            
+            <div class="user-card-dashed">
+                <div class="withdrawn-label">Total Withdrawn:</div>
+                <div class="withdrawn-value">$${((user.points_used || 0) / 100).toFixed(2)}</div>
             </div>
         `;
         list.appendChild(card);
     });
-}
-
-function filterUsers() {
-    const query = document.getElementById('user-search').value.toLowerCase();
-    const filtered = allUsers.filter(u => 
-        u.first_name.toLowerCase().includes(query) || 
-        u.user_id.toString().includes(query) || 
-        (u.username && u.username.toLowerCase().includes(query))
-    );
-    renderUsers(filtered);
-}
-
-async function toggleBan(userId) {
-    tg.HapticFeedback.impactOccurred('medium');
-    const res = await fetch('/api/users/ban', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId })
-    });
-    if (res.ok) {
-        loadUsers();
-    }
-}
-
-async function promptAddPoints(userId) {
-    const points = prompt("Enter points to add (can be negative to remove):");
-    if (points === null || points === "" || isNaN(points)) return;
-
-    tg.HapticFeedback.impactOccurred('medium');
-    const res = await fetch('/api/users/points', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, points: parseInt(points) })
-    });
-    if (res.ok) {
-        tg.showScanQrPopup({ text: "Points added! ✨" }); // Just a way to show a quick toast if showAlert is too much
-        setTimeout(() => tg.closeScanQrPopup(), 1000);
-        loadUsers();
-    }
 }
 
 function showLoader(show) {
