@@ -51,7 +51,7 @@ body {
 /* Header */
 header {
     background-color: var(--bg-dark);
-    padding: 15px 20px;
+    padding: 13px 20px; /* Reduced by 2px from 15px */
     display: flex;
     justify-content: space-between;
     align-items: center;
