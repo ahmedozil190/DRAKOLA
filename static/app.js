@@ -60,6 +60,11 @@ function switchNav(viewId) {
     // Save current view for persistence
     localStorage.setItem('currentView', viewId);
 
+    // Reset settings sub-views to main menu when entering settings
+    if (viewId === 'settings') {
+        hideSettingsSubView();
+    }
+
     // Update Title
     const titles = {
         'overview': 'Overview',
@@ -123,6 +128,12 @@ function populateSettings(settings) {
     document.getElementById('transfer-fee-input').value = settings.transfer_fee;
     document.getElementById('daily-gift-input').value = settings.daily_gift_amount;
     document.getElementById('min-transfer-input').value = settings.min_transfer_amount;
+    
+    // Bot Name (v59)
+    if (document.getElementById('bot-name-input')) {
+        document.getElementById('bot-name-input').value = settings.bot_name || "Billion Bot";
+    }
+
     renderChannels(settings.channels);
 }
 
@@ -152,16 +163,78 @@ async function saveSettings() {
     const data = {
         transfer_fee: parseFloat(document.getElementById('transfer-fee-input').value),
         daily_gift_amount: parseFloat(document.getElementById('daily-gift-input').value),
-        min_transfer_amount: parseFloat(document.getElementById('min-transfer-input').value)
+        min_transfer_amount: parseFloat(document.getElementById('min-transfer-input').value),
+        bot_name: document.getElementById('bot-name-input')?.value || "Billion Bot"
     };
 
     tg.HapticFeedback.impactOccurred('medium');
-    const res = await fetch('/api/settings/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    if (res.ok) tg.showAlert("Configuration saved successfully! ✨");
+    try {
+        const res = await fetch('/api/settings/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (res.ok) tg.showAlert("Configuration saved successfully! ✨");
+    } catch (err) {
+        console.error("Save error:", err);
+    }
+}
+
+// ========== Settings Sub-view Navigation (v59) ==========
+function showSettingsSubView(viewId) {
+    tg.HapticFeedback.impactOccurred('medium');
+    document.getElementById('settings-main-menu').style.display = 'none';
+    
+    // Hide all subviews first
+    document.getElementById('subview-bot-name').style.display = 'none';
+    document.getElementById('subview-prices').style.display = 'none';
+    document.getElementById('subview-channels-config').style.display = 'none';
+    
+    // Show selected subview
+    document.getElementById(`subview-${viewId}`).style.display = 'block';
+    
+    // If channels, sync them
+    if (viewId === 'channels-config') {
+        syncChannelsToSubview();
+    }
+}
+
+function hideSettingsSubView() {
+    // If we're already on the main menu, don't do anything
+    if (document.getElementById('settings-main-menu').style.display === 'block') return;
+
+    tg.HapticFeedback.impactOccurred('light');
+    document.getElementById('settings-main-menu').style.display = 'block';
+    document.getElementById('subview-bot-name').style.display = 'none';
+    document.getElementById('subview-prices').style.display = 'none';
+    document.getElementById('subview-channels-config').style.display = 'none';
+}
+
+function syncChannelsToSubview() {
+    const mainList = document.getElementById('channels-list').innerHTML;
+    const subList = document.getElementById('subview-channels-list');
+    if (subList) {
+        subList.innerHTML = mainList;
+    }
+}
+
+async function addNewChannelSubview() {
+    const channelId = document.getElementById('subview-new-channel-id').value;
+    const channelLink = document.getElementById('subview-new-channel-link').value;
+    
+    if (!channelId || !channelLink) return;
+
+    // Reuse main function logic by setting its inputs and calling it
+    document.getElementById('new-channel-id').value = channelId;
+    document.getElementById('new-channel-link').value = channelLink;
+    await addNewChannel();
+    
+    // Clear subview inputs
+    document.getElementById('subview-new-channel-id').value = '';
+    document.getElementById('subview-new-channel-link').value = '';
+    
+    // Refresh subview list after a short delay
+    setTimeout(syncChannelsToSubview, 800);
 }
 
 async function addNewChannel() {

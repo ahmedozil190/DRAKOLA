@@ -188,24 +188,111 @@
 
         <!-- Settings View -->
         <section id="settings-section" class="view-section">
-            <div class="section-header">
-                <i class="fas fa-cog"></i>
-                <h2>General Settings</h2>
+            <!-- Main Settings Menu -->
+            <div id="settings-main-menu">
+                <div class="section-header">
+                    <i class="fas fa-cog"></i>
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-menu-list">
+                    <!-- Bot Name Card (Red) -->
+                    <div class="settings-item" onclick="showSettingsSubView('bot-name')">
+                        <div class="settings-icon-box bg-red-soft">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="settings-info">
+                            <div class="settings-title">Bot Name</div>
+                        </div>
+                        <i class="fas fa-chevron-right settings-chevron"></i>
+                    </div>
+
+                    <!-- Prices Card (Blue) -->
+                    <div class="settings-item" onclick="showSettingsSubView('prices')">
+                        <div class="settings-icon-box bg-blue-soft">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="settings-info">
+                            <div class="settings-title">Prices & Commissions</div>
+                        </div>
+                        <i class="fas fa-chevron-right settings-chevron"></i>
+                    </div>
+
+                    <!-- Channels Card (Purple) -->
+                    <div class="settings-item" onclick="showSettingsSubView('channels-config')">
+                        <div class="settings-icon-box bg-purple-soft">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <div class="settings-info">
+                            <div class="settings-title">Channels & Subscriptions</div>
+                        </div>
+                        <i class="fas fa-chevron-right settings-chevron"></i>
+                    </div>
+                </div>
             </div>
-            <div class="card" style="min-height: auto; padding: 25px;">
-                <div class="form-group">
-                    <label>Transfer Fee (%)</label>
-                    <input type="number" id="transfer-fee-input" class="input-field">
+
+            <!-- Subview: Bot Name -->
+            <div id="subview-bot-name" style="display: none;">
+                <div class="subview-header">
+                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <h2 style="font-weight: 700;">Bot Name</h2>
                 </div>
-                <div class="form-group">
-                    <label>Daily Gift (Points)</label>
-                    <input type="number" id="daily-gift-input" class="input-field">
+                <div class="card" style="min-height: auto; padding: 25px;">
+                    <div class="form-group">
+                        <label>Display Name (Inside Bot)</label>
+                        <input type="text" id="bot-name-input" class="input-field" placeholder="e.g. Billion Bot">
+                    </div>
+                    <button class="primary-btn" onclick="saveSettings()">Save Name</button>
                 </div>
-                <div class="form-group">
-                    <label>Min Transfer Amount</label>
-                    <input type="number" id="min-transfer-input" class="input-field">
+            </div>
+
+            <!-- Subview: Prices & Commissions -->
+            <div id="subview-prices" style="display: none;">
+                <div class="subview-header">
+                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <h2 style="font-weight: 700;">Prices & Commissions</h2>
                 </div>
-                <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
+                <div class="card" style="min-height: auto; padding: 25px;">
+                    <div class="form-group">
+                        <label>Transfer Fee (%)</label>
+                        <input type="number" id="transfer-fee-input" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Daily Gift (Points)</label>
+                        <input type="number" id="daily-gift-input" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Min Transfer Amount</label>
+                        <input type="number" id="min-transfer-input" class="input-field">
+                    </div>
+                    <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
+                </div>
+            </div>
+
+            <!-- Subview: Channels Config (Proxied to main channels section logic) -->
+            <div id="subview-channels-config" style="display: none;">
+                <div class="subview-header">
+                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <h2 style="font-weight: 700;">Channels</h2>
+                </div>
+                <!-- This will essentially show the same content as the channels-section but formatted for subview -->
+                <div id="subview-channels-list">
+                    <!-- Synced from channels list -->
+                </div>
+                <div class="card" style="margin-top: 20px; min-height: auto; padding: 25px;">
+                    <div class="form-group">
+                        <label>Add New Channel</label>
+                        <input type="text" id="subview-new-channel-id" class="input-field" placeholder="@username"
+                            style="margin-bottom: 10px;">
+                        <input type="text" id="subview-new-channel-link" class="input-field" placeholder="https://t.me/...">
+                    </div>
+                    <button class="primary-btn" onclick="addNewChannelSubview()">Add Channel</button>
+                </div>
             </div>
         </section>
 

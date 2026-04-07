@@ -84,3 +84,4 @@ class GlobalSettings(Base):
     transfer_fee = Column(Integer, default=25)
     daily_gift_amount = Column(Integer, default=25)
     min_transfer_amount = Column(Integer, default=10)
+    bot_name = Column(String, default="Billion Bot")

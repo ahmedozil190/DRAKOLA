@@ -29,6 +29,7 @@ async def get_settings_data(request):
             "transfer_fee": settings.transfer_fee,
             "daily_gift_amount": settings.daily_gift_amount,
             "min_transfer_amount": settings.min_transfer_amount,
+            "bot_name": settings.bot_name or "Billion Bot",
             "channels": [{"id": c.channel_id, "link": c.channel_link} for c in channels]
         })
 
