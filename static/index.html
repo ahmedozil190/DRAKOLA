@@ -2,101 +2,152 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>لوحة تحكم Billion Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Billion Bot | Admin Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div id="loader" class="loader-container">
-        <div class="spinner"></div>
+    <!-- Premium Loader -->
+    <div id="loader" class="loader-screen">
+        <div class="loader-glow"></div>
+        <p style="margin-top: 20px; font-weight: 600; color: #38bdf8; letter-spacing: 1px;">جاري التهيئة...</p>
     </div>
 
-    <div class="app-container" style="display: none;">
+    <div class="app-container">
+        <!-- Dashboard Header -->
         <header>
-            <div class="user-info">
-                <img src="https://ui-avatars.com/api/?name=Admin&background=random" id="admin-avatar" alt="Avatar">
-                <div class="welcome-text">
-                    <h1 id="admin-name">أهلاً بك، أدمن</h1>
-                    <p>إدارة البوت الشاملة</p>
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <img id="admin-photo" src="https://via.placeholder.com/100" alt="Admin">
+                </div>
+                <div class="brand-text">
+                    <h1 id="admin-name">المشرف</h1>
+                    <p id="admin-status" style="font-size: 0.7rem; color: #10b981;"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> متصل الآن</p>
                 </div>
             </div>
-            <button id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+            <button id="refresh-btn" class="refresh-fab">
+                <i class="fas fa-sync-alt"></i>
+            </button>
         </header>
 
-        <main>
-            <!-- Stats Section -->
-            <section class="stats-grid">
+        <!-- Navigation Tabs -->
+        <nav class="tab-nav">
+            <div class="tab-item active" onclick="switchTab('overview')">الإحصائيات</div>
+            <div class="tab-item" onclick="switchTab('settings')">الإعدادات</div>
+            <div class="tab-item" onclick="switchTab('channels')">القنوات</div>
+        </nav>
+
+        <!-- View 1: Overview Dashboard -->
+        <section id="overview-section" class="view-section active">
+            <div class="stats-grid">
                 <div class="stat-card glass">
                     <i class="fas fa-users"></i>
-                    <div class="stat-info">
-                        <span class="label">المستخدمين</span>
-                        <h2 id="total-users">0</h2>
-                    </div>
+                    <div class="stat-value" id="stat-total-users">0</div>
+                    <div class="stat-label">إجمالي المستخدمين</div>
+                </div>
+                <div class="stat-card glass" style="border-bottom: 2px solid #fbbf24;">
+                    <i class="fas fa-coins" style="color: #fbbf24;"></i>
+                    <div class="stat-value" id="stat-total-balance">0</div>
+                    <div class="stat-label">إجمالي النقاط</div>
                 </div>
                 <div class="stat-card glass">
-                    <i class="fas fa-coins"></i>
-                    <div class="stat-info">
-                        <span class="label">إجمالي النقاط</span>
-                        <h2 id="total-points">0</h2>
-                    </div>
+                    <i class="fas fa-shopping-cart" style="color: #818cf8;"></i>
+                    <div class="stat-value" id="stat-total-orders">0</div>
+                    <div class="stat-label">إجمالي العمليات</div>
                 </div>
                 <div class="stat-card glass">
-                    <i class="fas fa-box-open"></i>
-                    <div class="stat-info">
-                        <span class="label">التمويلات</span>
-                        <h2 id="active-orders">0</h2>
-                    </div>
+                    <i class="fas fa-gift" style="color: #f472b6;"></i>
+                    <div class="stat-value" id="stat-pending-orders">0</div>
+                    <div class="stat-label">عمليات معلقة</div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Chart Section -->
-            <section class="chart-container glass">
-                <h3>📊 نشاط البوت</h3>
-                <canvas id="statsChart"></canvas>
-            </section>
+            <div class="chart-box glass">
+                <div class="chart-header">
+                    <h3>نشاط المستخدمين المؤخر</h3>
+                    <i class="fas fa-chart-line" style="color: #38bdf8;"></i>
+                </div>
+                <canvas id="usersChart"></canvas>
+            </div>
+        </section>
 
-            <!-- Settings Section -->
-            <section class="settings-section">
-                <h3>⚙️ الإعدادات العامة</h3>
-                <div class="settings-grid">
-                    <div class="input-group glass">
-                        <label>عمولة التحويل</label>
-                        <input type="number" id="transfer_fee" placeholder="0">
-                    </div>
-                    <div class="input-group glass">
-                        <label>الهدية اليومية</label>
-                        <input type="number" id="daily_gift_amount" placeholder="0">
-                    </div>
-                    <div class="input-group glass">
-                        <label>الحد الأدنى للتحويل</label>
-                        <input type="number" id="min_transfer_amount" placeholder="0">
+        <!-- View 2: Settings Panel -->
+        <section id="settings-section" class="view-section">
+            <div class="dashboard-card glass settings-group">
+                <div class="chart-header">
+                    <h3>إعدادات البوت الأساسية</h3>
+                    <i class="fas fa-cog" style="color: #94a3b8;"></i>
+                </div>
+                
+                <div class="form-field">
+                    <label>عمولة التحويل (%)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-percent"></i>
+                        <input type="number" id="transfer-fee-input" placeholder="مثلاً: 5">
                     </div>
                 </div>
-                <button id="save-settings" class="primary-btn">حفظ الإعدادات</button>
-            </section>
 
-            <!-- Channels Section -->
-            <section class="channels-section glass">
-                <h3>📺 القنوات الإجبارية</h3>
-                <div id="channels-list" class="channels-list">
-                    <!-- Channels will be loaded here -->
+                <div class="form-field">
+                    <label>الهدية اليومية (نقاط)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-gift"></i>
+                        <input type="number" id="daily-gift-input" placeholder="مثلاً: 25">
+                    </div>
                 </div>
-                <div class="add-channel-form">
-                    <input type="text" id="new-ch-id" placeholder="ID القناة (@...)">
-                    <input type="text" id="new-ch-link" placeholder="رابط القناة">
-                    <button id="add-channel-btn"><i class="fas fa-plus"></i></button>
+
+                <div class="form-field">
+                    <label>الحد الأدنى للتحويل</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-arrow-down"></i>
+                        <input type="number" id="min-transfer-input" placeholder="مثلاً: 100">
+                    </div>
                 </div>
-            </section>
-        </main>
+
+                <button class="btn-primary" onclick="saveSettings()">
+                    <i class="fas fa-save" style="margin-left: 8px;"></i> حفظ الإعدادات
+                </button>
+            </div>
+        </section>
+
+        <!-- View 3: Channels Management -->
+        <section id="channels-section" class="view-section">
+            <div class="dashboard-card glass settings-group">
+                <div class="chart-header">
+                    <h3>قنوات الاشتراك الإجباري</h3>
+                    <i class="fas fa-bullhorn" style="color: #fbbf24;"></i>
+                </div>
+                
+                <div id="channels-list" class="channels-list-container">
+                    <!-- Channels will be injected here -->
+                </div>
+
+                <div class="form-field" style="margin-top: 30px;">
+                    <label>إضافة قناة جديدة</label>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-wrapper" style="flex: 2;">
+                            <i class="fab fa-telegram-plane"></i>
+                            <input type="text" id="new-channel-id" placeholder="@channel">
+                        </div>
+                    </div>
+                    <div class="input-wrapper" style="margin-top: 10px;">
+                        <i class="fas fa-link"></i>
+                        <input type="text" id="new-channel-link" placeholder="https://t.me/...">
+                    </div>
+                    <button class="btn-primary" onclick="addNewChannel()" style="background: var(--bg-dark); color: var(--primary); border: 1px solid var(--primary); box-shadow: none;">
+                        <i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة القناة
+                    </button>
+                </div>
+            </div>
+        </section>
 
         <footer>
-            <p>تم التطوير بواسطة Antigravity AI Engine 🚀</p>
+            <p>لوحة تحكم المشرف الذكية | Billion Bot v2.0</p>
         </footer>
     </div>
 
-    <script src="static/app.js"></script>
+    <script src="/static/app.js"></script>
 </body>
 </html>
