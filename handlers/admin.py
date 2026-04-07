@@ -9,9 +9,9 @@ from models import User, Order
 
 router = Router()
 
-# ⚠️ هام جداً: استبدل الرابط أدناه بالرابط الذي يظهر لك في برنامج ngrok (Forwarding URL)
-# مثال: ADMIN_WEB_APP_URL = "https://a1b2-c3d4.ngrok-free.app"
-ADMIN_WEB_APP_URL = "https://sabrina-sarcastic-bunny.ngrok-free.dev" 
+# ⚠️ هام جداً: استبدل الرابط أدناه بالرابط الذي يظهر لك من خدمة Railway (Public Domain)
+# مثال: ADMIN_WEB_APP_URL = "https://your-app.up.railway.app"
+ADMIN_WEB_APP_URL = "https://web-production-435fd.up.railway.app" 
 
 def is_admin(user_id: int):
     return user_id == ADMIN_ID
