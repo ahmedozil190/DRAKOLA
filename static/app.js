@@ -630,7 +630,10 @@ async function modalUpdatePoints(type) {
     if (!currentManagingUser) return;
 
     const inputVal = document.getElementById('modal-points-input').value;
-    if (!inputVal || isNaN(inputVal)) return tg.showAlert("Please enter a valid number!");
+    // v70: Enhanced validation with clear request message
+    if (!inputVal || isNaN(inputVal)) {
+        return tg.showAlert("Please enter the number of points first! 🖋️");
+    }
 
     let points = parseInt(inputVal);
     if (type === 'sub') points = -points; // Negative for subtraction

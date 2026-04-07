@@ -808,3 +808,19 @@ header h1 {
 
 /* v69 Cleanup: Removed unused v67 header styles */
 
+
+/* ========== UI Refinements (v70) ========== */
+/* 1. Sync Top Card Colors */
+.card-value.val-blue { color: #ffd700 !important; } /* Sync with Full Name */
+.card-value.val-red { color: #f59e0b !important; }  /* Sync with User ID */
+
+/* 2. Hide Number Input Arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
