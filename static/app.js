@@ -135,6 +135,12 @@ function populateSettings(settings) {
         document.getElementById('bot-name-input').value = settings.bot_name || "Billion Bot";
     }
 
+    // Dynamic Side Menu Title 
+    const sideMenuTitle = document.querySelector('.side-menu-title');
+    if (sideMenuTitle) {
+        sideMenuTitle.innerText = settings.bot_name || "Billion Bot Plus";
+    }
+
     renderChannels(settings.channels);
 }
 

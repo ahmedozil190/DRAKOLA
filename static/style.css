@@ -227,8 +227,8 @@ header h1 {
     left: -100%;
     width: 280px;
     height: 100vh;
-    background: var(--nav-bg);
-    border-right: 1px solid var(--border-card);
+    background: #181d29; /* Deep dark slate from screenshot */
+    border-right: 1px solid rgba(255, 255, 255, 0.05); /* very subtle border */
     z-index: 2001;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 20px;
@@ -249,24 +249,24 @@ header h1 {
 }
 
 .side-menu-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    font-size: 1.15rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #60a5fa, #a855f7); /* Blue to Purple gradient */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .close-circle {
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.1);
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.08); /* slight grey circle */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    color: #fff;
+    color: #cbd5e1; /* soft grey/white */
     transition: 0.3s;
 }
 
@@ -282,30 +282,33 @@ header h1 {
     gap: 15px;
     padding: 14px 20px;
     border-radius: 12px;
-    color: #fff;
+    color: #94a3b8; /* Gray text for unselected */
     text-decoration: none;
     margin-bottom: 8px;
     cursor: pointer;
     transition: 0.2s;
-    font-weight: 500;
+    font-weight: 600;
+    border-left: 2px solid transparent; /* placeholder for active state */
 }
 
 .menu-item i {
     width: 24px;
     text-align: center;
     font-size: 1.1rem;
-    color: var(--text-secondary);
+    color: #94a3b8;
 }
 
 .menu-item.active {
-    background: rgba(96, 165, 250, 0.1);
-    color: var(--accent-blue);
-    border-left: 4px solid var(--accent-blue);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: #252840; /* Dark purple/blue tint */
+    color: #60a5fa; /* Light blue text */
+    border-left: 3px solid #60a5fa; /* Active border color */
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    box-shadow: none;
 }
 
 .menu-item.active i {
-    color: var(--accent-blue);
+    color: #60a5fa;
 }
 
 /* Overlay */
