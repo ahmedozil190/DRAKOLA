@@ -151,11 +151,7 @@ header h1 {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
-
-.card:active {
-    transform: scale(0.97);
-    background: rgba(28, 31, 46, 0.6);
-}
+/* Removed :active scale to make cards non-clickable */
 
 .card-label {
     font-size: 0.65rem;
