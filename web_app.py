@@ -101,37 +101,20 @@ async def add_points(request):
 
 async def handle_index(request):
     async for session in get_session():
-        # Fetch stats and users for injection to prevent flickering
+        # Fetch ONLY stats for rapid injection
         stats = await crud.get_admin_stats(session)
-        users_list = await crud.get_all_users(session)
         
-        # Prepare data for injection
-        injected_data = {
-            "stats": stats,
-            "users": [{
-                "user_id": u.user_id,
-                "first_name": u.first_name or "Unknown",
-                "username": u.username or "",
-                "points": u.points,
-                "is_banned": u.is_banned,
-                "invites_count": u.invites_count or 0,
-                "transfers_count": u.transfers_count or 0,
-                "points_used": u.points_used or 0
-            } for u in users_list]
-        }
-        
-        # Read index.html and inject data
         try:
             with open(os.path.join(STATIC_DIR, "index.html"), "r", encoding="utf-8") as f:
                 content = f.read()
             
-            # Create a script tag with the data
-            script_tag = f"<script>window.serverData = {json.dumps(injected_data)};</script>"
-            content = content.replace("<!-- INITIAL_DATA_INJECTION -->", script_tag)
+            # Inject only stats as a JS object
+            script_tag = f"<script>window.serverStats = {json.dumps(stats)};</script>"
+            content = content.replace("<!-- STATS_INJECTION -->", script_tag)
             
             return web.Response(text=content, content_type='text/html')
         except Exception as e:
-            logging.error(f"Error injecting data: {e}")
+            logging.error(f"Error injecting stats: {e}")
             return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 def setup_web_app(bot):

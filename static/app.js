@@ -14,27 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('avatar-circle').innerText = user.first_name?.[0]?.toUpperCase() || 'A';
     }
 
-    // Instant Render using preloaded server data
-    if (window.serverData) {
-        console.log("🚀 Preloaded data detected. Rendering instantly.");
-        const { stats, users } = window.serverData;
-        allUsers = users;
-        renderStats(stats);
-        applyUserFilter();
-        
-        // Hide loader quickly since data is here
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 300);
-        }
+    // Instant Render for stats only (Zero Flicker)
+    if (window.serverStats) {
+        console.log("🚀 Preloaded stats detected. Rendering instantly.");
+        renderStats(window.serverStats);
     }
 
-    // Restore last view or default to overview
+    // Restore last view
     const savedView = localStorage.getItem('currentView') || 'overview';
     switchNav(savedView);
 
-    // Silent background load to ensure fresh data and name sync
-    loadInitialData(!!window.serverData);
+    // Silent background load to refresh everything
+    loadInitialData(true);
 });
 
 // Sidebar & Navigation
@@ -293,13 +284,13 @@ function nextPage() {
 function triggerSearch() {
     const query = document.getElementById('user-search').value.trim();
     const resetBtn = document.getElementById('reset-search-container');
-    
+
     if (query) {
         resetBtn.style.display = 'flex';
     } else {
         resetBtn.style.display = 'none';
     }
-    
+
     filterUsers();
 }
 
