@@ -270,7 +270,7 @@ async function sendBroadcast(mode) {
         
         if (res.ok) {
             const successMsg = mode === 'all' 
-                ? `Broadcast sent to ${result.sent_count} users! ✨` 
+                ? `Broadcast sent to all users! ✨` 
                 : "Message delivered! ✈️";
             
             showSuccessPopup("Broadcast Sent!", successMsg);
