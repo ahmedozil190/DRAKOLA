@@ -136,8 +136,8 @@ async def get_finance_data(request):
                 "points_added": h.points_added,
                 "user_id": h.user_id,
                 "description": h.description,
-                "record_type": h.record_type if h.record_type else "sale",
-                "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S") if h.created_at else "---"
+                "record_type": h.record_type,
+                "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S")
             } for h in history]
         })
 

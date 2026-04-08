@@ -1,18 +1,14 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-// Diagnostic Alert (v28)
-alert("Finance Script v28 Initialized");
-
 // DOM Elements
 const loader = document.getElementById('loader');
 const sideMenu = document.getElementById('side-menu');
 const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
-// --- Global UI Logic (v27) ---
+// --- Global UI Logic (v30) ---
 function openAddSaleModal() {
-    console.log("🟢 Opening Sale Modal...");
     const modal = document.getElementById('add-sale-modal');
     if (modal) modal.classList.add('active');
 }
@@ -23,7 +19,6 @@ function closeAddSaleModal() {
 }
 
 function openAddExpenseModal() {
-    console.log("🔴 Opening Expense Modal...");
     const modal = document.getElementById('add-expense-modal');
     if (modal) modal.classList.add('active');
 }
@@ -722,11 +717,7 @@ async function loadFinanceData() {
     showLoader(true);
     try {
         const res = await fetch('/api/finance');
-        if (!res.ok) {
-            const errText = await res.text();
-            alert(`API Error ${res.status}: ${errText.substring(0, 50)}`);
-            throw new Error("API error");
-        }
+        if (!res.ok) throw new Error("API error");
         const data = await res.json();
         renderFinance(data);
     } catch (err) {
@@ -756,7 +747,7 @@ function renderFinance(data) {
     const list = document.getElementById('finance-history-list');
     if (!list) return;
     list.innerHTML = '';
-    
+
     if (!data.history || data.history.length === 0) {
         list.innerHTML = `
             <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; text-align: center; padding: 20px;">
@@ -778,7 +769,7 @@ function renderFinance(data) {
         item.style.background = 'rgba(255,255,255,0.02)';
         item.style.borderRadius = '14px';
         item.style.border = isExpense ? '1px solid rgba(239, 68, 68, 0.1)' : '1px solid rgba(255,255,255,0.03)';
-        
+
         item.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-weight: 700; color: ${isExpense ? '#ef4444' : '#2ecc71'}; font-size: 1.1rem;">
@@ -827,7 +818,7 @@ async function submitSale() {
             closeAddSaleModal();
             showSuccessPopup("Sale recorded successfully!");
             loadFinanceData();
-            
+
             // Clear inputs
             document.getElementById('sale-amount').value = '';
             document.getElementById('sale-points').value = '';
@@ -863,7 +854,7 @@ async function submitExpense() {
             closeAddExpenseModal();
             showSuccessPopup("Expense recorded successfully!");
             loadFinanceData();
-            
+
             // Clear inputs
             document.getElementById('expense-amount').value = '';
             document.getElementById('expense-note').value = '';

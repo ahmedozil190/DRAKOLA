@@ -28,29 +28,31 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
     logging.info("Database initialized successfully.")
     
-    # v73: Auto-migration for new columns
+    # Consolidated Database Migrations (v73)
     from config import DB_PATH
     db_file = DB_PATH.replace("sqlite+aiosqlite:///", "")
     if os.path.exists(db_file):
         conn_sync = sqlite3.connect(db_file)
         cur = conn_sync.cursor()
-        for col, definition in [("total_earned", "INTEGER DEFAULT 0"), ("joined_at", "DATETIME DEFAULT CURRENT_TIMESTAMP")]:
-            try:
-                cur.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
-                logging.info(f"Migration v73 (Users): Added column '{col}'")
-            except Exception:
-                pass  # Column already exists
         
-        # v73: Finance Table Migration
-        try:
-            cur.execute("ALTER TABLE financial_records ADD COLUMN record_type TEXT DEFAULT 'sale'")
-            logging.info("Migration v73 (Finance): Added column 'record_type'")
-        except Exception:
-            pass # Already exists
-            
+        # Migrations List: (Table, Column, Definition)
+        migrations = [
+            ("users", "total_earned", "INTEGER DEFAULT 0"),
+            ("users", "joined_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"),
+            ("global_settings", "bot_name", "TEXT DEFAULT 'Billion Bot'"),
+            ("financial_records", "record_type", "TEXT DEFAULT 'sale'")
+        ]
+        
+        for table, col, definition in migrations:
+            try:
+                cur.execute(f"ALTER TABLE {table} ADD COLUMN {col} {definition}")
+                logging.info(f"Migration: Added {table}.{col}")
+            except Exception:
+                pass # Already exists
+        
         conn_sync.commit()
         conn_sync.close()
-        logging.info("Migration v73 complete.")
+        logging.info("Database migrations check complete.")
 
 async def main():
     await init_db()
