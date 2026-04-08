@@ -351,6 +351,23 @@ header h1 {
     display: block;
 }
 
+/* Action Cards for Finance (v20) */
+.finance-action-card {
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.finance-action-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.finance-action-card:active {
+    transform: scale(0.98);
+}
+
 /* Form Styling (for settings tab) */
 .form-group {
     margin-bottom: 20px;
