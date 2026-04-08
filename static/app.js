@@ -450,7 +450,7 @@ function applyUserFilter() {
     const end = start + usersPerPage;
     const pagedUsers = filtered.slice(start, end);
 
-    document.getElementById('users-count-badge').innerText = `${totalFilteredCount} results`;
+
 
     // Pagination UI Updates
     const paginationContainer = document.getElementById('pagination-container');
