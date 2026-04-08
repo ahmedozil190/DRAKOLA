@@ -405,9 +405,10 @@ function setUserFilter(filter) {
     userFilter = filter;
     tg.HapticFeedback.selectionChanged();
 
-    // Update active tab UI v46 - Using classes only
+    // Update active tab UI v47 - Using classes only
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`tab-${filter}`).classList.add('active');
+    const activeTab = document.getElementById(`tab-${filter}`);
+    if (activeTab) activeTab.classList.add('active');
 
     applyUserFilter();
 }
