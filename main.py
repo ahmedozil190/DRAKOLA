@@ -37,9 +37,17 @@ async def init_db():
         for col, definition in [("total_earned", "INTEGER DEFAULT 0"), ("joined_at", "DATETIME DEFAULT CURRENT_TIMESTAMP")]:
             try:
                 cur.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
-                logging.info(f"Migration v73: Added column '{col}'")
+                logging.info(f"Migration v73 (Users): Added column '{col}'")
             except Exception:
                 pass  # Column already exists
+        
+        # v73: Finance Table Migration
+        try:
+            cur.execute("ALTER TABLE financial_records ADD COLUMN record_type TEXT DEFAULT 'sale'")
+            logging.info("Migration v73 (Finance): Added column 'record_type'")
+        except Exception:
+            pass # Already exists
+            
         conn_sync.commit()
         conn_sync.close()
         logging.info("Migration v73 complete.")
