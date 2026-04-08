@@ -321,8 +321,9 @@ async def check_for_coupon(message: Message, state: FSMContext):
         already_used = await crud.check_coupon_already_used(session, message.from_user.id, coupon.id)
         if already_used:
             await message.reply(
-                "❌ <b>عذراً، لقد قمت باسترداد هذا الكوبون مسبقاً!</b>\n\n"
-                "• لا يمكن استخدام الكود نفسه أكثر من مرة لكل مستخدم.",
+                "❌ <b>عذراً، هذا الكود تم استخدامه مسبقاً من قبلك!</b>\n\n"
+                "• نظامنا يسمح باستخدام كل كوبون مرة واحدة فقط لكل حساب.\n"
+                "• يمكنك البحث عن كوبونات أخرى جديدة! 🔍", 
                 parse_mode="HTML"
             )
             return
