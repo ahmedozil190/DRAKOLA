@@ -676,11 +676,25 @@ function closeErrorPopup() {
     document.getElementById('error-modal').classList.remove('active');
 }
 
+// ========== Inline Error Logic (v55) ==========
+function showInlineError(message) {
+    const alert = document.getElementById('modal-error-alert');
+    const text = document.getElementById('modal-error-text');
+    text.innerText = message;
+    alert.style.display = 'flex';
+    tg.HapticFeedback.notificationOccurred('error');
+}
+
+function hideInlineError() {
+    document.getElementById('modal-error-alert').style.display = 'none';
+}
+
 // ========== Custom User Management Modal (v66) ==========
 let currentManagingUser = null;
 
 function openUserManageModal(user) {
     currentManagingUser = user;
+    hideInlineError(); // v55: Clear previous errors
     tg.HapticFeedback.impactOccurred('medium');
 
     document.getElementById('modal-user-name').innerText = user.first_name;
@@ -694,6 +708,10 @@ function openUserManageModal(user) {
     banBtn.innerHTML = user.is_banned ? '<i class="fas fa-undo"></i> Unban Account' : '<i class="fas fa-ban"></i> Ban Account';
     banBtn.className = `modal-action-btn btn-ban ${user.is_banned ? 'unban' : ''}`;
 
+    // v55: Auto-hide error alert when typing
+    const pointsInput = document.getElementById('modal-points-input');
+    pointsInput.oninput = () => hideInlineError();
+
     document.getElementById('user-manage-modal').classList.add('active');
 }
 
@@ -706,9 +724,9 @@ async function modalUpdatePoints(type) {
     if (!currentManagingUser) return;
 
     const inputVal = document.getElementById('modal-points-input').value;
-    // v54: Using Custom Error Modal (Arabic) instead of browser alert
+    // v55: Using Inline Alert (Arabic) inside the panel above the input
     if (!inputVal || isNaN(inputVal) || parseInt(inputVal) === 0) {
-        return showErrorPopup("تنبيه! 🖋️", "يرجى إدخال عدد النقاط أولاً قبل الضغط على الإضافة أو الخصم.");
+        return showInlineError("Please enter the number of points first! 🖋️");
     }
 
     let points = parseInt(inputVal);

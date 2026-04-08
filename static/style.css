@@ -757,6 +757,28 @@ header h1 {
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
+/* Inline Error Alert (v55) */
+.inline-error-alert {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    animation: slideDownIn 0.3s ease-out;
+}
+
+@keyframes slideDownIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .modal-overlay.active .manage-card {
     transform: scale(1);
 }
