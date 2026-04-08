@@ -757,19 +757,19 @@ function renderFinance(data) {
 }
 
 function openAddSaleModal() {
-    document.getElementById('add-sale-modal').style.display = 'flex';
+    document.getElementById('add-sale-modal').classList.add('active');
 }
 
 function closeAddSaleModal() {
-    document.getElementById('add-sale-modal').style.display = 'none';
+    document.getElementById('add-sale-modal').classList.remove('active');
 }
 
 function openAddExpenseModal() {
-    document.getElementById('add-expense-modal').style.display = 'flex';
+    document.getElementById('add-expense-modal').classList.add('active');
 }
 
 function closeAddExpenseModal() {
-    document.getElementById('add-expense-modal').style.display = 'none';
+    document.getElementById('add-expense-modal').classList.remove('active');
 }
 
 async function submitSale() {
