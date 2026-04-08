@@ -1168,36 +1168,44 @@ async function loadCoupons() {
             div.style.position = 'relative';
 
             div.innerHTML = `
-                ${!isFinished ? `
-                <div onclick="deleteCoupon('${c.code}')" style="position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; background: rgba(239, 68, 68, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.1);">
-                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
-                </div>` : ''}
-
                 <!-- Boxed Info Fields -->
-                <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
                     <!-- Coupon Box -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Coupon</span>
-                        <span style="font-family: monospace; font-size: 1.1rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'};">${c.code}</span>
+                    <div style="background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Coupon</span>
+                        <span style="font-family: monospace; font-size: 1.1rem; font-weight: 800; color: #fff;">${c.code}</span>
                     </div>
 
                     <!-- Points Box -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Points</span>
-                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.8rem;"></i> ${c.points} Items</span>
+                    <div style="background: rgba(168, 85, 247, 0.08); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(168, 85, 247, 0.15); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #c084fc; font-weight: 700; text-transform: uppercase;">Points</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: #a855f7;"><i class="fas fa-star" style="font-size: 0.8rem;"></i> ${c.points} Items</span>
                     </div>
 
                     <!-- Uses Box -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Uses Left</span>
-                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#475569' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
+                    <div style="background: rgba(59, 130, 246, 0.08); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.15); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #60a5fa; font-weight: 700; text-transform: uppercase;">Uses Left</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: #3b82f6;">${c.current_uses} / ${c.max_uses}</span>
                     </div>
 
                     <!-- Date Box -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Date</span>
-                        <span style="font-size: 0.85rem; font-weight: 600; color: #475569;">${c.created_at}</span>
+                    <div style="background: rgba(148, 163, 184, 0.08); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.15); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Date Created</span>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #cbd5e1;">${c.created_at}</span>
                     </div>
+
+                    ${!isFinished ? `
+                    <!-- Delete Box Action -->
+                    <div onclick="deleteCoupon('${c.code}')" style="background: rgba(239, 68, 68, 0.1); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;">
+                        <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
+                        <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Delete Coupon</span>
+                    </div>` : `
+                    <!-- Deactivated Status Box -->
+                    <div style="background: rgba(71, 85, 105, 0.1); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(71, 85, 105, 0.1); display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
+                        <i class="fas fa-check-circle" style="color: #64748b; font-size: 0.9rem;"></i>
+                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Finished / Inactive</span>
+                    </div>
+                    `}
                 </div>
             `;
             return div;
