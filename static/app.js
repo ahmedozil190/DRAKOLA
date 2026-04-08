@@ -160,8 +160,25 @@ async function loadInitialData(silent = false) {
     } catch (err) {
         console.error("Data fetch error:", err);
     } finally {
-        // Always ensure loader is hidden after initial load
         hideLoader();
+    }
+}
+
+// v49 - Specialized Lightweight Refresh for Broadcast Counters
+async function refreshBroadcastStats() {
+    try {
+        const settingsRes = await fetch('/api/settings');
+        const settings = await settingsRes.json();
+        
+        const globalEl = document.getElementById('stat-broadcast-global');
+        const targetedEl = document.getElementById('stat-broadcast-targeted');
+        
+        if (globalEl) globalEl.innerText = settings.total_global || 0;
+        if (targetedEl) targetedEl.innerText = settings.total_targeted || 0;
+        
+        console.log("✅ Broadcast stats updated via light refresh.");
+    } catch (e) {
+        console.warn("⚠️ Silent stats refresh failed:", e);
     }
 }
 
@@ -345,8 +362,8 @@ async function sendBroadcast(mode) {
                     document.getElementById('broadcast-user-msg').value = '';
                 }
 
-                // LIVE UPDATES v48: Refresh counters immediately after broadcast
-                loadInitialData(true);
+                // LIVE UPDATES v49: Use lightweight refresh instead of full load to prevent UI glitches
+                refreshBroadcastStats();
         } else {
             tg.showAlert(`Error: ${result.message || "Something went wrong"}`);
         }
