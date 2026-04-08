@@ -1,4 +1,4 @@
-// v37 - Finance UI Refinement
+// v38 - Unified Finance UI Aesthetics
 const tg = window.Telegram.WebApp;
 tg.expand();
 
