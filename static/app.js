@@ -713,14 +713,15 @@ function renderFinance(data) {
 
     // Render History
     const list = document.getElementById('finance-history-list');
+    if (!list) return;
     list.innerHTML = '';
     
-    if (data.history.length === 0) {
+    if (!data.history || data.history.length === 0) {
         list.innerHTML = `
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; opacity: 0.5;">
-                <i class="fas fa-receipt" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                <div style="font-size: 1.2rem; font-weight: 700;">No transactions found</div>
-                <div style="font-size: 0.8rem; margin-top: 5px;">Record your sales and expenses to see them here.</div>
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; text-align: center; padding: 20px;">
+                <i class="fas fa-receipt" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.3;"></i>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #94a3b8;">No transactions found</div>
+                <div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">Record your sales and expenses to see them here.</div>
             </div>
         `;
         return;
