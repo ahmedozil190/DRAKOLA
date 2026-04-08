@@ -1131,9 +1131,12 @@ async function generateCoupon() {
 }
 
 let currentCouponFilter = 'active';
+let currentCouponsPage = 1;
+const couponsPerPage = 5;
 
 function setCouponFilter(type) {
     currentCouponFilter = type;
+    currentCouponsPage = 1; // Reset to page 1 on filter change
     document.getElementById('coupon-tab-active').classList.toggle('active', type === 'active');
     document.getElementById('coupon-tab-finished').classList.toggle('active', type === 'finished');
     loadCoupons();
@@ -1153,27 +1156,56 @@ async function loadCoupons() {
         document.getElementById('coupons-active-count').innerText = activeCoupons.length;
         document.getElementById('coupons-finished-count').innerText = finishedCoupons.length;
 
-        const currentList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
+        const filteredList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
+        
+        // Pagination logic
+        const totalCount = filteredList.length;
+        const totalPages = Math.ceil(totalCount / couponsPerPage);
+        if (currentCouponsPage > totalPages && totalPages > 0) currentCouponsPage = totalPages;
+        
+        const start = (currentCouponsPage - 1) * couponsPerPage;
+        const end = start + couponsPerPage;
+        const pagedCoupons = filteredList.slice(start, end);
 
-        function createRow(c, isFinished) {
+        // Update Pagination UI
+        const paginationContainer = document.getElementById('coupons-pagination-container');
+        const prevBtn = document.getElementById('coupons-prev-btn');
+        const nextBtn = document.getElementById('coupons-next-btn');
+        const pageInfo = document.getElementById('coupons-page-info');
+
+        if (totalCount > couponsPerPage) {
+            paginationContainer.style.display = 'flex';
+            pageInfo.innerText = `Page ${currentCouponsPage} of ${totalPages || 1}`;
+            prevBtn.style.opacity = currentCouponsPage === 1 ? '0.3' : '1';
+            prevBtn.style.pointerEvents = currentCouponsPage === 1 ? 'none' : 'auto';
+            nextBtn.style.opacity = (currentCouponsPage === totalPages || totalPages === 0) ? '0.3' : '1';
+            nextBtn.style.pointerEvents = (currentCouponsPage === totalPages || totalPages === 0) ? 'none' : 'auto';
+        } else {
+            paginationContainer.style.display = 'none';
+        }
+
+        function createRow(c, isFinished, displayIndex) {
             const div = document.createElement('div');
-            div.style.padding = '20px';
+            div.style.padding = '25px 20px 20px 20px'; // Top padding for the index badge
             div.style.background = 'rgba(255,255,255,0.01)';
             div.style.borderRadius = '18px';
             div.style.border = '1px solid rgba(255,255,255,0.05)';
-            div.style.marginBottom = '15px';
+            div.style.marginBottom = '25px'; // Increased margin for spacing
             div.style.display = 'flex';
             div.style.flexDirection = 'column';
             div.style.gap = '8px';
             div.style.position = 'relative';
 
             div.innerHTML = `
+                <!-- Card Index Badge (v76) -->
+                <div class="user-card-index" style="width: 28px; height: 28px; font-size: 0.8rem; top: -14px;">${displayIndex}</div>
+
                 <!-- Boxed Info Fields -->
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <!-- Coupon Box -->
                     <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Coupon</span>
-                        <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #fff;">${c.code}</span>
+                        <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #22d3ee;">${c.code}</span>
                     </div>
 
                     <!-- Points Box -->
@@ -1191,7 +1223,7 @@ async function loadCoupons() {
                     <!-- Date Box -->
                     <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
-                        <span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">${c.created_at}</span>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: #3b82f6;">${c.created_at}</span>
                     </div>
 
                     ${!isFinished ? `
@@ -1206,19 +1238,38 @@ async function loadCoupons() {
         }
 
         listContainer.innerHTML = '';
-        if (currentList.length === 0) {
+        if (pagedCoupons.length === 0) {
             listContainer.innerHTML = `
                 <div style="padding: 50px 20px; text-align: center;">
                     <i class="fas fa-folder-open" style="font-size: 3rem; color: #1e293b; margin-bottom: 15px;"></i>
                     <p style="color: #64748b; font-size: 0.9rem;">No ${currentCouponFilter} coupons found.</p>
                 </div>`;
         } else {
-            currentList.forEach(c => listContainer.appendChild(createRow(c, currentCouponFilter === 'finished')));
+            pagedCoupons.forEach((c, idx) => {
+                const displayIndex = start + idx + 1;
+                listContainer.appendChild(createRow(c, currentCouponFilter === 'finished', displayIndex));
+            });
         }
 
     } catch (err) {
         console.error("Load coupons error:", err);
     }
+}
+
+function prevCouponsPage() {
+    if (currentCouponsPage > 1) {
+        currentCouponsPage--;
+        tg.HapticFeedback.impactOccurred('light');
+        loadCoupons();
+    }
+}
+
+function nextCouponsPage() {
+    // We need the latest data to know total pages, but loadCoupons handles it.
+    // However, for immediate UI feedback:
+    currentCouponsPage++;
+    tg.HapticFeedback.impactOccurred('light');
+    loadCoupons();
 }
 
 
