@@ -7,7 +7,7 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=34">
+    <link rel="stylesheet" href="/static/style.css?v=35">
 </head>
 
 <body>
@@ -495,9 +495,11 @@
             <button class="success-close-btn" onclick="closeUserManageModal()"
                 style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
         </div>
-        <!-- Modal: Add Sale (v25) -->
-        <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
-            <div class="manage-card" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Modal: Add Sale -->
+    <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
+        <div class="manage-card" onclick="event.stopPropagation()">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                     <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800;">Record New Sale</h3>
                     <div class="close-circle" onclick="closeAddSaleModal()">
@@ -529,33 +531,32 @@
             </div>
         </div>
 
-        <!-- Modal: Add Expense (v25) -->
-        <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
-            <div class="manage-card" onclick="event.stopPropagation()">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800;">Record Expense</h3>
-                    <div class="close-circle" onclick="closeAddExpenseModal()">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-input-group">
-                        <label>Amount (USD $)</label>
-                        <input type="number" id="expense-amount" class="input-field" placeholder="e.g. 5">
-                    </div>
-                    <div class="modal-input-group" style="margin-bottom: 25px;">
-                        <label>Description / Reason</label>
-                        <input type="text" id="expense-note" class="input-field" placeholder="What was spent?">
-                    </div>
-                    <button onclick="submitExpense()" class="gradient-btn"
-                        style="width: 100%; border-radius: 15px; padding: 16px; background: linear-gradient(135deg, #ef4444, #991b1b);">
-                        Record Expense
-                    </button>
+    <!-- Modal: Add Expense -->
+    <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
+        <div class="manage-card" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800;">Record Expense</h3>
+                <div class="close-circle" onclick="closeAddExpenseModal()">
+                    <i class="fas fa-times"></i>
                 </div>
             </div>
+            <div class="modal-body">
+                <div class="modal-input-group">
+                    <label>Amount (USD $)</label>
+                    <input type="number" id="expense-amount" class="input-field" placeholder="e.g. 5">
+                </div>
+                <div class="modal-input-group" style="margin-bottom: 25px;">
+                    <label>Description / Reason</label>
+                    <input type="text" id="expense-note" class="input-field" placeholder="What was spent?">
+                </div>
+                <button onclick="submitExpense()" class="gradient-btn" style="width: 100%; border-radius: 15px; padding: 16px; background: linear-gradient(135deg, #ef4444, #991b1b);">
+                    Record Expense
+                </button>
+            </div>
         </div>
+    </div>
 
-        <script src="/static/app.js?v=34"></script>
+    <script src="/static/app.js?v=35"></script>
 </body>
 
 </html>

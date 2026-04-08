@@ -1,4 +1,4 @@
-// Master Version v34
+// v35 - Modal Nesting Bug Fixed
 const tg = window.Telegram.WebApp;
 tg.expand();
 
