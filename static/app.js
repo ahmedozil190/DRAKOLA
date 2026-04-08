@@ -716,7 +716,13 @@ function renderFinance(data) {
     list.innerHTML = '';
     
     if (data.history.length === 0) {
-        list.innerHTML = `<div style="text-align: center; padding: 40px; color: #475569;">No transactions recorded yet.</div>`;
+        list.innerHTML = `
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; opacity: 0.5;">
+                <i class="fas fa-receipt" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                <div style="font-size: 1.2rem; font-weight: 700;">لا يوجد معاملات</div>
+                <div style="font-size: 0.8rem; margin-top: 5px;">سجل مبيعاتك ومصروفاتك لمتابعة الأرباح</div>
+            </div>
+        `;
         return;
     }
 
