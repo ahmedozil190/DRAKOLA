@@ -1093,10 +1093,9 @@ function selectExpenseOption(value) {
 async function generateCoupon() {
     const points = document.getElementById('coupon-points').value;
     const uses = document.getElementById('coupon-uses').value;
-    const code = document.getElementById('coupon-code').value;
-
+    
     if (!points || !uses) {
-        showErrorPopup("Missing Fields", "Please enter points value and max uses.");
+        showErrorPopup("Missing Info", "Please enter points value and max uses.");
         return;
     }
 
@@ -1107,24 +1106,22 @@ async function generateCoupon() {
         const res = await fetch('/api/coupons/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ points, uses, code })
+            body: JSON.stringify({ points, uses, code: "" }) 
         });
         
         if (res.ok) {
             const data = await res.json();
-            showSuccessPopup("Coupon Created", `Your coupon code (${data.code}) has been generated and is ready to use.`);
+            showSuccessPopup("Coupon Created", `Your coupon code (${data.code}) has been generated successfully.`);
             
-            // Reset inputs
             document.getElementById('coupon-points').value = '';
             document.getElementById('coupon-uses').value = '';
-            document.getElementById('coupon-code').value = '';
-            
             loadCoupons();
         } else {
-            showErrorPopup("Error", "Failed to create coupon. Code might already exist.");
+            showErrorPopup("Error", "Failed to create coupon.");
         }
     } catch (err) {
-        showErrorPopup("Network Error", "Could not connect to server.");
+        console.error(err);
+        showErrorPopup("Error", "Could not connect to server.");
     } finally {
         hideLoader();
     }
@@ -1153,9 +1150,6 @@ async function loadCoupons() {
         const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
         const finishedCoupons = data.coupons.filter(c => !c.is_active || c.current_uses >= c.max_uses);
         
-        document.getElementById('coupons-active-count').innerText = activeCoupons.length;
-        document.getElementById('coupons-finished-count').innerText = finishedCoupons.length;
-
         const filteredList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
         
         // Pagination logic
@@ -1217,7 +1211,7 @@ async function loadCoupons() {
                     <!-- Uses Box -->
                     <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Uses</span>
-                        <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${c.current_uses} / ${c.max_uses}</span>
+                        <span style="font-size: 0.95rem; font-weight: 700; color: #f59e0b;">${c.current_uses} / ${c.max_uses}</span>
                     </div>
 
                     <!-- Date Box -->
@@ -1231,7 +1225,13 @@ async function loadCoupons() {
                     <div onclick="deleteCoupon('${c.code}')" style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;">
                         <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
                         <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Delete Coupon</span>
-                    </div>` : ''}
+                    </div>` : `
+                    <!-- Deactivated Status Box (v77 Restored) -->
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
+                        <i class="fas fa-check-circle" style="color: #64748b; font-size: 0.9rem;"></i>
+                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Finished / Inactive</span>
+                    </div>
+                    `}
                 </div>
             `;
             return div;
@@ -1275,23 +1275,26 @@ function nextCouponsPage() {
 
 
 async function deleteCoupon(code) {
-    if(!confirm("Are you sure you want to delete coupon: " + code + "?")) return;
-    tg.HapticFeedback.impactOccurred('light');
-    showLoader(true);
-    
-    try {
-        const res = await fetch('/api/coupons/delete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code })
-        });
-        if (res.ok) {
-            showSuccessPopup("Deleted", "The coupon has been permanently deactivated.");
-            loadCoupons();
+    tg.showConfirm(`Are you sure you want to delete coupon: ${code}?`, async (ok) => {
+        if (!ok) return;
+        
+        tg.HapticFeedback.impactOccurred('light');
+        showLoader(true);
+        
+        try {
+            const res = await fetch('/api/coupons/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            if (res.ok) {
+                showSuccessPopup("Deleted", "The coupon has been permanently deactivated.");
+                loadCoupons();
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            hideLoader();
         }
-    } catch (err) {
-        console.error(err);
-    } finally {
-        hideLoader();
-    }
+    });
 }
