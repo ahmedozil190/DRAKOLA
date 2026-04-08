@@ -310,7 +310,9 @@ async def check_for_coupon(message: Message, state: FSMContext):
         # Check if Active
         if not coupon.is_active or coupon.current_uses >= coupon.max_uses:
             await message.reply(
-                "⚠️ <b>عذراً، هذا الكوبون انتهت صلاحيته أو وصل للحد الأقصى من الاستخدامات.</b>",
+                "⚠️ <b>عذراً، هذا الكوبون لم يعد متاحاً الآن!</b>\n\n"
+                "• إما أنه انتهى وقته أو وصل للحد الأقصى من الاستخدامات.\n"
+                "• حظاً أوفر في المرات القادمة! ✨", 
                 parse_mode="HTML"
             )
             return
