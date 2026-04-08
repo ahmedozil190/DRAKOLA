@@ -156,13 +156,32 @@ async def add_finance_record(request):
 
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
-    size = os.path.getsize(path) if os.path.exists(path) else -1
-    logging.info(f"Serve Request: {path} (Size: {size} bytes)")
-    return web.FileResponse(path)
+    try:
+        with open(path, 'rb') as f:
+            content = f.read()
+        logging.info(f"Manual Serve Success: {path} ({len(content)} bytes)")
+        return web.Response(body=content, content_type='text/html')
+    except Exception as e:
+        logging.error(f"Manual Serve Error: {e}")
+        return web.Response(text=f"Error loading index: {e}", status=500)
+
+async def handle_js(request):
+    path = os.path.join(STATIC_DIR, "app.js")
+    with open(path, 'rb') as f:
+        return web.Response(body=f.read(), content_type='application/javascript')
+
+async def handle_css(request):
+    path = os.path.join(STATIC_DIR, "style.css")
+    with open(path, 'rb') as f:
+        return web.Response(body=f.read(), content_type='text/css')
 
 def setup_web_app(bot):
     app = web.Application()
     app['bot'] = bot
+    
+    app.router.add_get('/', handle_index)
+    app.router.add_get('/static/app.js', handle_js)
+    app.router.add_get('/static/style.css', handle_css)
     
     # API Routes
     app.router.add_get('/api/stats', get_stats)
@@ -184,8 +203,7 @@ def setup_web_app(bot):
     app.router.add_get('/api/finance', get_finance_data)
     app.router.add_post('/api/finance/add', add_finance_record)
     
-    # Static Files
-    app.router.add_get('/', handle_index)
+    # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')
     
     return app

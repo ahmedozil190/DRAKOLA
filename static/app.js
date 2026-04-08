@@ -1,18 +1,14 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-// Master Diagnostic Alert (v32)
-alert("Master Script v32 Loaded ✅");
-
 // DOM Elements
 const loader = document.getElementById('loader');
 const sideMenu = document.getElementById('side-menu');
 const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
-// --- Global UI Logic (v32) ---
+// --- Global UI Logic (v30) ---
 function openAddSaleModal() {
-    alert("Interaction Detected: Add Sale");
     const modal = document.getElementById('add-sale-modal');
     if (modal) modal.classList.add('active');
 }
@@ -23,7 +19,6 @@ function closeAddSaleModal() {
 }
 
 function openAddExpenseModal() {
-    alert("Interaction Detected: Add Expense");
     const modal = document.getElementById('add-expense-modal');
     if (modal) modal.classList.add('active');
 }
