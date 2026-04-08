@@ -663,6 +663,19 @@ function closeSuccessPopup() {
     document.getElementById('success-modal').classList.remove('active');
 }
 
+// ========== Custom Error Modal Logic (v54) ==========
+function showErrorPopup(title, message) {
+    document.getElementById('error-title').innerText = title;
+    document.getElementById('error-msg').innerText = message;
+    document.getElementById('error-modal').classList.add('active');
+    tg.HapticFeedback.notificationOccurred('error');
+}
+
+function closeErrorPopup() {
+    tg.HapticFeedback.impactOccurred('light');
+    document.getElementById('error-modal').classList.remove('active');
+}
+
 // ========== Custom User Management Modal (v66) ==========
 let currentManagingUser = null;
 
@@ -693,9 +706,9 @@ async function modalUpdatePoints(type) {
     if (!currentManagingUser) return;
 
     const inputVal = document.getElementById('modal-points-input').value;
-    // v53: Improved validation in Arabic to prevent empty or zero submissions
+    // v54: Using Custom Error Modal (Arabic) instead of browser alert
     if (!inputVal || isNaN(inputVal) || parseInt(inputVal) === 0) {
-        return tg.showAlert("يرجى إدخال عدد النقاط أولاً! 🖋️");
+        return showErrorPopup("تنبيه! 🖋️", "يرجى إدخال عدد النقاط أولاً قبل الضغط على الإضافة أو الخصم.");
     }
 
     let points = parseInt(inputVal);

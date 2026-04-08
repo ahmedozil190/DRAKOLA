@@ -514,6 +514,18 @@
         </div>
     </div>
 
+    <!-- Error/Warning Popup Modal (v54) -->
+    <div id="error-modal" class="modal-overlay" onclick="closeErrorPopup()">
+        <div class="error-card" onclick="event.stopPropagation()">
+            <div class="error-icon-wrap">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="error-title">Oops!</h3>
+            <p id="error-msg">Something went wrong.</p>
+            <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
+        </div>
+    </div>
+
     <!-- User Management Modal (v66) -->
     <div id="user-manage-modal" class="modal-overlay" onclick="closeUserManageModal()">
         <div class="manage-card" onclick="event.stopPropagation()">
