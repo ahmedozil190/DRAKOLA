@@ -497,66 +497,98 @@
         </div>
     </div>
 
-    <!-- Modal: Add Sale -->
+    <!-- Modal: Add Sale (v36) -->
     <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
-        <div class="manage-card" onclick="event.stopPropagation()">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800;">Record New Sale</h3>
-                    <div class="close-circle" onclick="closeAddSaleModal()">
-                        <i class="fas fa-times"></i>
+        <div onclick="event.stopPropagation()" style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(34,197,94,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(34,197,94,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 42px; height: 42px; background: rgba(34,197,94,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-plus" style="color: #22c55e; font-size: 1.1rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record New Sale</h3>
+                            <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Add a sale to your records</p>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-input-group">
-                        <label>Amount (USD $)</label>
-                        <input type="number" id="sale-amount" class="input-field" placeholder="e.g. 10">
+                    <div onclick="closeAddSaleModal()" style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
                     </div>
-                    <div class="modal-input-group">
-                        <label>Points to Add</label>
-                        <input type="number" id="sale-points" class="input-field" placeholder="e.g. 1000">
-                    </div>
-                    <div class="modal-input-group">
-                        <label>User ID (Optional)</label>
-                        <input type="number" id="sale-user-id" class="input-field" placeholder="Telegram ID">
-                    </div>
-                    <div class="modal-input-group" style="margin-bottom: 25px;">
-                        <label>Description / Note</label>
-                        <input type="text" id="sale-note" class="input-field" placeholder="What was sold?">
-                    </div>
-                    <button onclick="submitSale()" class="gradient-btn"
-                        style="width: 100%; border-radius: 15px; padding: 16px;">
-                        Confirm & Record
-                    </button>
                 </div>
             </div>
-        </div>
-
-    <!-- Modal: Add Expense -->
-    <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
-        <div class="manage-card" onclick="event.stopPropagation()">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800;">Record Expense</h3>
-                <div class="close-circle" onclick="closeAddExpenseModal()">
-                    <i class="fas fa-times"></i>
+            <!-- Body -->
+            <div style="padding: 24px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount (USD $)</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #22c55e; font-weight: 700;">$</span>
+                        <input type="number" id="sale-amount" placeholder="0.00" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
+                    </div>
                 </div>
-            </div>
-            <div class="modal-body">
-                <div class="modal-input-group">
-                    <label>Amount (USD $)</label>
-                    <input type="number" id="expense-amount" class="input-field" placeholder="e.g. 5">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Points to Add</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i class="fas fa-star" style="font-size: 0.75rem;"></i></span>
+                        <input type="number" id="sale-points" placeholder="0" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 36px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
+                    </div>
                 </div>
-                <div class="modal-input-group" style="margin-bottom: 25px;">
-                    <label>Description / Reason</label>
-                    <input type="text" id="expense-note" class="input-field" placeholder="What was spent?">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">User ID <span style="color: #334155;">(Optional)</span></label>
+                    <input type="number" id="sale-user-id" placeholder="Telegram User ID" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
                 </div>
-                <button onclick="submitExpense()" class="gradient-btn" style="width: 100%; border-radius: 15px; padding: 16px; background: linear-gradient(135deg, #ef4444, #991b1b);">
-                    Record Expense
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Description</label>
+                    <input type="text" id="sale-note" placeholder="Note" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                </div>
+                <button onclick="submitSale()" style="width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(34,197,94,0.2);">
+                    Confirm & Record
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="/static/app.js?v=35"></script>
+    <!-- Modal: Add Expense (v36) -->
+    <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
+        <div onclick="event.stopPropagation()" style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(239,68,68,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(185,28,28,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(239,68,68,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 42px; height: 42px; background: rgba(239,68,68,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-minus" style="color: #ef4444; font-size: 1.1rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record Expense</h3>
+                            <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Log a business expense</p>
+                        </div>
+                    </div>
+                    <div onclick="closeAddExpenseModal()" style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Body -->
+            <div style="padding: 24px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount (USD $)</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #ef4444; font-weight: 700;">$</span>
+                        <input type="number" id="expense-amount" placeholder="0.00" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Description</label>
+                    <input type="text" id="expense-note" placeholder="Note" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                </div>
+                <button onclick="submitExpense()" style="width: 100%; background: linear-gradient(135deg, #ef4444, #991b1b); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(239,68,68,0.2);">
+                    Save Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=36"></script>
 </body>
 
 </html>
