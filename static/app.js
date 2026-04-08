@@ -943,10 +943,13 @@ async function submitSale() {
     const amount = document.getElementById('sale-amount').value;
     const points = document.getElementById('sale-points').value;
     const userId = document.getElementById('sale-user-id').value;
-    const note = document.getElementById('sale-note').value;
+    let note = document.getElementById('sale-note').value;
+    if (note === 'Other') {
+        note = document.getElementById('sale-note-other').value;
+    }
 
     if (!amount || !note || !userId) {
-        alert("Please fill in all required fields (Amount, User ID, Description).");
+        alert("Please fill in all required fields (Amount, User ID, Reason).");
         return;
     }
 
@@ -973,6 +976,8 @@ async function submitSale() {
             document.getElementById('sale-points').value = '';
             document.getElementById('sale-user-id').value = '';
             document.getElementById('sale-note').selectedIndex = 0;
+            document.getElementById('sale-note-other').value = '';
+            document.getElementById('sale-other-container').style.display = 'none';
         }
     } catch (err) {
         console.error("Sale submission error:", err);
@@ -981,10 +986,13 @@ async function submitSale() {
 
 async function submitExpense() {
     const amount = document.getElementById('expense-amount').value;
-    const note = document.getElementById('expense-note').value;
+    let note = document.getElementById('expense-note').value;
+    if (note === 'Other') {
+        note = document.getElementById('expense-note-other').value;
+    }
 
     if (!amount || !note) {
-        alert("Please enter amount and description.");
+        alert("Please enter amount and reason.");
         return;
     }
 
@@ -1006,7 +1014,9 @@ async function submitExpense() {
 
             // Clear inputs
             document.getElementById('expense-amount').value = '';
-            document.getElementById('expense-note').value = '';
+            document.getElementById('expense-note').selectedIndex = 0;
+            document.getElementById('expense-note-other').value = '';
+            document.getElementById('expense-other-container').style.display = 'none';
         }
     } catch (err) {
         console.error("Expense submission error:", err);
