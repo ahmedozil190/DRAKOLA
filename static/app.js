@@ -1093,7 +1093,7 @@ function selectExpenseOption(value) {
 async function generateCoupon() {
     const points = document.getElementById('coupon-points').value;
     const uses = document.getElementById('coupon-uses').value;
-    
+
     if (!points || !uses) {
         showErrorPopup("Missing Info", "Please enter points value and max uses.");
         return;
@@ -1101,18 +1101,18 @@ async function generateCoupon() {
 
     tg.HapticFeedback.impactOccurred('medium');
     showLoader(true);
-    
+
     try {
         const res = await fetch('/api/coupons/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ points, uses, code: "" }) 
+            body: JSON.stringify({ points, uses, code: "" })
         });
-        
+
         if (res.ok) {
             const data = await res.json();
             showSuccessPopup("Coupon Created", `Your coupon code (${data.code}) has been generated successfully.`);
-            
+
             document.getElementById('coupon-points').value = '';
             document.getElementById('coupon-uses').value = '';
             loadCoupons();
@@ -1144,19 +1144,19 @@ async function loadCoupons() {
         const res = await fetch('/api/coupons');
         if (!res.ok) return;
         const data = await res.json();
-        
+
         const listContainer = document.getElementById('coupons-list-container');
-        
+
         const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
         const finishedCoupons = data.coupons.filter(c => !c.is_active || c.current_uses >= c.max_uses);
-        
+
         const filteredList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
-        
+
         // Pagination logic
         const totalCount = filteredList.length;
         const totalPages = Math.ceil(totalCount / couponsPerPage);
         if (currentCouponsPage > totalPages && totalPages > 0) currentCouponsPage = totalPages;
-        
+
         const start = (currentCouponsPage - 1) * couponsPerPage;
         const end = start + couponsPerPage;
         const pagedCoupons = filteredList.slice(start, end);
@@ -1180,15 +1180,14 @@ async function loadCoupons() {
 
         function createRow(c, isFinished, displayIndex) {
             const div = document.createElement('div');
-            div.style.padding = '25px 20px 20px 20px';
-            div.style.background = 'rgba(255,255,255,0.01)';
-            div.style.borderRadius = '18px';
-            div.style.border = '1px solid rgba(255,255,255,0.05)';
-            div.style.marginBottom = '25px';
+            div.className = 'user-card';
+            div.style.padding = '25px 20px 20px 20px'; // Top padding for the index badge
+            div.style.marginBottom = '25px'; // Increased margin for spacing
             div.style.display = 'flex';
             div.style.flexDirection = 'column';
             div.style.gap = '8px';
             div.style.position = 'relative';
+            div.style.cursor = 'default';
 
             div.innerHTML = `
                 <!-- Card Index Badge (v76) -->
@@ -1197,37 +1196,37 @@ async function loadCoupons() {
                 <!-- Boxed Info Fields -->
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <!-- Coupon Box -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Coupon</span>
                         <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #22d3ee;">${c.code}</span>
                     </div>
 
                     <!-- Points Box -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Points</span>
                         <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">${c.points}</span>
                     </div>
 
                     <!-- Uses Box -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Uses</span>
                         <span style="font-size: 0.95rem; font-weight: 700; color: #f59e0b;">${c.current_uses} / ${c.max_uses}</span>
                     </div>
 
                     <!-- Date Box -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
-                        <span style="font-size: 0.85rem; font-weight: 700; color: #3b82f6;">${c.created_at}</span>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: #60a5fa;">${c.created_at}</span>
                     </div>
 
                     ${!isFinished ? `
                     <!-- Delete Box Action -->
-                    <div onclick="deleteCoupon('${c.code}')" style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;">
+                    <div onclick="deleteCoupon('${c.code}')" style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;">
                         <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
                         <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Delete Coupon</span>
                     </div>` : `
                     <!-- Deactivated Status Box (v77 Restored) -->
-                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); opacity: 0.7;">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
                         <i class="fas fa-check-circle" style="color: #64748b; font-size: 0.9rem;"></i>
                         <span style="font-size: 0.8rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Finished / Inactive</span>
                     </div>
@@ -1277,10 +1276,10 @@ function nextCouponsPage() {
 async function deleteCoupon(code) {
     tg.showConfirm(`Are you sure you want to delete coupon: ${code}?`, async (ok) => {
         if (!ok) return;
-        
+
         tg.HapticFeedback.impactOccurred('light');
         showLoader(true);
-        
+
         try {
             const res = await fetch('/api/coupons/delete', {
                 method: 'POST',
