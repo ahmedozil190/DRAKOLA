@@ -98,6 +98,9 @@ function toggleMenu() {
 
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
+    
+    // Reset Scroll Position (v83)
+    window.scrollTo(0, 0);
 
     // PERSISTENCE v48: Save current view to session storage
     sessionStorage.setItem('last_view', viewId);
@@ -126,11 +129,15 @@ function switchNav(viewId) {
     };
     pageTitle.innerText = titles[viewId];
 
+    // Reset Pagination to Page 1 when entering sections (v83)
     if (viewId === 'users') {
+        currentPage = 1;
         loadUsers();
     } else if (viewId === 'finance') {
+        currentFinancePage = 1;
         loadFinanceData();
     } else if (viewId === 'coupons') {
+        currentCouponsPage = 1;
         loadCoupons();
     }
 
