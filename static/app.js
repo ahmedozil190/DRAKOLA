@@ -1,4 +1,4 @@
-// v41 - Global UI Unification (Users Cards Styling)
+// v42 - Restored User Layout & Enhanced Tabs
 const tg = window.Telegram.WebApp;
 tg.expand();
 
@@ -525,37 +525,56 @@ function renderUsers(users) {
 
         card.innerHTML = `
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
-                <!-- Account Status (v41) -->
+                <!-- Account Status (v42 - Restored Layout) -->
                 <div class="user-stat-row" 
                      style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); 
                             border: 1px solid rgba(255, 255, 255, 0.05);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Status</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Account Status</span>
                     <div style="font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; color: ${user.is_banned ? '#ef4444' : '#2ecc71'};">
                         <i class="fas ${user.is_banned ? 'fa-times' : 'fa-check'}"></i>
                         ${user.is_banned ? 'BANNED' : 'ACTIVE'}
                     </div>
                 </div>
 
-                <!-- Info Grid (v41) -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div style="padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">ID</div>
-                        <div style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${user.user_id}</div>
-                    </div>
-                    <div style="padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Balance</div>
-                        <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">${user.points}</div>
-                    </div>
-                </div>
-
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                <!-- Full Name -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Full Name</span>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: #fff;">${user.first_name}</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #ffd700;">${user.first_name}</span>
                 </div>
 
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                <!-- Username -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
                     <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${user.username || 'none'}</span>
+                </div>
+
+                <!-- User ID -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${user.user_id}</span>
+                </div>
+
+                <!-- Balance -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Balance</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${user.points}</span>
+                </div>
+
+                <!-- Spent -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Spent</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #ef4444;">${user.points_used || 0}</span>
+                </div>
+
+                <!-- Earned -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Earned</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #2ecc71;">${user.points + (user.points_used || 0)}</span>
+                </div>
+
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Orders Made</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #c084fc;">${user.orders_count || 0}</span>
                 </div>
             </div>
         `;
