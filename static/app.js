@@ -1,3 +1,4 @@
+// Master Version v34
 const tg = window.Telegram.WebApp;
 tg.expand();
 
@@ -7,25 +8,49 @@ const sideMenu = document.getElementById('side-menu');
 const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
-// --- Global UI Logic (v30) ---
+// --- Global UI Logic (v34) ---
 function openAddSaleModal() {
     const modal = document.getElementById('add-sale-modal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.style.pointerEvents = 'auto';
+        modal.style.zIndex = '10000';
+    }
 }
 
 function closeAddSaleModal() {
     const modal = document.getElementById('add-sale-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modal.style.pointerEvents = 'none';
+        modal.classList.remove('active');
+    }
 }
 
 function openAddExpenseModal() {
     const modal = document.getElementById('add-expense-modal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.style.pointerEvents = 'auto';
+        modal.style.zIndex = '10000';
+    }
 }
 
 function closeAddExpenseModal() {
     const modal = document.getElementById('add-expense-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modal.style.pointerEvents = 'none';
+        modal.classList.remove('active');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
