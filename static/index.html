@@ -620,8 +620,7 @@
             <div style="padding: 24px;">
                 <div style="margin-bottom: 16px;">
                     <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount
-                        (USD $)</label>
+                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount</label>
                     <div style="position: relative;">
                         <span
                             style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #22c55e; font-weight: 700;">$</span>
@@ -631,8 +630,7 @@
                 </div>
                 <div style="margin-bottom: 16px;">
                     <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Points
-                        to Add</label>
+                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Points</label>
                     <div style="position: relative;">
                         <span
                             style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i
@@ -644,15 +642,29 @@
                 <div style="margin-bottom: 16px;">
                     <label
                         style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">User
-                        ID <span style="color: #334155;">(Optional)</span></label>
+                        ID</label>
                     <input type="number" id="sale-user-id" placeholder="Telegram User ID"
                         style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 24px;">
                     <label
                         style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Description</label>
-                    <input type="text" id="sale-note" placeholder="Note"
-                        style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                    <style>
+                        /* Target the options inside the select */
+                        #sale-note option {
+                            background-color: #0f172a;
+                            color: #fff;
+                        }
+                    </style>
+                    <select id="sale-note"
+                        style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box; appearance: none; cursor: pointer;">
+                        <option value="Deposit - Vodafone Cash">Deposit - Vodafone Cash</option>
+                        <option value="Deposit - InstaPay">Deposit - InstaPay</option>
+                        <option value="Deposit - Binance Pay">Deposit - Binance Pay</option>
+                        <option value="Deposit - USDT">Deposit - USDT</option>
+                        <option value="Manual Addition">Manual Addition</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <button onclick="submitSale()"
                     style="width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(34,197,94,0.2);">

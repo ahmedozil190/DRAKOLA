@@ -945,8 +945,8 @@ async function submitSale() {
     const userId = document.getElementById('sale-user-id').value;
     const note = document.getElementById('sale-note').value;
 
-    if (!amount || !note) {
-        alert("Please enter amount and description.");
+    if (!amount || !note || !userId) {
+        alert("Please fill in all required fields (Amount, User ID, Description).");
         return;
     }
 
@@ -972,7 +972,7 @@ async function submitSale() {
             document.getElementById('sale-amount').value = '';
             document.getElementById('sale-points').value = '';
             document.getElementById('sale-user-id').value = '';
-            document.getElementById('sale-note').value = '';
+            document.getElementById('sale-note').selectedIndex = 0;
         }
     } catch (err) {
         console.error("Sale submission error:", err);
