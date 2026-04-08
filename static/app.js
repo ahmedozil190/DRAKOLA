@@ -949,7 +949,9 @@ async function submitSale() {
     }
 
     if (!amount || !note || !userId) {
-        alert("Please fill in all required fields (Amount, User ID, Reason).");
+        const alertBox = document.getElementById('sale-alert');
+        alertBox.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Please fill in all required fields (Amount, User ID, Reason).';
+        alertBox.style.display = 'block';
         return;
     }
 
@@ -992,7 +994,9 @@ async function submitExpense() {
     }
 
     if (!amount || !note) {
-        alert("Please enter amount and reason.");
+        const alertBox = document.getElementById('expense-alert');
+        alertBox.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Please enter amount and reason.';
+        alertBox.style.display = 'block';
         return;
     }
 
