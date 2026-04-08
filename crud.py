@@ -124,3 +124,44 @@ async def update_settings(session: AsyncSession, **kwargs):
         setattr(settings, key, value)
     await session.commit()
     return settings
+
+# --- Financial Dashboard Features ---
+from models import FinancialRecord
+
+async def add_financial_record(session: AsyncSession, amount: int, points: int, description: str, user_id: int = None):
+    # 1. Add points to user if ID provided
+    if user_id and points > 0:
+        user = await get_user(session, user_id)
+        if user:
+            user.points = (user.points or 0) + points
+    
+    # 2. Save the record
+    record = FinancialRecord(
+        amount_usd=amount,
+        points_added=points,
+        user_id=user_id,
+        description=description
+    )
+    session.add(record)
+    await session.commit()
+    return record
+
+async def get_financial_history(session: AsyncSession, limit: int = 50):
+    result = await session.execute(
+        select(FinancialRecord).order_by(FinancialRecord.created_at.desc()).limit(limit)
+    )
+    return result.scalars().all()
+
+async def get_financial_stats(session: AsyncSession):
+    # Sum of all USD amounts
+    q = await session.execute(select(func.sum(FinancialRecord.amount_usd)))
+    total_revenue = q.scalar() or 0
+    
+    # Count of records
+    q_count = await session.execute(select(func.count(FinancialRecord.id)))
+    total_records = q_count.scalar() or 0
+    
+    return {
+        "total_revenue": total_revenue,
+        "total_records": total_records
+    }

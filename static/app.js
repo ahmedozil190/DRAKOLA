@@ -70,12 +70,15 @@ function switchNav(viewId) {
         'settings': 'Settings',
         'channels': 'Channels',
         'users': 'User Management',
-        'broadcast': 'Broadcast'
+        'broadcast': 'Broadcast',
+        'finance': 'Finance'
     };
     pageTitle.innerText = titles[viewId];
 
     if (viewId === 'users') {
         loadUsers();
+    } else if (viewId === 'finance') {
+        loadFinanceData();
     }
 
     // Update UI Active States
@@ -686,5 +689,104 @@ async function modalToggleBan() {
         console.error("Ban toggle error:", err);
     } finally {
         hideLoader();
+    }
+}
+// --- Finance Dashboard (v73) ---
+async function loadFinanceData() {
+    showLoader(true);
+    try {
+        const res = await fetch('/api/finance');
+        const data = await res.json();
+        renderFinance(data);
+    } catch (err) {
+        console.error("Finance load error:", err);
+    } finally {
+        hideLoader();
+    }
+}
+
+function renderFinance(data) {
+    // Render Stats
+    document.getElementById('finance-total-revenue').innerText = `$${parseFloat(data.stats.total_revenue).toLocaleString()}`;
+    document.getElementById('finance-total-sales').innerText = data.stats.total_records;
+
+    // Render History
+    const list = document.getElementById('finance-history-list');
+    list.innerHTML = '';
+    
+    if (data.history.length === 0) {
+        list.innerHTML = `<div style="text-align: center; padding: 40px; color: #475569;">No transactions recorded yet.</div>`;
+        return;
+    }
+
+    data.history.forEach(h => {
+        const item = document.createElement('div');
+        item.className = 'user-stat-row';
+        item.style.display = 'block';
+        item.style.padding = '15px';
+        item.style.marginBottom = '12px';
+        item.style.background = 'rgba(255,255,255,0.02)';
+        item.style.borderRadius = '14px';
+        item.style.border = '1px solid rgba(255,255,255,0.03)';
+        
+        item.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 700; color: #2ecc71; font-size: 1.1rem;">+$${h.amount_usd}</span>
+                <span style="font-size: 0.75rem; color: #475569;">${h.created_at}</span>
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 5px;">${h.description}</div>
+            <div style="display: flex; gap: 10px; font-size: 0.8rem;">
+                <span style="color: #60a5fa;"><i class="fas fa-coins"></i> ${h.points_added} Points</span>
+                ${h.user_id ? `<span style="color: #94a3b8;"><i class="fas fa-user text-xs"></i> ID: ${h.user_id}</span>` : ''}
+            </div>
+        `;
+        list.appendChild(item);
+    });
+}
+
+function openAddSaleModal() {
+    document.getElementById('add-sale-modal').style.display = 'flex';
+}
+
+function closeAddSaleModal() {
+    document.getElementById('add-sale-modal').style.display = 'none';
+}
+
+async function submitSale() {
+    const amount = document.getElementById('sale-amount').value;
+    const points = document.getElementById('sale-points').value;
+    const userId = document.getElementById('sale-user-id').value;
+    const note = document.getElementById('sale-note').value;
+
+    if (!amount || !note) {
+        alert("Please enter amount and description.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/finance/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount,
+                points,
+                user_id: userId,
+                description: note
+            })
+        });
+
+        if (res.ok) {
+            closeAddSaleModal();
+            showSuccessPopup("Sale recorded successfully!");
+            loadFinanceData();
+            
+            // Clear inputs
+            document.getElementById('sale-amount').value = '';
+            document.getElementById('sale-points').value = '';
+            document.getElementById('sale-user-id').value = '';
+            document.getElementById('sale-note').value = '';
+        }
+    } catch (err) {
+        console.error("Sale submission error:", err);
     }
 }

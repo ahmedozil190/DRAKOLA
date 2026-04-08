@@ -122,6 +122,36 @@ async def send_broadcast_user(request):
     except Exception as e:
         return web.json_response({"status": "error", "message": str(e)}, status=400)
 
+# --- Finance API ---
+async def get_finance_data(request):
+    async for session in get_session():
+        stats = await crud.get_financial_stats(session)
+        history = await crud.get_financial_history(session)
+        
+        return web.json_response({
+            "stats": stats,
+            "history": [{
+                "id": h.id,
+                "amount_usd": h.amount_usd,
+                "points_added": h.points_added,
+                "user_id": h.user_id,
+                "description": h.description,
+                "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            } for h in history]
+        })
+
+async def add_finance_record(request):
+    data = await request.json()
+    async for session in get_session():
+        await crud.add_financial_record(
+            session,
+            amount=int(data.get('amount', 0)),
+            points=int(data.get('points', 0)),
+            description=data.get('description', ''),
+            user_id=int(data.get('user_id')) if data.get('user_id') else None
+        )
+        return web.json_response({"status": "ok"})
+
 async def handle_index(request):
     return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
@@ -144,6 +174,10 @@ def setup_web_app(bot):
     # Broadcast API (v60)
     app.router.add_post('/api/broadcast/all', send_broadcast_all)
     app.router.add_post('/api/broadcast/user', send_broadcast_user)
+    
+    # Finance API (v73)
+    app.router.add_get('/api/finance', get_finance_data)
+    app.router.add_post('/api/finance/add', add_finance_record)
     
     # Static Files
     app.router.add_get('/', handle_index)

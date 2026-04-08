@@ -85,3 +85,13 @@ class GlobalSettings(Base):
     daily_gift_amount = Column(Integer, default=25)
     min_transfer_amount = Column(Integer, default=10)
     bot_name = Column(String, default="Billion Bot")
+
+class FinancialRecord(Base):
+    __tablename__ = "financial_records"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    amount_usd = Column(Integer, default=0)
+    points_added = Column(Integer, default=0)
+    user_id = Column(BigInteger, nullable=True) # ID of user who bought
+    description = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)

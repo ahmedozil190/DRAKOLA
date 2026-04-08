@@ -7,7 +7,7 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=16">
+    <link rel="stylesheet" href="/static/style.css?v=17">
 </head>
 
 <body>
@@ -37,6 +37,9 @@
         </div>
         <div class="menu-item" onclick="switchNav('broadcast')">
             <i class="fas fa-bullhorn"></i> <span>Broadcast</span>
+        </div>
+        <div class="menu-item" onclick="switchNav('finance')">
+            <i class="fas fa-dollar-sign"></i> <span>Finance</span>
         </div>
         <div class="menu-item" onclick="switchNav('settings')">
             <i class="fas fa-cog"></i> <span>Settings</span>
@@ -182,6 +185,39 @@
                         style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
                         <i class="fas fa-chevron-right"></i>
                     </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Finance Section (v73) -->
+        <section id="finance-section" class="view-section">
+            <div class="section-header">
+                <i class="fas fa-dollar-sign"></i>
+                <h2>Financial Details</h2>
+            </div>
+
+            <!-- Finance Stats -->
+            <div class="stats-grid" style="margin-bottom: 30px;">
+                <div class="card" style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1);">
+                    <span class="card-label">Total Revenue</span>
+                    <span class="card-value val-green" id="finance-total-revenue">$0.00</span>
+                </div>
+                <div class="card" style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1);">
+                    <span class="card-label">Total Sales</span>
+                    <span class="card-value val-purple" id="finance-total-sales">0</span>
+                </div>
+            </div>
+
+            <button onclick="openAddSaleModal()" class="gradient-btn" style="width: 100%; padding: 16px; margin-bottom: 25px;">
+                <i class="fas fa-plus"></i> Add New Sale
+            </button>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #94a3b8; font-size: 1.1rem; font-weight: 700;">Transaction History</h3>
+                </div>
+                <div id="finance-history-list">
+                    <!-- History records will be injected here -->
                 </div>
             </div>
         </section>
@@ -424,9 +460,40 @@
             <button class="success-close-btn" onclick="closeUserManageModal()"
                 style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
         </div>
+    <!-- Modal: Add Sale (v73) -->
+    <div id="add-sale-modal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add New Sale</h3>
+                <div class="close-circle" onclick="closeAddSaleModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Amount (USD $)</label>
+                    <input type="number" id="sale-amount" placeholder="e.g. 10">
+                </div>
+                <div class="input-group">
+                    <label>Points (to add to user)</label>
+                    <input type="number" id="sale-points" placeholder="e.g. 1000">
+                </div>
+                <div class="input-group">
+                    <label>User ID (optional)</label>
+                    <input type="number" id="sale-user-id" placeholder="User Telegram ID">
+                </div>
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label>Description / Note</label>
+                    <input type="text" id="sale-note" placeholder="e.g. Sold points to story">
+                </div>
+                <button onclick="submitSale()" class="gradient-btn" style="width: 100%;">
+                    Confirm & Record
+                </button>
+            </div>
+        </div>
     </div>
 
-    <script src="/static/app.js?v=16"></script>
+    <script src="/static/app.js?v=17"></script>
 </body>
 
 </html>
