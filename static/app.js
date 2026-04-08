@@ -1,4 +1,4 @@
-// v35 - Modal Nesting Bug Fixed
+// v37 - Finance UI Refinement
 const tg = window.Telegram.WebApp;
 tg.expand();
 

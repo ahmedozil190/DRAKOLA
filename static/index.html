@@ -196,42 +196,44 @@
                 <h2>Financial Details</h2>
             </div>
 
-            <!-- Finance Stats (Stacked) -->
+            <!-- Finance Stats (Stacked) - Updated styling v37 -->
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card finance-stat-card" onclick="openAddSaleModal()"
-                    style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: pointer;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Revenue</span>
-                    <span class="card-value val-green" id="finance-total-revenue"
-                        style="font-size: 1.3rem;">$0.00</span>
+                <div class="card finance-stat-card" 
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Revenue</span>
+                    <span class="card-value" id="finance-total-revenue"
+                        style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
                 </div>
-                <div class="card finance-stat-card" onclick="openAddSaleModal()"
-                    style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: pointer;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Sales</span>
-                    <span class="card-value val-purple" id="finance-total-sales" style="font-size: 1.3rem;">0</span>
+                <div class="card finance-stat-card" 
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Sales</span>
+                    <span class="card-value" id="finance-total-sales" 
+                        style="font-size: 1.3rem; color: #a855f7; font-weight: 800;">0</span>
                 </div>
-                <div class="card finance-stat-card" onclick="openAddExpenseModal()"
-                    style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: pointer;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Expenses</span>
-                    <span class="card-value val-red" id="finance-total-expenses" style="font-size: 1.3rem;">$0.00</span>
+                <div class="card finance-stat-card" 
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Expenses</span>
+                    <span class="card-value" id="finance-total-expenses" 
+                        style="font-size: 1.3rem; color: #ef4444; font-weight: 800;">$0.00</span>
                 </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                <!-- Premium Action Card: Add Sale -->
+                <!-- Premium Action Card: Add Sale v37 -->
                 <div class="card finance-action-card" onclick="openAddSaleModal()"
-                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); text-align: center; cursor: pointer;">
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
                     <div
-                        style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #2ecc71; font-size: 1.1rem;">
+                        style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #22c55e; font-size: 1.1rem; border: 1px solid rgba(34,197,94,0.1);">
                         <i class="fas fa-plus"></i>
                     </div>
                     <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add Sale</span>
                 </div>
 
-                <!-- Premium Action Card: Add Expense -->
+                <!-- Premium Action Card: Add Expense v37 -->
                 <div class="card finance-action-card" onclick="openAddExpenseModal()"
-                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); text-align: center; cursor: pointer;">
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
                     <div
-                        style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ef4444; font-size: 1.1rem;">
+                        style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ef4444; font-size: 1.1rem; border: 1px solid rgba(239,68,68,0.1);">
                         <i class="fas fa-minus"></i>
                     </div>
                     <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add Expense</span>
@@ -588,7 +590,7 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=36"></script>
+    <script src="/static/app.js?v=37"></script>
 </body>
 
 </html>
