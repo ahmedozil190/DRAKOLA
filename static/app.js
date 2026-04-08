@@ -1180,11 +1180,11 @@ async function loadCoupons() {
 
         function createRow(c, isFinished, displayIndex) {
             const div = document.createElement('div');
-            div.style.padding = '25px 20px 20px 20px'; // Top padding for the index badge
+            div.style.padding = '25px 20px 20px 20px';
             div.style.background = 'rgba(255,255,255,0.01)';
             div.style.borderRadius = '18px';
             div.style.border = '1px solid rgba(255,255,255,0.05)';
-            div.style.marginBottom = '25px'; // Increased margin for spacing
+            div.style.marginBottom = '25px';
             div.style.display = 'flex';
             div.style.flexDirection = 'column';
             div.style.gap = '8px';
@@ -1197,37 +1197,37 @@ async function loadCoupons() {
                 <!-- Boxed Info Fields -->
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <!-- Coupon Box -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Coupon</span>
                         <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #22d3ee;">${c.code}</span>
                     </div>
 
                     <!-- Points Box -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Points</span>
                         <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">${c.points}</span>
                     </div>
 
                     <!-- Uses Box -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Uses</span>
                         <span style="font-size: 0.95rem; font-weight: 700; color: #f59e0b;">${c.current_uses} / ${c.max_uses}</span>
                     </div>
 
                     <!-- Date Box -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
                         <span style="font-size: 0.85rem; font-weight: 700; color: #3b82f6;">${c.created_at}</span>
                     </div>
 
                     ${!isFinished ? `
                     <!-- Delete Box Action -->
-                    <div onclick="deleteCoupon('${c.code}')" style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s;">
+                    <div onclick="deleteCoupon('${c.code}')" style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;">
                         <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
                         <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Delete Coupon</span>
                     </div>` : `
                     <!-- Deactivated Status Box (v77 Restored) -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); opacity: 0.7;">
                         <i class="fas fa-check-circle" style="color: #64748b; font-size: 0.9rem;"></i>
                         <span style="font-size: 0.8rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Finished / Inactive</span>
                     </div>
