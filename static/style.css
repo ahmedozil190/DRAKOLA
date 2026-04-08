@@ -358,9 +358,7 @@ header h1 {
 }
 
 .finance-action-card:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.02);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -430,9 +428,7 @@ header h1 {
 }
 
 .user-card:hover {
-    background: rgba(10, 11, 20, 0.6);
-    transform: translateY(-2px);
-    border-color: rgba(59, 130, 246, 0.3);
+    transform: scale(1.02);
 }
 
 .user-card:active {
@@ -577,9 +573,7 @@ header h1 {
 }
 
 .settings-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+    transform: scale(1.02);
 }
 
 .settings-item:active {
