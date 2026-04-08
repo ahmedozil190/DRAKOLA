@@ -897,7 +897,7 @@ function renderFinance() {
         html += `
             <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reason</span>
-                <span style="font-size: 0.9rem; font-weight: 500; color: #cbd5e1; text-align: right; max-width: 60%;">${h.description || '-'}</span>
+                <span style="font-size: 0.9rem; font-weight: 600; color: #fbbf24; text-align: right; max-width: 60%;">${h.description || '-'}</span>
             </div>
             <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Type</span>
@@ -905,9 +905,10 @@ function renderFinance() {
             </div>
             <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
-                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">${h.created_at}</span>
+                <span style="font-size: 0.85rem; color: #60a5fa; font-weight: 600;">${h.created_at}</span>
             </div>
             </div>
+
         `;
 
         item.innerHTML = html;
