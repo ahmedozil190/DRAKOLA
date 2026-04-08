@@ -1130,77 +1130,88 @@ async function generateCoupon() {
     }
 }
 
+let currentCouponFilter = 'active';
+
+function setCouponFilter(type) {
+    currentCouponFilter = type;
+    document.getElementById('coupon-tab-active').classList.toggle('active', type === 'active');
+    document.getElementById('coupon-tab-finished').classList.toggle('active', type === 'finished');
+    loadCoupons();
+}
+
 async function loadCoupons() {
     try {
         const res = await fetch('/api/coupons');
         if (!res.ok) return;
         const data = await res.json();
         
-        const activeContainer = document.getElementById('coupons-active-list');
-        const finishedContainer = document.getElementById('coupons-finished-list');
+        const listContainer = document.getElementById('coupons-list-container');
         
         const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
         const finishedCoupons = data.coupons.filter(c => !c.is_active || c.current_uses >= c.max_uses);
         
-        document.getElementById('coupons-active-count').innerText = `${activeCoupons.length} Active`;
-        document.getElementById('coupons-finished-count').innerText = `${finishedCoupons.length} Finished`;
+        document.getElementById('coupons-active-count').innerText = activeCoupons.length;
+        document.getElementById('coupons-finished-count').innerText = finishedCoupons.length;
+
+        const currentList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
 
         function createRow(c, isFinished) {
             const div = document.createElement('div');
-            div.style.padding = '15px';
-            div.style.background = 'rgba(255,255,255,0.02)';
-            div.style.borderRadius = '14px';
+            div.style.padding = '20px';
+            div.style.background = 'rgba(255,255,255,0.01)';
+            div.style.borderRadius = '18px';
             div.style.border = '1px solid rgba(255,255,255,0.05)';
+            div.style.marginBottom = '15px';
             div.style.display = 'flex';
             div.style.flexDirection = 'column';
-            div.style.gap = '8px';
+            div.style.gap = '10px';
             div.style.position = 'relative';
 
             div.innerHTML = `
                 ${!isFinished ? `
-                <div onclick="deleteCoupon('${c.code}')" style="position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.05);">
-                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.8rem;"></i>
+                <div onclick="deleteCoupon('${c.code}')" style="position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; background: rgba(239, 68, 68, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.1);">
+                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
                 </div>` : ''}
 
-                <!-- Coupon Row -->
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Coupon</span>
-                    <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'};">${c.code}</span>
-                </div>
+                <!-- Boxed Info Fields -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Coupon Box -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Coupon</span>
+                        <span style="font-family: monospace; font-size: 1.1rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'};">${c.code}</span>
+                    </div>
 
-                <!-- Points Row -->
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Points</span>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.7rem;"></i> ${c.points}</span>
-                </div>
+                    <!-- Points Box -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Points</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.8rem;"></i> ${c.points} Items</span>
+                    </div>
 
-                <!-- Uses Row -->
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Uses</span>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: ${isFinished ? '#475569' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
-                </div>
+                    <!-- Uses Box -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Uses Left</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#475569' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
+                    </div>
 
-                <!-- Date Row -->
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Date</span>
-                    <span style="font-size: 0.75rem; font-weight: 600; color: #475569;">${c.created_at}</span>
+                    <!-- Date Box -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Date</span>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #475569;">${c.created_at}</span>
+                    </div>
                 </div>
             `;
             return div;
         }
 
-        activeContainer.innerHTML = '';
-        if (activeCoupons.length === 0) {
-            activeContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: #475569; font-size: 0.9rem;">No active coupons.</div>';
+        listContainer.innerHTML = '';
+        if (currentList.length === 0) {
+            listContainer.innerHTML = `
+                <div style="padding: 50px 20px; text-align: center;">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; color: #1e293b; margin-bottom: 15px;"></i>
+                    <p style="color: #64748b; font-size: 0.9rem;">No ${currentCouponFilter} coupons found.</p>
+                </div>`;
         } else {
-            activeCoupons.forEach(c => activeContainer.appendChild(createRow(c, false)));
-        }
-
-        finishedContainer.innerHTML = '';
-        if (finishedCoupons.length === 0) {
-            finishedContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: #475569; font-size: 0.9rem;">No coupon history.</div>';
-        } else {
-            finishedCoupons.forEach(c => finishedContainer.appendChild(createRow(c, true)));
+            currentList.forEach(c => listContainer.appendChild(createRow(c, currentCouponFilter === 'finished')));
         }
 
     } catch (err) {

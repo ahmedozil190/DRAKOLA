@@ -532,28 +532,20 @@
                 </button>
             </div>
 
-            <!-- Split Lists side by side (v72) -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
-                <!-- Active Coupons List -->
-                <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 10px;">
-                        <h3 style="font-size: 1rem; font-weight: 700; color: #eff6ff; margin: 0;">Active</h3>
-                        <span id="coupons-active-count" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; padding: 2px 8px; border-radius: 8px; font-size: 0.65rem; font-weight: 800; border: 1px solid rgba(168, 85, 247, 0.2);">0</span>
-                    </div>
-                    <div id="coupons-active-list" style="display: flex; flex-direction: column; gap: 12px;">
-                        <!-- Cards will be injected here -->
-                    </div>
+            <!-- Unified Coupons Container with Tabs (v73) -->
+            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                <!-- Modern Tabs -->
+                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                    <button class="tab-btn active" id="coupon-tab-active" onclick="setCouponFilter('active')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-bolt"></i> Active <span id="coupons-active-count" style="font-size: 0.7rem; opacity: 0.7;">0</span>
+                    </button>
+                    <button class="tab-btn" id="coupon-tab-finished" onclick="setCouponFilter('finished')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-history"></i> Finished <span id="coupons-finished-count" style="font-size: 0.7rem; opacity: 0.7;">0</span>
+                    </button>
                 </div>
 
-                <!-- Finished Coupons List -->
-                <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 20px; opacity: 0.9;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 10px;">
-                        <h3 style="font-size: 1rem; font-weight: 700; color: #94a3b8; margin: 0;">Finished</h3>
-                        <span id="coupons-finished-count" style="background: rgba(71, 85, 105, 0.15); color: #64748b; padding: 2px 8px; border-radius: 8px; font-size: 0.65rem; font-weight: 800; border: 1px solid rgba(71, 85, 105, 0.2);">0</span>
-                    </div>
-                    <div id="coupons-finished-list" style="display: flex; flex-direction: column; gap: 12px;">
-                        <!-- Cards will be injected here -->
-                    </div>
+                <div id="coupons-list-container">
+                    <!-- Cards will be injected here dynamically -->
                 </div>
             </div>
         </section>
