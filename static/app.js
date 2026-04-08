@@ -691,25 +691,36 @@ async function modalToggleBan() {
         hideLoader();
     }
 }
-// --- Finance Dashboard (v73) ---
+// --- Finance Dashboard (v26) ---
 async function loadFinanceData() {
     showLoader(true);
     try {
         const res = await fetch('/api/finance');
+        if (!res.ok) throw new Error("API error");
         const data = await res.json();
         renderFinance(data);
     } catch (err) {
         console.error("Finance load error:", err);
+        const list = document.getElementById('finance-history-list');
+        if (list) list.innerHTML = `<div style="margin: auto; color: #ef4444; font-size: 0.85rem; text-align: center; padding: 20px;">Failed to load data. Please refresh.</div>`;
     } finally {
         hideLoader();
     }
 }
 
 function renderFinance(data) {
-    // Render Stats
-    document.getElementById('finance-total-revenue').innerText = `$${parseFloat(data.stats.total_revenue).toLocaleString()}`;
-    document.getElementById('finance-total-sales').innerText = data.stats.total_sales;
-    document.getElementById('finance-total-expenses').innerText = `$${parseFloat(data.stats.total_expenses).toLocaleString()}`;
+    if (!data) return;
+
+    // Defensive Stats Rendering
+    const stats = data.stats || {};
+    const safeSetText = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = text;
+    };
+
+    safeSetText('finance-total-revenue', `$${parseFloat(stats.total_revenue || 0).toLocaleString()}`);
+    safeSetText('finance-total-sales', stats.total_sales || 0);
+    safeSetText('finance-total-expenses', `$${parseFloat(stats.total_expenses || 0).toLocaleString()}`);
 
     // Render History
     const list = document.getElementById('finance-history-list');
@@ -718,7 +729,7 @@ function renderFinance(data) {
     
     if (!data.history || data.history.length === 0) {
         list.innerHTML = `
-            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; text-align: center; padding: 20px;">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; text-align: center; padding: 20px;">
                 <i class="fas fa-receipt" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.3;"></i>
                 <div style="font-size: 1.1rem; font-weight: 700; color: #94a3b8;">No transactions found</div>
                 <div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">Record your sales and expenses to see them here.</div>
