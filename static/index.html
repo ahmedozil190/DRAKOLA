@@ -258,17 +258,18 @@
                     <span class="card-value" id="finance-total-revenue"
                         style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
                 </div>
-                <div class="card finance-stat-card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Sales</span>
-                    <span class="card-value" id="finance-total-sales"
-                        style="font-size: 1.3rem; color: #a855f7; font-weight: 800;">0</span>
-                </div>
+                <!-- Expenses moved to 2nd position v92 -->
                 <div class="card finance-stat-card"
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
                     <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Expenses</span>
                     <span class="card-value" id="finance-total-expenses"
                         style="font-size: 1.3rem; color: #ef4444; font-weight: 800;">$0.00</span>
+                </div>
+                <div class="card finance-stat-card"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Sales</span>
+                    <span class="card-value" id="finance-total-sales"
+                        style="font-size: 1.3rem; color: #a855f7; font-weight: 800;">0</span>
                 </div>
             </div>
 
@@ -818,6 +819,30 @@
                 <button onclick="submitExpense()"
                     style="width: 100%; background: linear-gradient(135deg, #ef4444, #991b1b); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(239,68,68,0.2);">
                     Save Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal (v93) -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="manage-card" style="text-align: center; border-color: rgba(245, 158, 11, 0.2);">
+            <div class="success-icon-wrap" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirm-title" style="margin-bottom: 10px; font-weight: 800; color: #fff;">Confirm Action</h3>
+            <p id="confirm-msg" style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; padding: 0 10px;">
+                Are you sure you want to perform this action?
+            </p>
+            
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeConfirmPopup(false)" 
+                        style="flex: 1; padding: 14px; background: rgba(255,255,255,0.05); color: #94a3b8; border: none; border-radius: 14px; font-weight: 700; cursor: pointer;">
+                    Cancel
+                </button>
+                <button id="confirm-yes-btn" 
+                        style="flex: 1; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);">
+                    Confirm
                 </button>
             </div>
         </div>

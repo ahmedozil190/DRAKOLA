@@ -385,14 +385,20 @@ async function addNewChannel() {
 }
 
 async function deleteChannel(id) {
-    if (confirm("Delete this channel?")) {
-        await fetch('/api/channels/delete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-        });
-        loadInitialData();
-    }
+    showConfirmPopup(
+        "حذف القناة الإجبارية",
+        `هل أنت متأكد من حذف القناة (${id})؟ سيتمكن المستخدمون من استخدام البوت بدون الاشتراك فيها.`,
+        async () => {
+            tg.HapticFeedback.impactOccurred('light');
+            await fetch('/api/channels/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            loadInitialData();
+            showSuccessPopup("تم الحذف", "تمت إزالة القناة من قائمة الاشتراك الإجباري.");
+        }
+    );
 }
 
 let allUsers = [];
@@ -531,8 +537,11 @@ function renderUsers(users) {
 
     if (users.length === 0) {
         list.innerHTML = `
-            <div style="padding: 45px 20px 30px 20px; text-align: center; color: #94a3b8; font-size: 0.9rem; font-weight: 500; font-style: italic;">
-                No users found.
+            <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
+                <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">🔍</div>
+                <b>لا يوجد مستخدمين حالياً!</b><br>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• يبدو أن القائمة فارغة أو لا توجد نتائج للبحث.</p>
+                <p style="font-size: 0.85rem; opacity: 0.8;">• تأكد من صحة الفلتر أو كلمة البحث.</p>
             </div>
         `;
         return;
@@ -686,6 +695,30 @@ function showErrorPopup(title, message = "") {
 function closeErrorPopup() {
     tg.HapticFeedback.impactOccurred('light');
     document.getElementById('error-modal').classList.remove('active');
+}
+
+// ========== Custom Confirmation Modal Logic (v93) ==========
+let onConfirmAction = null;
+
+function showConfirmPopup(title, message, onConfirm) {
+    document.getElementById('confirm-title').innerText = title;
+    document.getElementById('confirm-msg').innerText = message;
+    onConfirmAction = onConfirm;
+    
+    const confirmBtn = document.getElementById('confirm-yes-btn');
+    confirmBtn.onclick = () => {
+        if (onConfirmAction) onConfirmAction();
+        closeConfirmPopup(true);
+    };
+    
+    document.getElementById('confirm-modal').classList.add('active');
+    tg.HapticFeedback.notificationOccurred('warning');
+}
+
+function closeConfirmPopup(confirmed = false) {
+    if (!confirmed) tg.HapticFeedback.impactOccurred('light');
+    document.getElementById('confirm-modal').classList.remove('active');
+    onConfirmAction = null;
 }
 
 // ========== Inline Error Logic (v55) ==========
@@ -1281,26 +1314,28 @@ function nextCouponsPage() {
 
 
 async function deleteCoupon(code) {
-    tg.showConfirm(`Are you sure you want to delete coupon: ${code}?`, async (ok) => {
-        if (!ok) return;
+    showConfirmPopup(
+        "حذف الكوبون", 
+        `هل أنت متأكد من حذف هذا الكوبون (${code})؟ \n لا يمكن التراجع عن هذا الإجراء.`,
+        async () => {
+            tg.HapticFeedback.impactOccurred('light');
+            showLoader(true);
 
-        tg.HapticFeedback.impactOccurred('light');
-        showLoader(true);
-
-        try {
-            const res = await fetch('/api/coupons/delete', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code })
-            });
-            if (res.ok) {
-                showSuccessPopup("Deleted", "The coupon has been permanently deactivated.");
-                loadCoupons();
+            try {
+                const res = await fetch('/api/coupons/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
+                if (res.ok) {
+                    showSuccessPopup("تم الحذف بنجاح", "تم تعطيل الكوبون وإزالته من القروض النشطة.");
+                    loadCoupons();
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                hideLoader();
             }
-        } catch (err) {
-            console.error(err);
-        } finally {
-            hideLoader();
         }
-    });
+    );
 }

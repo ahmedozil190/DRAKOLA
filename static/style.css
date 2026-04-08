@@ -425,6 +425,7 @@ header h1 {
     margin-bottom: 0px;
     position: relative;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .user-card:hover {
