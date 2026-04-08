@@ -155,7 +155,10 @@ async def add_finance_record(request):
         return web.json_response({"status": "ok"})
 
 async def handle_index(request):
-    return web.FileResponse(os.path.join(STATIC_DIR, "index.html"))
+    path = os.path.join(STATIC_DIR, "index.html")
+    size = os.path.getsize(path) if os.path.exists(path) else -1
+    logging.info(f"Serve Request: {path} (Size: {size} bytes)")
+    return web.FileResponse(path)
 
 def setup_web_app(bot):
     app = web.Application()
