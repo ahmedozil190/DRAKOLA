@@ -593,17 +593,11 @@
 
     <!-- Modal: Add Sale (v36) -->
     <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
-        <div id="sale-modal-body" onclick="event.stopPropagation()"
-            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(34,197,94,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('sale-alert').style.display='none'">
-            <style>
-                #sale-modal-body::-webkit-scrollbar { width: 6px; }
-                #sale-modal-body::-webkit-scrollbar-track { background: transparent; }
-                #sale-modal-body::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.5); border-radius: 4px; }
-                #sale-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(34,197,94,0.8); }
-            </style>
+        <div id="sale-modal-wrapper" onclick="event.stopPropagation()"
+            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(34,197,94,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('sale-alert').style.display='none'">
             <!-- Header -->
             <div
-                style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(34,197,94,0.1);">
+                style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(34,197,94,0.1); flex-shrink: 0;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div
@@ -623,7 +617,13 @@
                 </div>
             </div>
             <!-- Body -->
-            <div style="padding: 24px;">
+            <div id="sale-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
+                <style>
+                    #sale-modal-body::-webkit-scrollbar { width: 6px; }
+                    #sale-modal-body::-webkit-scrollbar-track { background: transparent; }
+                    #sale-modal-body::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.5); border-radius: 4px; }
+                    #sale-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(34,197,94,0.8); }
+                </style>
                 <div id="sale-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
                 <div style="margin-bottom: 16px;">
                     <label
@@ -656,18 +656,19 @@
                 <div style="margin-bottom: 24px;">
                     <label
                         style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
-                    <style>
-                        /* Target the options inside the select */
-                        #sale-note option {
-                            background-color: #0f172a;
-                            color: #fff;
-                        }
-                    </style>
-                    <select id="sale-note" onchange="document.getElementById('sale-other-container').style.display = this.value === 'Other' ? 'block' : 'none'; document.getElementById('sale-alert').style.display='none';"
-                        style="width: 100%; background-color: rgba(255,255,255,0.04); background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 14px top 50%; background-size: 10px auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box; appearance: none; cursor: pointer; margin-bottom: 8px;">
-                        <option value="New Deposit">New Deposit</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <div id="sale-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
+                        <input type="hidden" id="sale-note" value="New Deposit">
+                        <div onclick="toggleSaleDropdown()" id="sale-dropdown-header"
+                             style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
+                            <span id="sale-dropdown-selected">New Deposit</span>
+                            <i class="fas fa-chevron-down" id="sale-dropdown-icon" style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </div>
+                        <div id="sale-dropdown-list"
+                             style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
+                            <div onclick="selectSaleOption('New Deposit')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">New Deposit</div>
+                            <div onclick="selectSaleOption('Other')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other</div>
+                        </div>
+                    </div>
                     <div id="sale-other-container" style="display: none;">
                         <input type="text" id="sale-note-other" placeholder="Specify reason"
                             style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
@@ -683,17 +684,11 @@
 
     <!-- Modal: Add Expense (v36) -->
     <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
-        <div id="expense-modal-body" onclick="event.stopPropagation()"
-            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(239,68,68,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('expense-alert').style.display='none'">
-            <style>
-                #expense-modal-body::-webkit-scrollbar { width: 6px; }
-                #expense-modal-body::-webkit-scrollbar-track { background: transparent; }
-                #expense-modal-body::-webkit-scrollbar-thumb { background: rgba(239,68,68,0.5); border-radius: 4px; }
-                #expense-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(239,68,68,0.8); }
-            </style>
+        <div id="expense-modal-wrapper" onclick="event.stopPropagation()"
+            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(239,68,68,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('expense-alert').style.display='none'">
             <!-- Header -->
             <div
-                style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(185,28,28,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(239,68,68,0.1);">
+                style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(185,28,28,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(239,68,68,0.1); flex-shrink: 0;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div
@@ -712,7 +707,13 @@
                 </div>
             </div>
             <!-- Body -->
-            <div style="padding: 24px;">
+            <div id="expense-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
+                <style>
+                    #expense-modal-body::-webkit-scrollbar { width: 6px; }
+                    #expense-modal-body::-webkit-scrollbar-track { background: transparent; }
+                    #expense-modal-body::-webkit-scrollbar-thumb { background: rgba(239,68,68,0.5); border-radius: 4px; }
+                    #expense-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(239,68,68,0.8); }
+                </style>
                 <div id="expense-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
                 <div style="margin-bottom: 16px;">
                     <label
@@ -727,19 +728,20 @@
                 <div style="margin-bottom: 24px;">
                     <label
                         style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
-                    <style>
-                        /* Target the options inside the select */
-                        #expense-note option {
-                            background-color: #0f172a;
-                            color: #fff;
-                        }
-                    </style>
-                    <select id="expense-note" onchange="document.getElementById('expense-other-container').style.display = this.value === 'Other' ? 'block' : 'none'; document.getElementById('expense-alert').style.display='none';"
-                        style="width: 100%; background-color: rgba(255,255,255,0.04); background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 14px top 50%; background-size: 10px auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box; appearance: none; cursor: pointer; margin-bottom: 8px;">
-                        <option value="Prize">Prize</option>
-                        <option value="Hosting">Hosting</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <div id="expense-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
+                        <input type="hidden" id="expense-note" value="Prize">
+                        <div onclick="toggleExpenseDropdown()" id="expense-dropdown-header"
+                             style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
+                            <span id="expense-dropdown-selected">Prize</span>
+                            <i class="fas fa-chevron-down" id="expense-dropdown-icon" style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </div>
+                        <div id="expense-dropdown-list"
+                             style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
+                            <div onclick="selectExpenseOption('Prize')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">Prize</div>
+                            <div onclick="selectExpenseOption('Hosting')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">Hosting</div>
+                            <div onclick="selectExpenseOption('Other')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other</div>
+                        </div>
+                    </div>
                     <div id="expense-other-container" style="display: none;">
                         <input type="text" id="expense-note-other" placeholder="Specify reason"
                             style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">

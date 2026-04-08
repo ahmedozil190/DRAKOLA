@@ -985,7 +985,8 @@ async function submitSale() {
             document.getElementById('sale-amount').value = '';
             document.getElementById('sale-points').value = '';
             document.getElementById('sale-user-id').value = '';
-            document.getElementById('sale-note').selectedIndex = 0;
+            document.getElementById('sale-note').value = 'New Deposit';
+            document.getElementById('sale-dropdown-selected').innerText = 'New Deposit';
             document.getElementById('sale-note-other').value = '';
             document.getElementById('sale-other-container').style.display = 'none';
         }
@@ -1034,11 +1035,53 @@ async function submitExpense() {
 
             // Clear inputs
             document.getElementById('expense-amount').value = '';
-            document.getElementById('expense-note').selectedIndex = 0;
+            document.getElementById('expense-note').value = 'Prize';
+            document.getElementById('expense-dropdown-selected').innerText = 'Prize';
             document.getElementById('expense-note-other').value = '';
             document.getElementById('expense-other-container').style.display = 'none';
         }
     } catch (err) {
         console.error("Expense submission error:", err);
     }
+}
+
+// Custom Dropdown Logic for Finance Modals (v67)
+function toggleSaleDropdown() {
+    const list = document.getElementById('sale-dropdown-list');
+    const icon = document.getElementById('sale-dropdown-icon');
+    if (list.style.display === 'none') {
+        list.style.display = 'flex';
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        list.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function selectSaleOption(value) {
+    document.getElementById('sale-note').value = value;
+    document.getElementById('sale-dropdown-selected').innerText = value;
+    document.getElementById('sale-other-container').style.display = (value === 'Other') ? 'block' : 'none';
+    document.getElementById('sale-alert').style.display = 'none';
+    toggleSaleDropdown();
+}
+
+function toggleExpenseDropdown() {
+    const list = document.getElementById('expense-dropdown-list');
+    const icon = document.getElementById('expense-dropdown-icon');
+    if (list.style.display === 'none') {
+        list.style.display = 'flex';
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        list.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function selectExpenseOption(value) {
+    document.getElementById('expense-note').value = value;
+    document.getElementById('expense-dropdown-selected').innerText = value;
+    document.getElementById('expense-other-container').style.display = (value === 'Other') ? 'block' : 'none';
+    document.getElementById('expense-alert').style.display = 'none';
+    toggleExpenseDropdown();
 }
