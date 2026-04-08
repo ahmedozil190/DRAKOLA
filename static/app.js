@@ -1,6 +1,9 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
+// Diagnostic Alert (v28)
+alert("Finance Script v28 Initialized");
+
 // DOM Elements
 const loader = document.getElementById('loader');
 const sideMenu = document.getElementById('side-menu');
@@ -719,7 +722,11 @@ async function loadFinanceData() {
     showLoader(true);
     try {
         const res = await fetch('/api/finance');
-        if (!res.ok) throw new Error("API error");
+        if (!res.ok) {
+            const errText = await res.text();
+            alert(`API Error ${res.status}: ${errText.substring(0, 50)}`);
+            throw new Error("API error");
+        }
         const data = await res.json();
         renderFinance(data);
     } catch (err) {
