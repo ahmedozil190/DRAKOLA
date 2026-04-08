@@ -98,3 +98,14 @@ class FinancialRecord(Base):
     description = Column(String, nullable=True)
     record_type = Column(String, default="sale") # 'sale' or 'expense'
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class Coupon(Base):
+    __tablename__ = "coupons"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    code = Column(String, unique=True, index=True)
+    points = Column(Integer, default=0)
+    max_uses = Column(Integer, default=1)
+    current_uses = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    is_active = Column(Boolean, default=True)

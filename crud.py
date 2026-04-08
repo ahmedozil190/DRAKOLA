@@ -1,6 +1,6 @@
 from sqlalchemy import select, update, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import User, Order, Subscription, MandatoryChannel, GlobalSettings
+from models import User, Order, Subscription, MandatoryChannel, GlobalSettings, FinancialRecord, Coupon
 
 async def get_user(session: AsyncSession, user_id: int):
     result = await session.execute(select(User).where(User.user_id == user_id))
@@ -187,3 +187,25 @@ async def get_financial_stats(session: AsyncSession):
         "total_expenses": total_expenses,
         "total_sales": total_sales
     }
+
+# --- Coupons ---
+async def create_coupon(session: AsyncSession, code: str, points: int, max_uses: int):
+    coupon = Coupon(code=code, points=points, max_uses=max_uses)
+    session.add(coupon)
+    await session.commit()
+    return coupon
+
+async def get_active_coupons(session: AsyncSession):
+    result = await session.execute(
+        select(Coupon).where(Coupon.is_active == True).order_by(Coupon.id.desc())
+    )
+    return result.scalars().all()
+
+async def delete_coupon(session: AsyncSession, code: str):
+    result = await session.execute(select(Coupon).where(Coupon.code == code))
+    coupon = result.scalar_one_or_none()
+    if coupon:
+        coupon.is_active = False
+        await session.commit()
+        return True
+    return False

@@ -130,6 +130,8 @@ function switchNav(viewId) {
         loadUsers();
     } else if (viewId === 'finance') {
         loadFinanceData();
+    } else if (viewId === 'coupons') {
+        loadCoupons();
     }
 
     // Update UI Active States
@@ -1087,7 +1089,7 @@ function selectExpenseOption(value) {
     toggleExpenseDropdown();
 }
 
-// Coupons Logic (v68 Placeholder)
+// Coupons Logic (v69 Backend Integration)
 async function generateCoupon() {
     const points = document.getElementById('coupon-points').value;
     const uses = document.getElementById('coupon-uses').value;
@@ -1099,16 +1101,101 @@ async function generateCoupon() {
     }
 
     tg.HapticFeedback.impactOccurred('medium');
-    
-    // Simulate API Call
     showLoader(true);
-    setTimeout(() => {
-        hideLoader();
-        showSuccessPopup("Coupon Created", `Your coupon code has been generated and is ready to use.`);
+    
+    try {
+        const res = await fetch('/api/coupons/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ points, uses, code })
+        });
         
-        // Reset inputs
-        document.getElementById('coupon-points').value = '';
-        document.getElementById('coupon-uses').value = '';
-        document.getElementById('coupon-code').value = '';
-    }, 800);
+        if (res.ok) {
+            const data = await res.json();
+            showSuccessPopup("Coupon Created", `Your coupon code (${data.code}) has been generated and is ready to use.`);
+            
+            // Reset inputs
+            document.getElementById('coupon-points').value = '';
+            document.getElementById('coupon-uses').value = '';
+            document.getElementById('coupon-code').value = '';
+            
+            loadCoupons();
+        } else {
+            showErrorPopup("Error", "Failed to create coupon. Code might already exist.");
+        }
+    } catch (err) {
+        showErrorPopup("Network Error", "Could not connect to server.");
+    } finally {
+        hideLoader();
+    }
+}
+
+async function loadCoupons() {
+    try {
+        const res = await fetch('/api/coupons');
+        if (!res.ok) return;
+        const data = await res.json();
+        const listContainer = document.getElementById('coupons-list');
+        
+        if (!data.coupons || data.coupons.length === 0) {
+            listContainer.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px;">
+                    <i class="fas fa-ticket-alt" style="font-size: 2.5rem; color: #475569; margin-bottom: 15px;"></i>
+                    <h4 style="color: #94a3b8; margin: 0; font-weight: 600;">No active coupons</h4>
+                    <p style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">Create a points coupon above to see it here.</p>
+                </div>`;
+            return;
+        }
+
+        listContainer.innerHTML = '';
+        data.coupons.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.padding = '15px 20px';
+            div.style.marginBottom = '12px';
+            div.style.flexDirection = 'row';
+            div.style.minHeight = 'auto';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'space-between';
+            div.innerHTML = `
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                        <span style="font-family: monospace; font-size: 1.1rem; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 6px;">${c.code}</span>
+                        <span style="font-size: 0.8rem; background: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 2px 6px; border-radius: 4px; font-weight: 600;"><i class="fas fa-star" style="font-size:0.7rem;"></i> ${c.points}</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">
+                        Uses: <span style="color: #e2e8f0; font-weight: 600;">${c.current_uses} / ${c.max_uses}</span> &nbsp;&bull;&nbsp; Created: ${c.created_at}
+                    </div>
+                </div>
+                <div onclick="deleteCoupon('${c.code}')" style="width: 35px; height: 35px; background: rgba(239, 68, 68, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
+                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+    } catch (err) {
+        console.error("Load coupons error:", err);
+    }
+}
+
+async function deleteCoupon(code) {
+    if(!confirm("Are you sure you want to delete coupon: " + code + "?")) return;
+    tg.HapticFeedback.impactOccurred('light');
+    showLoader(true);
+    
+    try {
+        const res = await fetch('/api/coupons/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code })
+        });
+        if (res.ok) {
+            showSuccessPopup("Deleted", "The coupon has been permanently deactivated.");
+            loadCoupons();
+        }
+    } catch (err) {
+        console.error(err);
+    } finally {
+        hideLoader();
+    }
 }

@@ -164,6 +164,43 @@ async def add_finance_record(request):
         )
         return web.json_response({"status": "ok"})
 
+async def get_coupons_data(request):
+    async for session in get_session():
+        coupons = await crud.get_active_coupons(session)
+        return web.json_response({
+            "coupons": [
+                {
+                    "code": str(c.code),
+                    "points": c.points,
+                    "max_uses": c.max_uses,
+                    "current_uses": c.current_uses,
+                    "created_at": c.created_at.strftime("%Y-%m-%d")
+                } for c in coupons
+            ]
+        })
+
+async def add_coupon_api(request):
+    data = await request.json()
+    points = int(data.get('points', 0))
+    uses = int(data.get('uses', 1))
+    code = data.get('code', '').strip()
+    
+    if not code:
+        import string
+        import random
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+        
+    async for session in get_session():
+        await crud.create_coupon(session, code=code, points=points, max_uses=uses)
+        return web.json_response({"status": "ok", "code": code})
+
+async def delete_coupon_api(request):
+    data = await request.json()
+    code = data.get('code')
+    async for session in get_session():
+        success = await crud.delete_coupon(session, code)
+        return web.json_response({"status": "ok", "deleted": success})
+
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
     try:
@@ -212,6 +249,11 @@ def setup_web_app(bot):
     # Finance API (v73)
     app.router.add_get('/api/finance', get_finance_data)
     app.router.add_post('/api/finance/add', add_finance_record)
+    
+    # Coupons API
+    app.router.add_get('/api/coupons', get_coupons_data)
+    app.router.add_post('/api/coupons/add', add_coupon_api)
+    app.router.add_post('/api/coupons/delete', delete_coupon_api)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')
