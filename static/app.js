@@ -1,4 +1,4 @@
-// v39 - Global UI Consistency (Broadcast & Channels)
+// v40 - Global UI Unification (Home & Settings)
 const tg = window.Telegram.WebApp;
 tg.expand();
 
