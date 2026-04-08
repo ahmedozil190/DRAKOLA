@@ -121,7 +121,8 @@ function switchNav(viewId) {
         'channels': 'Channels',
         'users': 'User Management',
         'broadcast': 'Broadcast',
-        'finance': 'Finance'
+        'finance': 'Finance',
+        'coupons': 'Points Coupons'
     };
     pageTitle.innerText = titles[viewId];
 
@@ -1084,4 +1085,30 @@ function selectExpenseOption(value) {
     document.getElementById('expense-other-container').style.display = (value === 'Other') ? 'block' : 'none';
     document.getElementById('expense-alert').style.display = 'none';
     toggleExpenseDropdown();
+}
+
+// Coupons Logic (v68 Placeholder)
+async function generateCoupon() {
+    const points = document.getElementById('coupon-points').value;
+    const uses = document.getElementById('coupon-uses').value;
+    const code = document.getElementById('coupon-code').value;
+
+    if (!points || !uses) {
+        showErrorPopup("Missing Fields", "Please enter points value and max uses.");
+        return;
+    }
+
+    tg.HapticFeedback.impactOccurred('medium');
+    
+    // Simulate API Call
+    showLoader(true);
+    setTimeout(() => {
+        hideLoader();
+        showSuccessPopup("Coupon Created", `Your coupon code has been generated and is ready to use.`);
+        
+        // Reset inputs
+        document.getElementById('coupon-points').value = '';
+        document.getElementById('coupon-uses').value = '';
+        document.getElementById('coupon-code').value = '';
+    }, 800);
 }
