@@ -777,13 +777,19 @@ async function modalToggleBan() {
     }
 }
 // --- Finance Dashboard (v26) ---
+// v59: Finance Pagination State
+let financeDataCache = null;
+let currentFinancePage = 1;
+const financePerPage = 5;
+
 async function loadFinanceData() {
     showLoader(true);
     try {
         const res = await fetch('/api/finance');
         if (!res.ok) throw new Error("API error");
-        const data = await res.json();
-        renderFinance(data);
+        financeDataCache = await res.json();
+        currentFinancePage = 1;
+        renderFinance();
     } catch (err) {
         console.error("Finance load error:", err);
         const list = document.getElementById('finance-history-list');
@@ -793,8 +799,9 @@ async function loadFinanceData() {
     }
 }
 
-function renderFinance(data) {
-    if (!data) return;
+function renderFinance() {
+    if (!financeDataCache) return;
+    const data = financeDataCache;
 
     // Defensive Stats Rendering
     const stats = data.stats || {};
@@ -820,12 +827,43 @@ function renderFinance(data) {
                 <div style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">Record your sales and expenses to see them here.</div>
             </div>
         `;
+        document.getElementById('finance-pagination-container').style.display = 'none';
         return;
     }
 
-    data.history.forEach(h => {
+    // Pagination Logic (v59)
+    const totalTransactions = data.history.length;
+    const totalPages = Math.ceil(totalTransactions / financePerPage);
+    if (currentFinancePage > totalPages && totalPages > 0) currentFinancePage = totalPages;
+
+    const start = (currentFinancePage - 1) * financePerPage;
+    const end = start + financePerPage;
+    const pagedHistory = data.history.slice(start, end);
+
+    // UI Pagination Updates
+    const paginationContainer = document.getElementById('finance-pagination-container');
+    const prevBtn = document.getElementById('finance-prev-btn');
+    const nextBtn = document.getElementById('finance-next-btn');
+    const pageInfo = document.getElementById('finance-page-info');
+
+    if (totalTransactions > financePerPage) {
+        paginationContainer.style.display = 'flex';
+        pageInfo.innerText = `Page ${currentFinancePage} of ${totalPages || 1}`;
+
+        prevBtn.style.opacity = currentFinancePage === 1 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = currentFinancePage === 1 ? 'none' : 'auto';
+
+        nextBtn.style.opacity = (currentFinancePage === totalPages || totalPages === 0) ? '0.3' : '1';
+        nextBtn.style.pointerEvents = (currentFinancePage === totalPages || totalPages === 0) ? 'none' : 'auto';
+    } else {
+        paginationContainer.style.display = 'none';
+    }
+
+    pagedHistory.forEach((h, index) => {
         const item = document.createElement('div');
         const isExpense = h.record_type === 'expense';
+        item.className = 'user-card'; // v59 Match User Cards
+        item.style.cursor = 'default';
         item.style.marginBottom = '25px';
         item.style.textAlign = 'left';
 
@@ -834,39 +872,66 @@ function renderFinance(data) {
         const typeStr = isExpense ? 'Expense' : 'Sale';
 
         let html = `
-            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.02);">
-                <span style="font-size: 0.8rem; color: #94a3b8;">Amount</span>
+            <div class="user-card-index">${start + index + 1}</div>
+            <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
+        `;
+
+        html += `
+            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Amount</span>
                 <span style="font-size: 1.1rem; font-weight: 800; color: ${amountColor};">${amountPrefix}$${parseFloat(h.amount_usd).toLocaleString()}</span>
             </div>
         `;
 
         if (!isExpense && h.user_id) {
             html += `
-            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
-                <span style="font-size: 0.8rem; color: #94a3b8;">User ID</span>
+            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">User ID</span>
                 <span style="font-size: 0.9rem; font-weight: 600; color: #f59e0b; font-family: monospace;">${h.user_id}</span>
             </div>
             `;
         }
 
         html += `
-            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
-                <span style="font-size: 0.8rem; color: #94a3b8;">Reason</span>
+            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reason</span>
                 <span style="font-size: 0.9rem; font-weight: 500; color: #cbd5e1; text-align: right; max-width: 60%;">${h.description || '-'}</span>
             </div>
-            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
-                <span style="font-size: 0.8rem; color: #94a3b8;">Type</span>
-                <span style="font-size: 0.9rem; font-weight: 600; color: ${isExpense ? '#ef4444' : '#60a5fa'};">${typeStr}</span>
+            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Type</span>
+                <span style="font-size: 0.9rem; font-weight: 800; color: ${isExpense ? '#ef4444' : '#60a5fa'}; text-transform: uppercase;">${typeStr}</span>
             </div>
-            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02);">
-                <span style="font-size: 0.8rem; color: #94a3b8;">Date</span>
-                <span style="font-size: 0.85rem; color: #94a3b8;">${h.created_at}</span>
+            <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
+                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">${h.created_at}</span>
+            </div>
             </div>
         `;
 
         item.innerHTML = html;
         list.appendChild(item);
     });
+}
+
+// Finance Pagination Helpers v59
+function prevFinancePage() {
+    if (currentFinancePage > 1) {
+        currentFinancePage--;
+        tg.HapticFeedback.impactOccurred('light');
+        renderFinance();
+        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+    }
+}
+
+function nextFinancePage() {
+    if (!financeDataCache) return;
+    const totalPages = Math.ceil(financeDataCache.history.length / financePerPage);
+    if (currentFinancePage < totalPages) {
+        currentFinancePage++;
+        tg.HapticFeedback.impactOccurred('light');
+        renderFinance();
+        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+    }
 }
 
 // Modal control functions moved to top (v27)
