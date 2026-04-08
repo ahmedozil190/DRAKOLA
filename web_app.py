@@ -166,7 +166,7 @@ async def add_finance_record(request):
 
 async def get_coupons_data(request):
     async for session in get_session():
-        coupons = await crud.get_active_coupons(session)
+        coupons = await crud.get_all_coupons(session)
         return web.json_response({
             "coupons": [
                 {
@@ -174,6 +174,7 @@ async def get_coupons_data(request):
                     "points": c.points,
                     "max_uses": c.max_uses,
                     "current_uses": c.current_uses,
+                    "is_active": c.is_active,
                     "created_at": c.created_at.strftime("%Y-%m-%d")
                 } for c in coupons
             ]

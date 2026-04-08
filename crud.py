@@ -195,9 +195,9 @@ async def create_coupon(session: AsyncSession, code: str, points: int, max_uses:
     await session.commit()
     return coupon
 
-async def get_active_coupons(session: AsyncSession):
+async def get_all_coupons(session: AsyncSession):
     result = await session.execute(
-        select(Coupon).where(Coupon.is_active == True).order_by(Coupon.id.desc())
+        select(Coupon).order_by(Coupon.id.desc())
     )
     return result.scalars().all()
 

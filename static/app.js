@@ -1135,44 +1135,71 @@ async function loadCoupons() {
         const res = await fetch('/api/coupons');
         if (!res.ok) return;
         const data = await res.json();
-        const listContainer = document.getElementById('coupons-list');
         
-        if (!data.coupons || data.coupons.length === 0) {
-            listContainer.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px;">
-                    <i class="fas fa-ticket-alt" style="font-size: 2.5rem; color: #475569; margin-bottom: 15px;"></i>
-                    <h4 style="color: #94a3b8; margin: 0; font-weight: 600;">No active coupons</h4>
-                    <p style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">Create a points coupon above to see it here.</p>
-                </div>`;
-            return;
-        }
+        const activeContainer = document.getElementById('coupons-active-list');
+        const finishedContainer = document.getElementById('coupons-finished-list');
+        
+        const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
+        const finishedCoupons = data.coupons.filter(c => !c.is_active || c.current_uses >= c.max_uses);
+        
+        document.getElementById('coupons-active-count').innerText = `${activeCoupons.length} Active`;
+        document.getElementById('coupons-finished-count').innerText = `${finishedCoupons.length} Finished`;
 
-        listContainer.innerHTML = '';
-        data.coupons.forEach(c => {
+        function createRow(c, isFinished) {
             const div = document.createElement('div');
-            div.className = 'card';
-            div.style.padding = '15px 20px';
-            div.style.marginBottom = '12px';
-            div.style.flexDirection = 'row';
-            div.style.minHeight = 'auto';
-            div.style.alignItems = 'center';
-            div.style.justifyContent = 'space-between';
+            div.style.padding = '18px 5px';
+            div.style.borderBottom = '1px solid rgba(255, 255, 255, 0.03)';
+            div.style.display = 'flex';
+            div.style.flexDirection = 'column';
+            div.style.gap = '12px';
+
             div.innerHTML = `
-                <div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                        <span style="font-family: monospace; font-size: 1.1rem; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 6px;">${c.code}</span>
-                        <span style="font-size: 0.8rem; background: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 2px 6px; border-radius: 4px; font-weight: 600;"><i class="fas fa-star" style="font-size:0.7rem;"></i> ${c.points}</span>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 0.65rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Coupon Code</span>
+                        <span style="font-family: monospace; font-size: 1.15rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'}; letter-spacing: 1px;">${c.code}</span>
                     </div>
-                    <div style="font-size: 0.75rem; color: #94a3b8;">
-                        Uses: <span style="color: #e2e8f0; font-weight: 600;">${c.current_uses} / ${c.max_uses}</span> &nbsp;&bull;&nbsp; Created: ${c.created_at}
-                    </div>
+                    ${!isFinished ? `
+                    <div onclick="deleteCoupon('${c.code}')" style="width: 38px; height: 38px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(239, 68, 68, 0.1);">
+                        <i class="fas fa-trash" style="color: #ef4444; font-size: 0.95rem;"></i>
+                    </div>` : `
+                    <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">
+                        Deactivated
+                    </div>`}
                 </div>
-                <div onclick="deleteCoupon('${c.code}')" style="width: 35px; height: 35px; background: rgba(239, 68, 68, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
-                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.9rem;"></i>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Points</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.75rem;"></i> ${c.points}</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Uses</span>
+                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Date</span>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">${c.created_at}</span>
+                    </div>
                 </div>
             `;
-            listContainer.appendChild(div);
-        });
+            return div;
+        }
+
+        activeContainer.innerHTML = '';
+        if (activeCoupons.length === 0) {
+            activeContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: #475569; font-size: 0.9rem;">No active coupons.</div>';
+        } else {
+            activeCoupons.forEach(c => activeContainer.appendChild(createRow(c, false)));
+        }
+
+        finishedContainer.innerHTML = '';
+        if (finishedCoupons.length === 0) {
+            finishedContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: #475569; font-size: 0.9rem;">No coupon history.</div>';
+        } else {
+            finishedCoupons.forEach(c => finishedContainer.appendChild(createRow(c, true)));
+        }
+
     } catch (err) {
         console.error("Load coupons error:", err);
     }

@@ -533,13 +533,24 @@
             </div>
 
             <!-- Active Coupons List -->
-            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 15px; margin-top: 10px; color: #fff;">Active Coupons</h3>
-            <div id="coupons-list">
-                <!-- Example Empty State -->
-                <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px;">
-                    <i class="fas fa-ticket-alt" style="font-size: 2.5rem; color: #475569; margin-bottom: 15px;"></i>
-                    <h4 style="color: #94a3b8; margin: 0; font-weight: 600;">No active coupons</h4>
-                    <p style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">Create a points coupon above to see it here.</p>
+            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 5px 15px 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 5px;">
+                    <h3 style="font-size: 1.2rem; font-weight: 700; color: #eff6ff;">Active Coupons</h3>
+                    <span id="coupons-active-count" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(168, 85, 247, 0.2);">0 Active</span>
+                </div>
+                <div id="coupons-active-list">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
+
+            <!-- Finished Coupons List -->
+            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px; opacity: 0.8;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 5px 15px 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 5px;">
+                    <h3 style="font-size: 1.2rem; font-weight: 700; color: #94a3b8;">Finished Coupons</h3>
+                    <span id="coupons-finished-count" style="background: rgba(71, 85, 105, 0.15); color: #64748b; padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(71, 85, 105, 0.2);">0 Finished</span>
+                </div>
+                <div id="coupons-finished-list">
+                    <!-- Cards will be injected here -->
                 </div>
             </div>
         </section>
