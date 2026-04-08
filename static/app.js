@@ -1,4 +1,4 @@
-// v38 - Unified Finance UI Aesthetics
+// v39 - Global UI Consistency (Broadcast & Channels)
 const tg = window.Telegram.WebApp;
 tg.expand();
 
