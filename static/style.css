@@ -417,14 +417,14 @@ header h1 {
 }
 
 .user-card {
-    background: rgba(10, 11, 20, 0.4); /* Darker inner cards for contrast */
+    background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px; /* Slightly smaller radius for inner cards */
+    border-radius: 16px;
     padding: 18px;
     margin-top: 15px;
-    margin-bottom: 0px; /* Use gap in parent or margin-top */
+    margin-bottom: 0px;
     position: relative;
     transition: all 0.3s ease;
 }
