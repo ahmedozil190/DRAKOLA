@@ -528,13 +528,15 @@ function renderUsers(users) {
         return;
     }
 
+    const startIdx = (currentPage - 1) * usersPerPage;
+
     users.forEach((user, idx) => {
         const card = document.createElement('div');
         card.className = 'user-card';
         card.onclick = () => openUserManageModal(user);
 
         card.innerHTML = `
-            <div class="user-card-index">${idx + 1}</div>
+            <div class="user-card-index">${startIdx + idx + 1}</div>
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
                 <!-- Account Status (v44 - High Contrast) -->
                 <div class="user-stat-row" 
@@ -899,7 +901,7 @@ function renderFinance() {
             </div>
             <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Type</span>
-                <span style="font-size: 0.9rem; font-weight: 800; color: ${isExpense ? '#ef4444' : '#60a5fa'}; text-transform: uppercase;">${typeStr}</span>
+                <span style="font-size: 0.9rem; font-weight: 800; color: ${isExpense ? '#ef4444' : '#a855f7'}; text-transform: uppercase;">${typeStr}</span>
             </div>
             <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);">
                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
