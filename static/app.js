@@ -719,8 +719,8 @@ function renderFinance(data) {
         list.innerHTML = `
             <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #475569; opacity: 0.5;">
                 <i class="fas fa-receipt" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                <div style="font-size: 1.2rem; font-weight: 700;">لا يوجد معاملات</div>
-                <div style="font-size: 0.8rem; margin-top: 5px;">سجل مبيعاتك ومصروفاتك لمتابعة الأرباح</div>
+                <div style="font-size: 1.2rem; font-weight: 700;">No transactions found</div>
+                <div style="font-size: 0.8rem; margin-top: 5px;">Record your sales and expenses to see them here.</div>
             </div>
         `;
         return;
