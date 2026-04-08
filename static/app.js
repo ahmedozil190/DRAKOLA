@@ -35,9 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Safety fallback: ensure loader is hidden after 4s no matter what
     setTimeout(() => hideLoader(), 4000);
 
-    // Restore last view
-    const savedView = localStorage.getItem('currentView') || 'overview';
-    switchNav(savedView);
+    // Always start at 'overview' on every fresh open
+    switchNav('overview');
 
     // Fetch fresh data in background
     loadInitialData(true);
