@@ -333,6 +333,9 @@ async function sendBroadcast(mode) {
         const result = await res.json();
 
         if (res.ok) {
+            // Scroll to top v52: Ensure stats cards are in view and avoid mobile rendering glitches
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
             const successMsg = mode === 'all'
                 ? `Broadcast sent to all users! ✨`
                 : "Message delivered! ✈️";
@@ -345,8 +348,8 @@ async function sendBroadcast(mode) {
                 document.getElementById('broadcast-user-msg').value = '';
             }
 
-            // LIVE UPDATES v51: Small delay helps mobile browsers handle the switch between popup and data update
-            setTimeout(() => loadInitialData(true), 150);
+            // LIVE UPDATES v48: Refresh counters immediately after broadcast
+            loadInitialData(true);
         } else {
             tg.showAlert(`Error: ${result.message || "Something went wrong"}`);
         }
