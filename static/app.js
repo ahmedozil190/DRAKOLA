@@ -652,9 +652,9 @@ function hideLoader() {
 }
 
 // ========== Custom Success Modal Logic (v62) ==========
-function showSuccessPopup(title, message) {
+function showSuccessPopup(title, message = "") {
     document.getElementById('success-title').innerText = title;
-    document.getElementById('success-msg').innerText = message;
+    document.getElementById('success-msg').innerText = message || "";
 
     // Add active class to show overlay and animate card
     document.getElementById('success-modal').classList.add('active');
@@ -669,9 +669,9 @@ function closeSuccessPopup() {
 }
 
 // ========== Custom Error Modal Logic (v54) ==========
-function showErrorPopup(title, message) {
+function showErrorPopup(title, message = "") {
     document.getElementById('error-title').innerText = title;
-    document.getElementById('error-msg').innerText = message;
+    document.getElementById('error-msg').innerText = message || "";
     document.getElementById('error-modal').classList.add('active');
     tg.HapticFeedback.notificationOccurred('error');
 }
