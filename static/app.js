@@ -7,6 +7,29 @@ const sideMenu = document.getElementById('side-menu');
 const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
+// --- Global UI Logic (v27) ---
+function openAddSaleModal() {
+    console.log("🟢 Opening Sale Modal...");
+    const modal = document.getElementById('add-sale-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeAddSaleModal() {
+    const modal = document.getElementById('add-sale-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+function openAddExpenseModal() {
+    console.log("🔴 Opening Expense Modal...");
+    const modal = document.getElementById('add-expense-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeAddExpenseModal() {
+    const modal = document.getElementById('add-expense-modal');
+    if (modal) modal.classList.remove('active');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initial Setup
     const user = tg.initDataUnsafe?.user;
@@ -767,21 +790,7 @@ function renderFinance(data) {
     });
 }
 
-function openAddSaleModal() {
-    document.getElementById('add-sale-modal').classList.add('active');
-}
-
-function closeAddSaleModal() {
-    document.getElementById('add-sale-modal').classList.remove('active');
-}
-
-function openAddExpenseModal() {
-    document.getElementById('add-expense-modal').classList.add('active');
-}
-
-function closeAddExpenseModal() {
-    document.getElementById('add-expense-modal').classList.remove('active');
-}
+// Modal control functions moved to top (v27)
 
 async function submitSale() {
     const amount = document.getElementById('sale-amount').value;
