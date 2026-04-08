@@ -950,7 +950,15 @@ async function submitSale() {
 
     if (!amount || !note || !userId) {
         const alertBox = document.getElementById('sale-alert');
-        alertBox.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Please fill in all required fields (Amount, User ID, Reason).';
+        alertBox.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Please fill in all required fields.';
+        alertBox.style.background = 'rgba(239, 68, 68, 0.1)';
+        alertBox.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        alertBox.style.color = '#ef4444';
+        alertBox.style.padding = '12px';
+        alertBox.style.borderRadius = '12px';
+        alertBox.style.fontSize = '0.85rem';
+        alertBox.style.fontWeight = '600';
+        alertBox.style.textAlign = 'center';
         alertBox.style.display = 'block';
         return;
     }
@@ -996,6 +1004,14 @@ async function submitExpense() {
     if (!amount || !note) {
         const alertBox = document.getElementById('expense-alert');
         alertBox.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Please enter amount and reason.';
+        alertBox.style.background = 'rgba(239, 68, 68, 0.1)';
+        alertBox.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        alertBox.style.color = '#ef4444';
+        alertBox.style.padding = '12px';
+        alertBox.style.borderRadius = '12px';
+        alertBox.style.fontSize = '0.85rem';
+        alertBox.style.fontWeight = '600';
+        alertBox.style.textAlign = 'center';
         alertBox.style.display = 'block';
         return;
     }
