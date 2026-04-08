@@ -81,8 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Safety fallback: ensure loader is hidden after 4s no matter what
     setTimeout(() => hideLoader(), 4000);
 
-    // Always start at 'overview' on every fresh open
-    switchNav('overview');
+    // PERSISTENCE v48: Restore last session view or default to overview
+    const lastSessionView = sessionStorage.getItem('last_view') || 'overview';
+    switchNav(lastSessionView);
 
     // Fetch fresh data in background
     loadInitialData(true);
@@ -97,6 +98,9 @@ function toggleMenu() {
 
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
+    
+    // PERSISTENCE v48: Save current view to session storage
+    sessionStorage.setItem('last_view', viewId);
 
     // Smoothly close menu and overlay
     sideMenu.classList.remove('active');
@@ -335,11 +339,14 @@ async function sendBroadcast(mode) {
 
             showSuccessPopup("Broadcast Sent!", successMsg);
 
-            if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
-            else {
-                document.getElementById('broadcast-user-id').value = '';
-                document.getElementById('broadcast-user-msg').value = '';
-            }
+                if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
+                else {
+                    document.getElementById('broadcast-user-id').value = '';
+                    document.getElementById('broadcast-user-msg').value = '';
+                }
+
+                // LIVE UPDATES v48: Refresh counters immediately after broadcast
+                loadInitialData(true);
         } else {
             tg.showAlert(`Error: ${result.message || "Something went wrong"}`);
         }
