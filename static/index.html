@@ -7,7 +7,33 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=35">
+    <link rel="stylesheet" href="/static/style.css?v=45">
+    <style>
+        .user-card {
+            position: relative;
+            padding-top: 25px !important;
+            margin-top: 14px;
+        }
+        .user-card-index {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: #fff;
+            border: 2px solid #0f1116;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+            z-index: 5;
+        }
+    </style>
 </head>
 
 <body>
@@ -101,6 +127,10 @@
 
         <!-- Users Section -->
         <section id="users-section" class="view-section">
+            <div class="section-header">
+                <i class="fas fa-users"></i>
+                <h2>User Management</h2>
+            </div>
             <div class="stats-grid"
                 style="grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0px; margin-bottom: 40px;">
                 <!-- Total Users Card v40 -->

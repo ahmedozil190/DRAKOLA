@@ -1,4 +1,4 @@
-// v44 - Broadcast Stats & Refined User Management Styling
+// v45 - User Management Header & Numbered Index Cards
 const tg = window.Telegram.WebApp;
 tg.expand();
 
@@ -524,12 +524,13 @@ function renderUsers(users) {
         return;
     }
 
-    users.forEach(user => {
+    users.forEach((user, idx) => {
         const card = document.createElement('div');
         card.className = 'user-card';
         card.onclick = () => openUserManageModal(user);
 
         card.innerHTML = `
+            <div class="user-card-index">${idx + 1}</div>
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
                 <!-- Account Status (v44 - High Contrast) -->
                 <div class="user-stat-row" 
