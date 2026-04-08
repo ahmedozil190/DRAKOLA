@@ -273,11 +273,53 @@ async def invite_link(call: CallbackQuery):
         text += f"- مشاركتك للرابط : {user.invites_count or 0} 🌀\n"
         text += top_text
         
-        # Share button using Inline Mode to allow buttons in shared messages
         kbd = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="مشاركة مع اصدقائك", switch_inline_query="")],
             [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]
         ])
         await call.message.edit_text(text, reply_markup=kbd)
         await call.answer()
+
+@router.message(F.text & ~F.text.startswith("/"))
+async def check_for_coupon(message: Message, state: FSMContext):
+    # Only process if user is not in a specific state
+    current_state = await state.get_state()
+    if current_state is not None:
+        return # Let State handlers do their job
+
+    text = message.text.strip()
+    async for session in get_session():
+        from models import Coupon
+        from sqlalchemy import select
+        
+        result = await session.execute(select(Coupon).where(Coupon.code == text, Coupon.is_active == True))
+        coupon = result.scalar_one_or_none()
+        
+        if coupon:
+            user = await crud.get_user(session, message.from_user.id)
+            if not user: return
+            
+            user.points += coupon.points
+            coupon.current_uses += 1
+            if coupon.current_uses >= coupon.max_uses:
+                coupon.is_active = False
+                
+            await session.commit()
+            
+            await message.reply(
+                f"🎁 <b>مبروك! لقد قمت باسترداد الكوبون بنجاح.</b>\n"
+                f"تمت إضافة <b>{coupon.points}</b> نقطة إلى حسابك.\n"
+                f"الرصيد الحالي: <b>{user.points}</b>", 
+                parse_mode="HTML"
+            )
+            return
+            
+        from handlers.admin import is_admin
+        if is_admin(message.from_user.id):
+            await message.reply(
+                "❌ <b>لم يتم التعرف على هذا الكود أو الكوبون.</b>\n"
+                "ملاحظة للإدارة: البوت لم يعد ينشر الرسائل العادية كإذاعة تلقائياً. "
+                "لعمل إذاعة أرسل الأمر <code>/broadcast</code> يليه مسافة ثم رسالتك، أو قم بالإرسال عبر لوحة تحكم الويب.",
+                parse_mode="HTML"
+            )
 

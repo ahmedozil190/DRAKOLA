@@ -42,21 +42,7 @@ async def admin_broadcast_legacy_start(call: CallbackQuery):
     await call.message.answer("📢 أرسل الرسالة التي تريد إذاعتها لجميع المستخدمين (نص فقط):")
     await call.answer()
 
-@router.message(F.text & ~F.text.startswith("/"))
-async def admin_broadcast_legacy_process(message: Message):
-    if not is_admin(message.from_user.id): return
-    
-    # Simple broadcast logic
-    text_to_send = message.text
-    async for session in get_session():
-        users = await session.execute(select(User))
-        success = 0
-        for u in users.scalars().all():
-            try:
-                await message.bot.send_message(u.user_id, text_to_send)
-                success += 1
-            except: pass
-        await message.reply(f"✅ تمت الإذاعة بنجاح لـ {success} مستخدم.")
+
 
 @router.message(Command("add_points"))
 async def admin_add_points(message: Message):
@@ -89,5 +75,13 @@ async def admin_broadcast_cmd(message: Message):
     if not text_to_send:
         await message.reply("يرجى كتابة الرسالة بعد الأمر.")
         return
-    # reuse the logic or just point to it
-    await admin_broadcast_legacy_process(message)
+        
+    async for session in get_session():
+        users = await session.execute(select(User))
+        success = 0
+        for u in users.scalars().all():
+            try:
+                await message.bot.send_message(u.user_id, text_to_send)
+                success += 1
+            except: pass
+        await message.reply(f"✅ تمت الإذاعة بنجاح لـ {success} مستخدم.")
