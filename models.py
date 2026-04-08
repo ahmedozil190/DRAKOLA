@@ -92,6 +92,7 @@ class FinancialRecord(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount_usd = Column(Integer, default=0)
     points_added = Column(Integer, default=0)
-    user_id = Column(BigInteger, nullable=True) # ID of user who bought
+    user_id = Column(BigInteger, nullable=True)
     description = Column(String, nullable=True)
+    record_type = Column(String, default="sale") # 'sale' or 'expense'
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

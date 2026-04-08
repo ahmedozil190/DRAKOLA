@@ -136,6 +136,7 @@ async def get_finance_data(request):
                 "points_added": h.points_added,
                 "user_id": h.user_id,
                 "description": h.description,
+                "record_type": h.record_type,
                 "created_at": h.created_at.strftime("%Y-%m-%d %H:%M:%S")
             } for h in history]
         })
@@ -148,7 +149,8 @@ async def add_finance_record(request):
             amount=int(data.get('amount', 0)),
             points=int(data.get('points', 0)),
             description=data.get('description', ''),
-            user_id=int(data.get('user_id')) if data.get('user_id') else None
+            user_id=int(data.get('user_id')) if data.get('user_id') else None,
+            record_type=data.get('type', 'sale')
         )
         return web.json_response({"status": "ok"})
 

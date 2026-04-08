@@ -708,7 +708,8 @@ async function loadFinanceData() {
 function renderFinance(data) {
     // Render Stats
     document.getElementById('finance-total-revenue').innerText = `$${parseFloat(data.stats.total_revenue).toLocaleString()}`;
-    document.getElementById('finance-total-sales').innerText = data.stats.total_records;
+    document.getElementById('finance-total-sales').innerText = data.stats.total_sales;
+    document.getElementById('finance-total-expenses').innerText = `$${parseFloat(data.stats.total_expenses).toLocaleString()}`;
 
     // Render History
     const list = document.getElementById('finance-history-list');
@@ -721,23 +722,27 @@ function renderFinance(data) {
 
     data.history.forEach(h => {
         const item = document.createElement('div');
+        const isExpense = h.record_type === 'expense';
         item.className = 'user-stat-row';
         item.style.display = 'block';
         item.style.padding = '15px';
         item.style.marginBottom = '12px';
         item.style.background = 'rgba(255,255,255,0.02)';
         item.style.borderRadius = '14px';
-        item.style.border = '1px solid rgba(255,255,255,0.03)';
+        item.style.border = isExpense ? '1px solid rgba(239, 68, 68, 0.1)' : '1px solid rgba(255,255,255,0.03)';
         
         item.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-weight: 700; color: #2ecc71; font-size: 1.1rem;">+$${h.amount_usd}</span>
+                <span style="font-weight: 700; color: ${isExpense ? '#ef4444' : '#2ecc71'}; font-size: 1.1rem;">
+                    ${isExpense ? '-' : '+'}$${h.amount_usd}
+                </span>
                 <span style="font-size: 0.75rem; color: #475569;">${h.created_at}</span>
             </div>
             <div style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 5px;">${h.description}</div>
             <div style="display: flex; gap: 10px; font-size: 0.8rem;">
-                <span style="color: #60a5fa;"><i class="fas fa-coins"></i> ${h.points_added} Points</span>
+                ${!isExpense ? `<span style="color: #60a5fa;"><i class="fas fa-coins"></i> ${h.points_added} Points</span>` : ''}
                 ${h.user_id ? `<span style="color: #94a3b8;"><i class="fas fa-user text-xs"></i> ID: ${h.user_id}</span>` : ''}
+                <span style="color: #475569; text-transform: uppercase; font-size: 0.65rem; font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${h.record_type}</span>
             </div>
         `;
         list.appendChild(item);
@@ -750,6 +755,14 @@ function openAddSaleModal() {
 
 function closeAddSaleModal() {
     document.getElementById('add-sale-modal').style.display = 'none';
+}
+
+function openAddExpenseModal() {
+    document.getElementById('add-expense-modal').style.display = 'flex';
+}
+
+function closeAddExpenseModal() {
+    document.getElementById('add-expense-modal').style.display = 'none';
 }
 
 async function submitSale() {
@@ -771,7 +784,8 @@ async function submitSale() {
                 amount,
                 points,
                 user_id: userId,
-                description: note
+                description: note,
+                type: 'sale'
             })
         });
 
@@ -788,5 +802,39 @@ async function submitSale() {
         }
     } catch (err) {
         console.error("Sale submission error:", err);
+    }
+}
+
+async function submitExpense() {
+    const amount = document.getElementById('expense-amount').value;
+    const note = document.getElementById('expense-note').value;
+
+    if (!amount || !note) {
+        alert("Please enter amount and description.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/finance/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount,
+                description: note,
+                type: 'expense'
+            })
+        });
+
+        if (res.ok) {
+            closeAddExpenseModal();
+            showSuccessPopup("Expense recorded successfully!");
+            loadFinanceData();
+            
+            // Clear inputs
+            document.getElementById('expense-amount').value = '';
+            document.getElementById('expense-note').value = '';
+        }
+    } catch (err) {
+        console.error("Expense submission error:", err);
     }
 }

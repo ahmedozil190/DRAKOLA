@@ -7,7 +7,7 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=17">
+    <link rel="stylesheet" href="/static/style.css?v=18">
 </head>
 
 <body>
@@ -196,21 +196,30 @@
                 <h2>Financial Details</h2>
             </div>
 
-            <!-- Finance Stats -->
-            <div class="stats-grid" style="margin-bottom: 30px;">
-                <div class="card" style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1);">
-                    <span class="card-label">Total Revenue</span>
-                    <span class="card-value val-green" id="finance-total-revenue">$0.00</span>
+            <!-- Finance Stats (Stacked) -->
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+                <div class="card" style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 70px; padding: 15px 20px;">
+                    <span class="card-label" style="margin-bottom: 0;">Total Revenue</span>
+                    <span class="card-value val-green" id="finance-total-revenue" style="font-size: 1.4rem;">$0.00</span>
                 </div>
-                <div class="card" style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1);">
-                    <span class="card-label">Total Sales</span>
-                    <span class="card-value val-purple" id="finance-total-sales">0</span>
+                <div class="card" style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 70px; padding: 15px 20px;">
+                    <span class="card-label" style="margin-bottom: 0;">Total Sales</span>
+                    <span class="card-value val-purple" id="finance-total-sales" style="font-size: 1.4rem;">0</span>
+                </div>
+                <div class="card" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); flex-direction: row; justify-content: space-between; align-items: center; min-height: 70px; padding: 15px 20px;">
+                    <span class="card-label" style="margin-bottom: 0;">Total Expenses</span>
+                    <span class="card-value val-red" id="finance-total-expenses" style="font-size: 1.4rem;">$0.00</span>
                 </div>
             </div>
 
-            <button onclick="openAddSaleModal()" class="gradient-btn" style="width: 100%; padding: 16px; margin-bottom: 25px;">
-                <i class="fas fa-plus"></i> Add New Sale
-            </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;">
+                <button onclick="openAddSaleModal()" class="gradient-btn" style="padding: 16px; font-size: 0.85rem;">
+                    <i class="fas fa-plus"></i> Add Sale
+                </button>
+                <button onclick="openAddExpenseModal()" class="gradient-btn" style="padding: 16px; font-size: 0.85rem; background: linear-gradient(135deg, #ef4444, #991b1b);">
+                    <i class="fas fa-minus"></i> Add Expense
+                </button>
+            </div>
 
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -493,7 +502,32 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=17"></script>
+    <!-- Modal: Add Expense (v73) -->
+    <div id="add-expense-modal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Record Expense</h3>
+                <div class="close-circle" onclick="closeAddExpenseModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Amount (USD $)</label>
+                    <input type="number" id="expense-amount" placeholder="e.g. 5">
+                </div>
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label>Description / Reason</label>
+                    <input type="text" id="expense-note" placeholder="e.g. Server monthly cost">
+                </div>
+                <button onclick="submitExpense()" class="gradient-btn" style="width: 100%; background: linear-gradient(135deg, #ef4444, #991b1b);">
+                    Record Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=18"></script>
 </body>
 
 </html>

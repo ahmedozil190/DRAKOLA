@@ -128,9 +128,9 @@ async def update_settings(session: AsyncSession, **kwargs):
 # --- Financial Dashboard Features ---
 from models import FinancialRecord
 
-async def add_financial_record(session: AsyncSession, amount: int, points: int, description: str, user_id: int = None):
-    # 1. Add points to user if ID provided
-    if user_id and points > 0:
+async def add_financial_record(session: AsyncSession, amount: int, points: int, description: str, user_id: int = None, record_type: str = "sale"):
+    # 1. Add points to user if it's a SALE and user_id is provided
+    if record_type == "sale" and user_id and points > 0:
         user = await get_user(session, user_id)
         if user:
             user.points = (user.points or 0) + points
@@ -140,7 +140,8 @@ async def add_financial_record(session: AsyncSession, amount: int, points: int, 
         amount_usd=amount,
         points_added=points,
         user_id=user_id,
-        description=description
+        description=description,
+        record_type=record_type
     )
     session.add(record)
     await session.commit()
@@ -153,15 +154,26 @@ async def get_financial_history(session: AsyncSession, limit: int = 50):
     return result.scalars().all()
 
 async def get_financial_stats(session: AsyncSession):
-    # Sum of all USD amounts
-    q = await session.execute(select(func.sum(FinancialRecord.amount_usd)))
-    total_revenue = q.scalar() or 0
+    # Total Revenue (Sales)
+    q_rev = await session.execute(
+        select(func.sum(FinancialRecord.amount_usd)).where(FinancialRecord.record_type == 'sale')
+    )
+    total_revenue = q_rev.scalar() or 0
     
-    # Count of records
-    q_count = await session.execute(select(func.count(FinancialRecord.id)))
-    total_records = q_count.scalar() or 0
+    # Total Expenses
+    q_exp = await session.execute(
+        select(func.sum(FinancialRecord.amount_usd)).where(FinancialRecord.record_type == 'expense')
+    )
+    total_expenses = q_exp.scalar() or 0
+    
+    # Sales Count
+    q_count = await session.execute(
+        select(func.count(FinancialRecord.id)).where(FinancialRecord.record_type == 'sale')
+    )
+    total_sales = q_count.scalar() or 0
     
     return {
         "total_revenue": total_revenue,
-        "total_records": total_records
+        "total_expenses": total_expenses,
+        "total_sales": total_sales
     }
