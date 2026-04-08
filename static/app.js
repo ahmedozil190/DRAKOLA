@@ -1147,40 +1147,43 @@ async function loadCoupons() {
 
         function createRow(c, isFinished) {
             const div = document.createElement('div');
-            div.style.padding = '18px 5px';
-            div.style.borderBottom = '1px solid rgba(255, 255, 255, 0.03)';
+            div.style.padding = '15px';
+            div.style.background = 'rgba(255,255,255,0.02)';
+            div.style.borderRadius = '14px';
+            div.style.border = '1px solid rgba(255,255,255,0.05)';
             div.style.display = 'flex';
             div.style.flexDirection = 'column';
-            div.style.gap = '12px';
+            div.style.gap = '8px';
+            div.style.position = 'relative';
 
             div.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div style="display: flex; flex-direction: column; gap: 4px;">
-                        <span style="font-size: 0.65rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Coupon Code</span>
-                        <span style="font-family: monospace; font-size: 1.15rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'}; letter-spacing: 1px;">${c.code}</span>
-                    </div>
-                    ${!isFinished ? `
-                    <div onclick="deleteCoupon('${c.code}')" style="width: 38px; height: 38px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(239, 68, 68, 0.1);">
-                        <i class="fas fa-trash" style="color: #ef4444; font-size: 0.95rem;"></i>
-                    </div>` : `
-                    <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase;">
-                        Deactivated
-                    </div>`}
+                ${!isFinished ? `
+                <div onclick="deleteCoupon('${c.code}')" style="position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.05);">
+                    <i class="fas fa-trash" style="color: #ef4444; font-size: 0.8rem;"></i>
+                </div>` : ''}
+
+                <!-- Coupon Row -->
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Coupon</span>
+                    <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: ${isFinished ? '#64748b' : '#fff'};">${c.code}</span>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
-                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Points</span>
-                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.75rem;"></i> ${c.points}</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
-                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Uses</span>
-                        <span style="font-size: 1rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
-                        <span style="display: block; font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Date</span>
-                        <span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">${c.created_at}</span>
-                    </div>
+                <!-- Points Row -->
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Points</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: ${isFinished ? '#64748b' : '#a855f7'};"><i class="fas fa-star" style="font-size: 0.7rem;"></i> ${c.points}</span>
+                </div>
+
+                <!-- Uses Row -->
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Uses</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: ${isFinished ? '#475569' : '#e2e8f0'};">${c.current_uses} / ${c.max_uses}</span>
+                </div>
+
+                <!-- Date Row -->
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Date</span>
+                    <span style="font-size: 0.75rem; font-weight: 600; color: #475569;">${c.created_at}</span>
                 </div>
             `;
             return div;
