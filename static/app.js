@@ -350,20 +350,20 @@ async function sendBroadcast(mode) {
         const result = await res.json();
 
         if (res.ok) {
+            // LIVE UPDATES v50: Refresh counters immediately BEFORE showing popup to avoid mobile glitches
+            refreshBroadcastStats();
+
             const successMsg = mode === 'all'
                 ? `Broadcast sent to all users! ✨`
                 : "Message delivered! ✈️";
 
             showSuccessPopup("Broadcast Sent!", successMsg);
 
-                if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
-                else {
-                    document.getElementById('broadcast-user-id').value = '';
-                    document.getElementById('broadcast-user-msg').value = '';
-                }
-
-                // LIVE UPDATES v49: Use lightweight refresh instead of full load to prevent UI glitches
-                refreshBroadcastStats();
+            if (mode === 'all') document.getElementById('broadcast-all-msg').value = '';
+            else {
+                document.getElementById('broadcast-user-id').value = '';
+                document.getElementById('broadcast-user-msg').value = '';
+            }
         } else {
             tg.showAlert(`Error: ${result.message || "Something went wrong"}`);
         }
