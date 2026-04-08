@@ -32,6 +32,8 @@ async def get_settings_data(request):
             "daily_gift_amount": settings.daily_gift_amount,
             "min_transfer_amount": settings.min_transfer_amount,
             "bot_name": settings.bot_name or "Billion Bot",
+            "total_global": settings.total_global_broadcasts or 0,
+            "total_targeted": settings.total_targeted_broadcasts or 0,
             "channels": [{"id": c.channel_id, "link": c.channel_link} for c in channels]
         })
 
@@ -104,10 +106,15 @@ async def send_broadcast_all(request):
             try:
                 await bot.send_message(u.user_id, message, parse_mode='HTML')
                 count += 1
-                # Small delay to keep Telegram happy
                 await asyncio.sleep(0.05) 
             except Exception:
                 continue
+        
+        # Increment global stats helper (v44)
+        if count > 0:
+            async for s in get_session():
+                await crud.increment_broadcast_stat(s, 'global')
+                
         return web.json_response({"status": "ok", "sent_count": count})
 
 async def send_broadcast_user(request):
@@ -118,6 +125,9 @@ async def send_broadcast_user(request):
     
     try:
         await bot.send_message(int(user_id), message, parse_mode='HTML')
+        # Increment targeted stats (v44)
+        async for s in get_session():
+            await crud.increment_broadcast_stat(s, 'targeted')
         return web.json_response({"status": "ok"})
     except Exception as e:
         return web.json_response({"status": "error", "message": str(e)}, status=400)

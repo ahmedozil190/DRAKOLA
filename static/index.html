@@ -162,12 +162,12 @@
                 </div>
             </div>
 
-            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px;">
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: #94a3b8;">User Management</h3>
+            <!-- User Management List Card (v44 - Refined Depth) -->
+            <div class="card" style="margin-top: 35px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 5px 15px 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 5px;">
+                    <h3 style="font-size: 1.2rem; font-weight: 700; color: #eff6ff;">User Management</h3>
                     <span id="users-count-badge"
-                        style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; color: #94a3b8;">--
-                        results</span>
+                        style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(59, 130, 246, 0.2);">0 Users</span>
                 </div>
 
                 <div id="users-list">
@@ -370,6 +370,20 @@
             <div class="section-header">
                 <i class="fas fa-bullhorn"></i>
                 <h2>Broadcast Control</h2>
+            </div>
+
+            <!-- Broadcast Stats (v44) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;">
+                <div class="card" 
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; text-align: center; min-height: auto;">
+                    <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Global Sent</div>
+                    <div id="stat-broadcast-global" style="font-size: 1.4rem; font-weight: 800; color: #3b82f6;">0</div>
+                </div>
+                <div class="card" 
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; text-align: center; min-height: auto;">
+                    <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Targeted Sent</div>
+                    <div id="stat-broadcast-targeted" style="font-size: 1.4rem; font-weight: 800; color: #10b981;">0</div>
+                </div>
             </div>
 
             <!-- Global Broadcast Card v39 -->
@@ -590,7 +604,7 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=43"></script>
+    <script src="/static/app.js?v=44"></script>
 </body>
 
 </html>

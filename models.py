@@ -85,6 +85,8 @@ class GlobalSettings(Base):
     daily_gift_amount = Column(Integer, default=25)
     min_transfer_amount = Column(Integer, default=10)
     bot_name = Column(String, default="Billion Bot")
+    total_global_broadcasts = Column(Integer, default=0)
+    total_targeted_broadcasts = Column(Integer, default=0)
 
 class FinancialRecord(Base):
     __tablename__ = "financial_records"

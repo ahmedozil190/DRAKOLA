@@ -125,6 +125,16 @@ async def update_settings(session: AsyncSession, **kwargs):
     await session.commit()
     return settings
 
+async def increment_broadcast_stat(session: AsyncSession, stat_type: str):
+    # stat_type is either 'global' or 'targeted'
+    settings = await get_settings(session)
+    if stat_type == 'global':
+        settings.total_global_broadcasts = (settings.total_global_broadcasts or 0) + 1
+    elif stat_type == 'targeted':
+        settings.total_targeted_broadcasts = (settings.total_targeted_broadcasts or 0) + 1
+    await session.commit()
+    return settings
+
 # --- Financial Dashboard Features ---
 from models import FinancialRecord
 

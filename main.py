@@ -40,6 +40,8 @@ async def init_db():
             ("users", "total_earned", "INTEGER DEFAULT 0"),
             ("users", "joined_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"),
             ("global_settings", "bot_name", "TEXT DEFAULT 'Billion Bot'"),
+            ("global_settings", "total_global_broadcasts", "INTEGER DEFAULT 0"),
+            ("global_settings", "total_targeted_broadcasts", "INTEGER DEFAULT 0"),
             ("financial_records", "record_type", "TEXT DEFAULT 'sale'")
         ]
         
