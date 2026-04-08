@@ -693,9 +693,9 @@ async function modalUpdatePoints(type) {
     if (!currentManagingUser) return;
 
     const inputVal = document.getElementById('modal-points-input').value;
-    // v70: Enhanced validation with clear request message
-    if (!inputVal || isNaN(inputVal)) {
-        return tg.showAlert("Please enter the number of points first! 🖋️");
+    // v53: Improved validation in Arabic to prevent empty or zero submissions
+    if (!inputVal || isNaN(inputVal) || parseInt(inputVal) === 0) {
+        return tg.showAlert("يرجى إدخال عدد النقاط أولاً! 🖋️");
     }
 
     let points = parseInt(inputVal);
