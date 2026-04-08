@@ -126,13 +126,13 @@
             <!-- Search & Tabs Consolidated Container (Compact) v40 -->
             <div class="card"
                 style="padding: 18px; margin-top: -2px; margin-bottom: 30px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                <!-- Tabs (Connected) v42 -->
+                <!-- Tabs (Connected & Unified) v43 -->
                 <div class="tabs-row"
-                    style="display: flex; gap: 4px; margin-bottom: 26px; padding: 4px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); background: rgba(0, 0, 0, 0.2);">
+                    style="display: flex; gap: 0; margin-bottom: 26px; padding: 4px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); background: rgba(0, 0, 0, 0.3);">
                     <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: #3b82f6; color: #fff; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">All</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: #3b82f6; color: #fff; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">All</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
-                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255, 255, 255, 0.05); color: #94a3b8; font-weight: 700; font-size: 0.9rem; transition: 0.3s; box-shadow: none;">Banned</button>
+                        style="flex: 1; padding: 12px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 0.9rem; transition: 0.3s;">Banned</button>
                 </div>
 
                 <!-- Search Input -->
@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <div class="card" style="margin-top: 35px;">
+            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px;">
                     <h3 style="font-size: 1.2rem; font-weight: 700; color: #94a3b8;">User Management</h3>
                     <span id="users-count-badge"
@@ -590,7 +590,7 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=42"></script>
+    <script src="/static/app.js?v=43"></script>
 </body>
 
 </html>
