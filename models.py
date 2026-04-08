@@ -109,3 +109,12 @@ class Coupon(Base):
     current_uses = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     is_active = Column(Boolean, default=True)
+
+class CouponUsage(Base):
+    __tablename__ = "coupon_usage"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey("users.user_id"), index=True)
+    coupon_id = Column(Integer, ForeignKey("coupons.id"), index=True)
+    used_at = Column(DateTime, default=datetime.datetime.utcnow)
+

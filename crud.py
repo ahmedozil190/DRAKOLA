@@ -1,6 +1,6 @@
 from sqlalchemy import select, update, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import User, Order, Subscription, MandatoryChannel, GlobalSettings, FinancialRecord, Coupon
+from models import User, Order, Subscription, MandatoryChannel, GlobalSettings, FinancialRecord, Coupon, CouponUsage
 
 async def get_user(session: AsyncSession, user_id: int):
     result = await session.execute(select(User).where(User.user_id == user_id))
@@ -209,3 +209,15 @@ async def delete_coupon(session: AsyncSession, code: str):
         await session.commit()
         return True
     return False
+
+# --- Coupon Usage Restriction (v85) ---
+async def check_coupon_already_used(session: AsyncSession, user_id: int, coupon_id: int):
+    q = select(CouponUsage).where(CouponUsage.user_id == user_id, CouponUsage.coupon_id == coupon_id)
+    result = await session.execute(q)
+    return result.scalar_one_or_none() is not None
+
+async def record_coupon_usage(session: AsyncSession, user_id: int, coupon_id: int):
+    usage = CouponUsage(user_id=user_id, coupon_id=coupon_id)
+    session.add(usage)
+    # Note: caller should commit
+    return usage

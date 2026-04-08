@@ -292,34 +292,58 @@ async def check_for_coupon(message: Message, state: FSMContext):
         from models import Coupon
         from sqlalchemy import select
         
-        result = await session.execute(select(Coupon).where(Coupon.code == text, Coupon.is_active == True))
+        # 1. Fetch Coupon
+        result = await session.execute(select(Coupon).where(Coupon.code == text))
         coupon = result.scalar_one_or_none()
         
-        if coupon:
-            user = await crud.get_user(session, message.from_user.id)
-            if not user: return
-            
-            user.points += coupon.points
-            coupon.current_uses += 1
-            if coupon.current_uses >= coupon.max_uses:
-                coupon.is_active = False
-                
-            await session.commit()
-            
+        # 2. Validation Flow
+        if not coupon:
+            from handlers.admin import is_admin
+            if is_admin(message.from_user.id):
+                await message.reply(
+                    "🚫 <b>عذراً، هذا الكود غير صحيح أو غير موجود.</b>\n"
+                    "لعمل إذاعة، استخدم <code>/broadcast</code> يليه النص.",
+                    parse_mode="HTML"
+                )
+            return
+
+        # Check if Active
+        if not coupon.is_active or coupon.current_uses >= coupon.max_uses:
             await message.reply(
-                f"🎁 <b>مبروك! لقد قمت باسترداد الكوبون بنجاح.</b>\n"
-                f"تمت إضافة <b>{coupon.points}</b> نقطة إلى حسابك.\n"
-                f"الرصيد الحالي: <b>{user.points}</b>", 
+                "⚠️ <b>عذراً، هذا الكوبون انتهت صلاحيته أو وصل للحد الأقصى من الاستخدامات.</b>",
                 parse_mode="HTML"
             )
             return
-            
-        from handlers.admin import is_admin
-        if is_admin(message.from_user.id):
+
+        # Check if Already Used
+        already_used = await crud.check_coupon_already_used(session, message.from_user.id, coupon.id)
+        if already_used:
             await message.reply(
-                "❌ <b>لم يتم التعرف على هذا الكود أو الكوبون.</b>\n"
-                "ملاحظة للإدارة: البوت لم يعد ينشر الرسائل العادية كإذاعة تلقائياً. "
-                "لعمل إذاعة أرسل الأمر <code>/broadcast</code> يليه مسافة ثم رسالتك، أو قم بالإرسال عبر لوحة تحكم الويب.",
+                "❌ <b>عذراً، لقد قمت باسترداد هذا الكوبون مسبقاً!</b>\n\n"
+                "• لا يمكن استخدام الكود نفسه أكثر من مرة لكل مستخدم.",
                 parse_mode="HTML"
             )
+            return
+
+        # 3. Success Logic
+        user = await crud.get_user(session, message.from_user.id)
+        if not user: return
+        
+        user.points += coupon.points
+        coupon.current_uses += 1
+        if coupon.current_uses >= coupon.max_uses:
+            coupon.is_active = False
+            
+        await crud.record_coupon_usage(session, user.user_id, coupon.id)
+        await session.commit()
+        
+        # Success Message
+        success_text = (
+            f"🎁 <b>تهانينا! لقد استرددت الكوبون بنجاح ✨</b>\n\n"
+            f"💰 تمت إضافة: <b>{coupon.points}</b> نقطة\n"
+            f"📊 رصيدك الحالي: <b>{user.points}</b> نقطة\n\n"
+            f"✅ استمتع بخدماتنا!"
+        )
+        await message.reply(success_text, parse_mode="HTML")
+        return
 
