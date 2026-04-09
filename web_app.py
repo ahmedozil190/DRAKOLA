@@ -69,8 +69,8 @@ async def get_users(request):
             nonlocal updates_made
             try:
                 chat = await bot.get_chat(u.user_id)
-                if chat.first_name and u.first_name != chat.first_name:
-                    u.first_name = chat.first_name
+                if chat.full_name and u.first_name != chat.full_name:
+                    u.first_name = chat.full_name
                     updates_made = True
                 if chat.username != u.username:
                     u.username = chat.username
