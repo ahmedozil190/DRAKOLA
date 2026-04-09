@@ -508,28 +508,34 @@
                 </div>
             </div>
 
-            <!-- Subview: Channels Config (Proxied to main channels section logic) -->
+            <!-- Subview: Channels Config (Unified Management) -->
             <div id="subview-channels-config" style="display: none;">
                 <div class="subview-header">
                     <div class="back-btn-circle" onclick="hideSettingsSubView()">
                         <i class="fas fa-arrow-left"></i>
                     </div>
-                    <h2 style="font-weight: 700;">Channels</h2>
+                    <h2 style="font-weight: 700;">Channels & Subscriptions</h2>
                 </div>
-                <!-- This will essentially show the same content as the channels-section but formatted for subview -->
-                <div id="subview-channels-list">
-                    <!-- Synced from channels list -->
+                
+                <!-- Unified Channels List -->
+                <div id="channels-list">
+                    <!-- Injected via JS -->
                 </div>
+
                 <div class="card"
                     style="margin-top: 20px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
                     <div class="form-group">
                         <label>Add New Channel</label>
-                        <input type="text" id="subview-new-channel-id" class="input-field" placeholder="@username"
+                        <!-- Only one set of inputs now (Primary) -->
+                        <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
                             style="margin-bottom: 10px;">
-                        <input type="text" id="subview-new-channel-link" class="input-field"
+                        <input type="text" id="new-channel-link" class="input-field"
                             placeholder="https://t.me/...">
                     </div>
-                    <button class="primary-btn" onclick="addNewChannelSubview()">Add Channel</button>
+                    <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
+                    <p style="font-size: 0.75rem; color: #64748b; margin-top: 15px; line-height: 1.4;">
+                        * ID is used for bot checks, Link is shown to users.
+                    </p>
                 </div>
             </div>
         </section>
@@ -671,22 +677,6 @@
             </div>
         </section>
 
-        <!-- Channels View -->
-        <section id="channels-section" class="view-section">
-            <div id="channels-list">
-                <!-- Injected via JS -->
-            </div>
-            <div class="card"
-                style="margin-top: 20px; min-height: auto; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px;">
-                <div class="form-group">
-                    <label>Add New Channel</label>
-                    <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
-                        style="margin-bottom: 10px;">
-                    <input type="text" id="new-channel-link" class="input-field" placeholder="https://t.me/...">
-                </div>
-                <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
-            </div>
-        </section>
 
         <!-- Orders View (v113) -->
         <section id="orders-section" class="view-section">

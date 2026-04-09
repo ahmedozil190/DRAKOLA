@@ -13,7 +13,4 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 DB_PATH = f"sqlite+aiosqlite:///{os.path.join(DATA_DIR, 'bot_database.sqlite3')}"
 
 # Mandatory subscription channels
-MANDATORY_CHANNELS = [
-    {"id": "@DRAKOLA1CHANNEL", "link": "https://t.me/DRAKOLA1CHANNEL"},
-    {"id": "@DRAKOLA2CHANNEL", "link": "https://t.me/DRAKOLA2CHANNEL"},
-]
+MANDATORY_CHANNELS = []

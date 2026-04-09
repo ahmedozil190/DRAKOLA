@@ -371,6 +371,12 @@ async function saveSettings() {
         });
         if (res.ok) {
             showSuccessPopup("Settings Saved!", "Your configuration has been updated successfully. ✨");
+            
+            // Instantly update sidebar title (v121 Fix)
+            const sideMenuTitle = document.querySelector('.side-menu-title');
+            if (sideMenuTitle) {
+                sideMenuTitle.innerText = data.bot_name;
+            }
         }
     } catch (err) {
         console.error("Save error:", err);
@@ -389,11 +395,6 @@ function showSettingsSubView(viewId) {
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
-
-    // If channels, sync them
-    if (viewId === 'channels-config') {
-        syncChannelsToSubview();
-    }
 }
 
 function hideSettingsSubView() {
@@ -405,33 +406,6 @@ function hideSettingsSubView() {
     document.getElementById('subview-bot-name').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
-}
-
-function syncChannelsToSubview() {
-    const mainList = document.getElementById('channels-list').innerHTML;
-    const subList = document.getElementById('subview-channels-list');
-    if (subList) {
-        subList.innerHTML = mainList;
-    }
-}
-
-async function addNewChannelSubview() {
-    const channelId = document.getElementById('subview-new-channel-id').value;
-    const channelLink = document.getElementById('subview-new-channel-link').value;
-
-    if (!channelId || !channelLink) return;
-
-    // Reuse main function logic by setting its inputs and calling it
-    document.getElementById('new-channel-id').value = channelId;
-    document.getElementById('new-channel-link').value = channelLink;
-    await addNewChannel();
-
-    // Clear subview inputs
-    document.getElementById('subview-new-channel-id').value = '';
-    document.getElementById('subview-new-channel-link').value = '';
-
-    // Refresh subview list after a short delay
-    setTimeout(syncChannelsToSubview, 800);
 }
 
 // ========== Broadcast Logic (v60) ==========
@@ -492,8 +466,10 @@ async function sendBroadcast(mode) {
 }
 
 async function addNewChannel() {
-    const id = document.getElementById('new-channel-id').value;
-    const link = document.getElementById('new-channel-link').value;
+    const idInput = document.getElementById('new-channel-id');
+    const linkInput = document.getElementById('new-channel-link');
+    const id = idInput.value;
+    const link = linkInput.value;
     if (!id || !link) return;
 
     await fetch('/api/channels/add', {
@@ -501,6 +477,11 @@ async function addNewChannel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, link })
     });
+    
+    // Clear inputs immediately
+    idInput.value = '';
+    linkInput.value = '';
+    
     loadInitialData();
 }
 
