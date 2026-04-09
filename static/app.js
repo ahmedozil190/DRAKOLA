@@ -2090,9 +2090,10 @@ async function updateReportStatus(orderId, status) {
 function prevReportsPage() {
     if (currentReportsPage > 1) {
         currentReportsPage--;
+        tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
-        const section = document.getElementById('reports-section');
-        if (section) window.scrollTo({ top: section.offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -2101,9 +2102,10 @@ function nextReportsPage() {
     const totalPages = Math.ceil(filtered.length / reportsPerPage);
     if (currentReportsPage < totalPages) {
         currentReportsPage++;
+        tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
-        const section = document.getElementById('reports-section');
-        if (section) window.scrollTo({ top: section.offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
