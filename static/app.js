@@ -1703,6 +1703,10 @@ function renderReports(reports) {
 
     reports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
+        const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
+        const nameLabel = isGroup ? 'Group Name' : 'Channel Name';
+        const usernameLabel = isGroup ? 'Group Username' : 'Channel Username';
+
         const card = document.createElement('div');
         card.className = 'user-card';
         card.style.marginBottom = '20px';
@@ -1733,13 +1737,13 @@ function renderReports(reports) {
 
                 <!-- Target Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Target Channel Name</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${nameLabel}</span>
                     <span style="font-size: 0.9rem; font-weight: 700; color: #60a5fa;">${r.chat_name}</span>
                 </div>
 
                 <!-- Target Username -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Target Username</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${usernameLabel}</span>
                     <span style="font-size: 0.85rem; font-weight: 600; color: #c084fc;">${r.chat_username ? '@' + r.chat_username : 'No Username'}</span>
                 </div>
 

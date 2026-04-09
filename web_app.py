@@ -273,6 +273,7 @@ async def get_reports_api(request):
                 "order_id": r.order_id,
                 "chat_name": res_order.chat_name if res_order else "Deleted Order",
                 "chat_username": res_order.chat_username if res_order and res_order.chat_username else "",
+                "chat_type": res_order.chat_type if res_order else "channel",
                 "created_at": r.created_at.strftime("%Y-%m-%d %H:%M"),
                 "status": r.status
             })
