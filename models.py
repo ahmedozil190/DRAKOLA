@@ -13,6 +13,7 @@ class User(Base):
     last_daily_gift = Column(DateTime, nullable=True)
     is_admin = Column(Boolean, default=False)
     is_banned = Column(Boolean, default=False)
+    last_synced = Column(DateTime, nullable=True) # v122: For background auto-sync
     
     # Stats fields
     transfers_count = Column(Integer, default=0)
