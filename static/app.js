@@ -197,7 +197,7 @@ function populateStats(stats) {
         if (document.getElementById('stat-net-profit-home')) {
             const profitEl = document.getElementById('stat-net-profit-home');
             profitEl.innerText = `$${netProfit.toLocaleString()}`;
-            profitEl.style.color = '#3b82f6'; // Blue (v106)
+            profitEl.style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
         }
     }
 
@@ -899,8 +899,7 @@ function renderFinance() {
     const profitEl = document.getElementById('finance-stat-profit');
     if (profitEl) {
         profitEl.innerText = `$${net.toLocaleString()}`;
-        profitEl.style.color = '#2ecc71'; // Keep Green on Finance page? No, user said "في الصفحة الرئيسية وفي صفحة Finance"
-        profitEl.style.color = '#3b82f6'; // Blue (v106)
+        profitEl.style.color = net >= 0 ? '#2ecc71' : '#ef4444';
     }
 
     // Render History

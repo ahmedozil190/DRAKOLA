@@ -218,25 +218,18 @@
 
         <!-- Users Section -->
         <section id="users-section" class="view-section">
-            <div class="stats-grid"
-                style="grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0px; margin-bottom: 40px;">
-                <!-- Total Users Card v40 -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+                <!-- Total Users Card v108 -->
                 <div class="card"
-                    style="padding: 10px; text-align: center; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 22px; display: flex; flex-direction: column; justify-content: center; min-height: 67px;">
-                    <div class="card-label"
-                        style="font-size: 0.6rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">
-                        TOTAL USERS</div>
-                    <div class="card-value" id="user-stat-total"
-                        style="font-size: 1.45rem; color: var(--accent-blue); font-weight: 800;">...</div>
+                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">TOTAL USERS</div>
+                    <div class="card-value" id="user-stat-total" style="font-size: 1.3rem; color: var(--accent-blue); font-weight: 800;">...</div>
                 </div>
-                <!-- Banned Users Card v40 -->
+                <!-- Banned Users Card v108 -->
                 <div class="card"
-                    style="padding: 10px; text-align: center; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 22px; display: flex; flex-direction: column; justify-content: center; min-height: 67px;">
-                    <div class="card-label"
-                        style="font-size: 0.6rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">
-                        BANNED</div>
-                    <div class="card-value" id="user-stat-banned"
-                        style="font-size: 1.45rem; color: var(--danger); font-weight: 800;">...</div>
+                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">BANNED</div>
+                    <div class="card-value" id="user-stat-banned" style="font-size: 1.3rem; color: var(--danger); font-weight: 800;">...</div>
                 </div>
             </div>
 
@@ -496,22 +489,17 @@
         <!-- Broadcast View (v60) -->
         <section id="broadcast-section" class="view-section">
 
-            <!-- Broadcast Stats (v52 Stability Fix) -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;">
+            <!-- Broadcast Stats (v109) -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
                 <div class="card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
-                    <div
-                        style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">
-                        Global Sent</div>
-                    <div id="stat-broadcast-global" style="font-size: 1.4rem; font-weight: 800; color: #3b82f6;">0</div>
+                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Global Sent</div>
+                    <div id="stat-broadcast-global" style="font-size: 1.3rem; font-weight: 800; color: #3b82f6;">0</div>
                 </div>
                 <div class="card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
-                    <div
-                        style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">
-                        Targeted Sent</div>
-                    <div id="stat-broadcast-targeted" style="font-size: 1.4rem; font-weight: 800; color: #10b981;">0
-                    </div>
+                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Targeted Sent</div>
+                    <div id="stat-broadcast-targeted" style="font-size: 1.3rem; font-weight: 800; color: #3b82f6;">0</div>
                 </div>
             </div>
 
