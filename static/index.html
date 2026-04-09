@@ -665,6 +665,27 @@
                 </div>
             </div>
 
+            <!-- Orders Search Box -->
+            <div class="card"
+                style="padding: 18px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                <div class="search-box-v2" style="margin-bottom: 14px;">
+                    <input type="text" id="order-search" placeholder="Search by User ID, Channel Name, Username..."
+                        style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
+                </div>
+
+                <button onclick="triggerOrderSearch()" class="gradient-btn"
+                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
+                    <i class="fas fa-search"></i> Find Order
+                </button>
+
+                <div id="reset-order-search-container" style="display: none;">
+                    <button onclick="resetOrderSearch()"
+                        style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 5px;">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
             <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Orders Management</h3>

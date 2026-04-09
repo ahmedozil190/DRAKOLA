@@ -1434,8 +1434,46 @@ async function loadOrders() {
     }
 }
 
+let orderFilterText = '';
+
+function triggerOrderSearch() {
+    const query = document.getElementById('order-search').value.trim();
+    const resetBtn = document.getElementById('reset-order-search-container');
+
+    if (query) {
+        resetBtn.style.display = 'flex';
+    } else {
+        resetBtn.style.display = 'none';
+    }
+
+    orderFilterText = query.toLowerCase();
+    tg.HapticFeedback.impactOccurred('light');
+    currentOrdersPage = 1; // Reset to page 1
+    applyOrdersPagination();
+}
+
+function resetOrderSearch() {
+    document.getElementById('order-search').value = '';
+    document.getElementById('reset-order-search-container').style.display = 'none';
+    orderFilterText = '';
+    tg.HapticFeedback.impactOccurred('light');
+    currentOrdersPage = 1;
+    applyOrdersPagination();
+}
+
 function applyOrdersPagination() {
-    const totalOrders = allOrdersData.length;
+    let filteredOrders = allOrdersData;
+    
+    // Apply search filter if active
+    if (orderFilterText) {
+        filteredOrders = filteredOrders.filter(o => 
+            (o.user_id && o.user_id.toString().includes(orderFilterText)) ||
+            (o.chat_name && o.chat_name.toLowerCase().includes(orderFilterText)) ||
+            (o.chat_username && o.chat_username.toLowerCase().includes(orderFilterText))
+        );
+    }
+
+    const totalOrders = filteredOrders.length;
     const totalPages = Math.ceil(totalOrders / ordersPerPage);
 
     // Safety check for empty results or page bounds
@@ -1444,7 +1482,7 @@ function applyOrdersPagination() {
 
     const start = (currentOrdersPage - 1) * ordersPerPage;
     const end = start + ordersPerPage;
-    const pagedOrders = allOrdersData.slice(start, end);
+    const pagedOrders = filteredOrders.slice(start, end);
 
     // Update Pagination UI
     const container = document.getElementById('orders-pagination-container');
