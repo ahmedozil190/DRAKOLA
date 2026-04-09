@@ -103,8 +103,10 @@ function toggleMenu() {
 
 // v119: Global State Reset Function
 function resetDashboardState(viewId) {
-    // Reset Scroll
-    window.scrollTo(0, 0);
+    // Reset Scroll (v119)
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller) scroller.scrollTo(0, 0);
+    else window.scrollTo(0, 0);
 
     // Reset Users
     userFilter = 'active';
@@ -162,8 +164,10 @@ function syncAllTabUI() {
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
 
-    // Reset Scroll Position (v83)
-    window.scrollTo(0, 0);
+    // Reset Scroll Position (v119)
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller) scroller.scrollTo(0, 0);
+    else window.scrollTo(0, 0);
 
     // PERSISTENCE v48: Save current view to session storage
     sessionStorage.setItem('last_view', viewId);
@@ -1545,9 +1549,38 @@ function triggerOrderSearch() {
         resetBtn.style.display = 'flex';
     } else {
         resetBtn.style.display = 'none';
+        orderFilterText = '';
+        applyOrdersPagination();
+        return;
     }
 
     orderFilterText = query.toLowerCase();
+
+    // Global Search Auto-Switch (v119)
+    if (orderFilterText) {
+        // Try finding match across all data to auto-switch tab
+        const match = allOrdersData.find(o => 
+            (o.chat_name && o.chat_name.toLowerCase().includes(orderFilterText)) ||
+            (o.chat_username && o.chat_username.toLowerCase().includes(orderFilterText.replace('@',''))) ||
+            (o.order_id && o.order_id.toString().includes(orderFilterText)) ||
+            (o.user_id && o.user_id.toString().includes(orderFilterText))
+        );
+
+        if (match) {
+            let targetTab = 'pending';
+            if (match.status === 'completed') targetTab = 'finished';
+            else if (match.status === 'cancelled') targetTab = 'rejected';
+
+            if (targetTab !== currentOrderTab) {
+                currentOrderTab = targetTab;
+                // Sync UI
+                document.querySelectorAll('#orders-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+                const btn = document.getElementById(`order-tab-${targetTab}`);
+                if (btn) btn.classList.add('active');
+            }
+        }
+    }
+
     tg.HapticFeedback.impactOccurred('light');
     currentOrdersPage = 1; // Reset to page 1
     applyOrdersPagination();

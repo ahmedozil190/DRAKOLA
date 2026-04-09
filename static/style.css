@@ -23,30 +23,58 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom Scrollbar Styles */
+/* Custom Scrollbar Styles (Global fallbacks) */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-darker);
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1e293b;
+    background: rgba(139, 92, 246, 0.3); /* Transparent Purple */
     border-radius: 10px;
-    transition: 0.3s;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #4f73ff;
+/* Purple Main Scroller (v119) */
+#app-content-scroller {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    scroll-behavior: smooth;
+    position: relative;
+    /* Smooth Scrollbar for Main Content */
+}
+
+#app-content-scroller::-webkit-scrollbar {
+    width: 7px;
+}
+
+#app-content-scroller::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+#app-content-scroller::-webkit-scrollbar-thumb {
+    background: #8b5cf6; /* Vibrant Purple */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Padding effect */
+    background-clip: padding-box;
+}
+
+#app-content-scroller::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa; /* Lighter Purple */
 }
 
 body {
     background-color: var(--bg-main);
     color: var(--text-primary);
-    padding-bottom: 5px;
+    padding-bottom: 0px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 body::before {
