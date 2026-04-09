@@ -700,7 +700,8 @@ function prevPage() {
         currentPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -710,7 +711,8 @@ function nextPage() {
         currentPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -1755,7 +1757,8 @@ function prevOrdersPage() {
         currentOrdersPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -1765,7 +1768,8 @@ function nextOrdersPage() {
         currentOrdersPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
