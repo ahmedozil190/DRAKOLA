@@ -1926,6 +1926,7 @@ async function loadReports() {
     }
 }
 
+function renderReports(reports) {
     // 1. Grouping by Order ID AND Status (v62 Fix)
     const grouped = {};
     reports.forEach(r => {
