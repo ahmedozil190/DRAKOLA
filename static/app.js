@@ -344,11 +344,11 @@ function renderChannels(channels) {
         div.style.display = 'flex';
         div.style.flexDirection = 'column';
         div.style.gap = '12px';
-        
+
         div.innerHTML = `
-            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Username</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700; word-break: break-all; text-align: right; flex-grow: 1; min-width: 50%;">${ch.id}</span>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; flex-shrink: 0; margin-top: 2px;">Username</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700; word-break: break-all; text-align: right;">${ch.id}</span>
             </div>
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Link</span>
@@ -383,7 +383,7 @@ async function saveSettings() {
         });
         if (res.ok) {
             showSuccessPopup("Settings Saved!", "Your configuration has been updated successfully. ✨");
-            
+
             // Instantly update sidebar title (v121 Fix)
             const sideMenuTitle = document.querySelector('.side-menu-title');
             if (sideMenuTitle) {
@@ -489,11 +489,11 @@ async function addNewChannel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, link })
     });
-    
+
     // Clear inputs immediately
     idInput.value = '';
     linkInput.value = '';
-    
+
     loadInitialData();
 }
 

@@ -136,944 +136,1070 @@
     <!-- Purple Main Scroller (v119) -->
     <main id="app-content-scroller">
         <div class="container" style="margin-top: -3px;">
-        <!-- Dashboard View -->
-        <section id="overview-section" class="view-section active">
+            <!-- Dashboard View -->
+            <section id="overview-section" class="view-section active">
+                <!-- Users Section -->
+                <div class="section-header">
+                    <i class="fas fa-users"></i>
+                    <h2>Users</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Users</span>
+                        <span class="card-value val-green" id="stat-total-users">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Banned</span>
+                        <span class="card-value" id="stat-banned-users" style="color: #ef4444;">...</span>
+                    </div>
+                </div>
+
+                <!-- Tasks Section -->
+                <div class="section-header">
+                    <i class="fas fa-envelope"></i>
+                    <h2>Orders</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Orders</span>
+                        <span class="card-value val-purple" id="stat-total-tasks">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Approved</span>
+                        <span class="card-value val-green" id="stat-completed-tasks">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Pending</span>
+                        <span class="card-value val-orange" id="stat-active-tasks">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Rejected</span>
+                        <span class="card-value" id="stat-cancelled-tasks" style="color: #ef4444;">...</span>
+                    </div>
+                </div>
+
+                <!-- Finance Section (v99) -->
+                <div class="section-header">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h2>Finance</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Revenue</span>
+                        <span class="card-value val-green" id="stat-total-revenue">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Expenses</span>
+                        <span class="card-value" style="color: #ef4444;" id="stat-total-expenses">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Net Profit</span>
+                        <span class="card-value" id="stat-net-profit-home" style="font-weight: 800;">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Sales</span>
+                        <span class="card-value val-purple" id="stat-total-sales-count">...</span>
+                    </div>
+                </div>
+
+                <!-- Coupons Section (v101) -->
+                <div class="section-header">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h2>Coupons</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Active</span>
+                        <span class="card-value val-green" id="stat-active-coupons-home">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Finished</span>
+                        <span class="card-value" style="color: #ef4444;" id="stat-finished-coupons-home">...</span>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div class="section-header">
+                    <i class="fas fa-flag"></i>
+                    <h2>Reports</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Total Reports</span>
+                        <span class="card-value val-blue" id="stat-total-reports-home">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Accepted</span>
+                        <span class="card-value val-green" id="stat-accepted-reports-home">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Rejected</span>
+                        <span class="card-value" style="color: #ef4444;" id="stat-rejected-reports-home">...</span>
+                    </div>
+                </div>
+
+                <!-- Broadcast Section (v100) -->
+                <div class="section-header">
+                    <i class="fas fa-bullhorn"></i>
+                    <h2>Broadcast</h2>
+                </div>
+                <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Global Sent</span>
+                        <span class="card-value" id="stat-broadcast-global-home"
+                            style="color: #3b82f6; font-weight: 800;">...</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0;">Targeted Sent</span>
+                        <span class="card-value" id="stat-broadcast-targeted-home"
+                            style="color: #10b981; font-weight: 800;">...</span>
+                    </div>
+                </div>
+            </section>
+
             <!-- Users Section -->
-            <div class="section-header">
-                <i class="fas fa-users"></i>
-                <h2>Users</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Users</span>
-                    <span class="card-value val-green" id="stat-total-users">...</span>
+            <section id="users-section" class="view-section">
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+                    <!-- Total Users Card v108 -->
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                        <div class="card-label"
+                            style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">TOTAL USERS
+                        </div>
+                        <div class="card-value" id="user-stat-total"
+                            style="font-size: 1.3rem; color: #10b981; font-weight: 800;">...</div>
+                    </div>
+                    <!-- Banned Users Card v108 -->
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                        <div class="card-label"
+                            style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">BANNED</div>
+                        <div class="card-value" id="user-stat-banned"
+                            style="font-size: 1.3rem; color: var(--danger); font-weight: 800;">...</div>
+                    </div>
                 </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Banned</span>
-                    <span class="card-value" id="stat-banned-users" style="color: #ef4444;">...</span>
-                </div>
-            </div>
 
-            <!-- Tasks Section -->
-            <div class="section-header">
-                <i class="fas fa-envelope"></i>
-                <h2>Orders</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Orders</span>
-                    <span class="card-value val-purple" id="stat-total-tasks">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Approved</span>
-                    <span class="card-value val-green" id="stat-completed-tasks">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Pending</span>
-                    <span class="card-value val-orange" id="stat-active-tasks">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Rejected</span>
-                    <span class="card-value" id="stat-cancelled-tasks" style="color: #ef4444;">...</span>
-                </div>
-            </div>
-
-            <!-- Finance Section (v99) -->
-            <div class="section-header">
-                <i class="fas fa-dollar-sign"></i>
-                <h2>Finance</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Revenue</span>
-                    <span class="card-value val-green" id="stat-total-revenue">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Expenses</span>
-                    <span class="card-value" style="color: #ef4444;" id="stat-total-expenses">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Net Profit</span>
-                    <span class="card-value" id="stat-net-profit-home" style="font-weight: 800;">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Sales</span>
-                    <span class="card-value val-purple" id="stat-total-sales-count">...</span>
-                </div>
-            </div>
-
-            <!-- Coupons Section (v101) -->
-            <div class="section-header">
-                <i class="fas fa-ticket-alt"></i>
-                <h2>Coupons</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Active</span>
-                    <span class="card-value val-green" id="stat-active-coupons-home">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Finished</span>
-                    <span class="card-value" style="color: #ef4444;" id="stat-finished-coupons-home">...</span>
-                </div>
-            </div>
-
-            <!-- Reports Section -->
-            <div class="section-header">
-                <i class="fas fa-flag"></i>
-                <h2>Reports</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Total Reports</span>
-                    <span class="card-value val-blue" id="stat-total-reports-home">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Accepted</span>
-                    <span class="card-value val-green" id="stat-accepted-reports-home">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Rejected</span>
-                    <span class="card-value" style="color: #ef4444;" id="stat-rejected-reports-home">...</span>
-                </div>
-            </div>
-
-            <!-- Broadcast Section (v100) -->
-            <div class="section-header">
-                <i class="fas fa-bullhorn"></i>
-                <h2>Broadcast</h2>
-            </div>
-            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Global Sent</span>
-                    <span class="card-value" id="stat-broadcast-global-home" style="color: #3b82f6; font-weight: 800;">...</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0;">Targeted Sent</span>
-                    <span class="card-value" id="stat-broadcast-targeted-home" style="color: #10b981; font-weight: 800;">...</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Users Section -->
-        <section id="users-section" class="view-section">
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
-                <!-- Total Users Card v108 -->
+                <!-- Search Container (v117) -->
                 <div class="card"
-                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">TOTAL USERS</div>
-                    <div class="card-value" id="user-stat-total" style="font-size: 1.3rem; color: #10b981; font-weight: 800;">...</div>
-                </div>
-                <!-- Banned Users Card v108 -->
-                <div class="card"
-                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">BANNED</div>
-                    <div class="card-value" id="user-stat-banned" style="font-size: 1.3rem; color: var(--danger); font-weight: 800;">...</div>
-                </div>
-            </div>
+                    style="padding: 18px; margin-top: -2px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                    <!-- Search Input -->
+                    <div class="search-box-v2" style="margin-bottom: 14px; margin-top: 0;">
+                        <style>
+                            #user-search::placeholder {
+                                color: var(--text-secondary) !important;
+                                opacity: 0.6;
+                            }
+                        </style>
+                        <input type="text" id="user-search" placeholder="Search users..."
+                            style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
+                    </div>
 
-            <!-- Search Container (v117) -->
-            <div class="card"
-                style="padding: 18px; margin-top: -2px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                <!-- Search Input -->
-                <div class="search-box-v2" style="margin-bottom: 14px; margin-top: 0;">
+                    <!-- Find Button -->
+                    <button onclick="triggerSearch()" class="gradient-btn" id="find-btn"
+                        style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
+                        <i class="fas fa-search"></i> Find
+                    </button>
+
+                    <!-- Reset Search Button (Styled like image) -->
+                    <div id="reset-search-container" style="display: none;">
+                        <button onclick="resetSearch()"
+                            style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 20px;">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Management List Card (v44 - Refined Depth) -->
+                <div class="card"
+                    style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">User Management</h3>
+                    </div>
+
+                    <div class="tabs-row"
+                        style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                        <button class="tab-btn active" id="tab-active" onclick="setUserFilter('active')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Active</button>
+                        <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Banned</button>
+                    </div>
+
+                    <div id="users-list">
+                        <!-- Premium cards will be injected here -->
+                    </div>
+
+                    <div id="pagination-container" class="pagination"
+                        style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                        <button id="prev-btn" onclick="prevPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of
+                            1</span>
+                        <button id="next-btn" onclick="nextPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Finance Section (v73) -->
+            <section id="finance-section" class="view-section">
+
+                <!-- Finance Stats (Stacked) - Updated styling v104 -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                    <div class="card finance-stat-card"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Revenue</span>
+                        <span class="card-value" id="finance-total-revenue"
+                            style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
+                    </div>
+                    <div class="card finance-stat-card"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Expenses</span>
+                        <span class="card-value" id="finance-total-expenses"
+                            style="font-size: 1.3rem; color: #ef4444; font-weight: 800;">$0.00</span>
+                    </div>
+                    <div class="card finance-stat-card"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Net Profit</span>
+                        <span class="card-value" id="finance-stat-profit"
+                            style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
+                    </div>
+                    <div class="card finance-stat-card"
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Sales</span>
+                        <span class="card-value" id="finance-total-sales"
+                            style="font-size: 1.3rem; color: #a855f7; font-weight: 800;">0</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <!-- Premium Action Card: Add Sale v37 -->
+                    <div class="card finance-action-card" onclick="openAddSaleModal()"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
+                        <div
+                            style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #22c55e; font-size: 1.1rem; border: 1px solid rgba(34,197,94,0.1);">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add Sale</span>
+                    </div>
+
+                    <!-- Premium Action Card: Add Expense v37 -->
+                    <div class="card finance-action-card" onclick="openAddExpenseModal()"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
+                        <div
+                            style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ef4444; font-size: 1.1rem; border: 1px solid rgba(239,68,68,0.1);">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                        <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add
+                            Expense</span>
+                    </div>
+                </div>
+
+                <div class="card"
+                    style="min-height: 250px; display: flex; flex-direction: column; overflow: hidden; position: relative; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Finance Management</h3>
+                    </div>
+
+                    <!-- Finance Filter Tabs v117 -->
+                    <div class="tabs-row"
+                        style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                        <button class="tab-btn active" id="finance-tab-sale" onclick="setFinanceFilter('sale')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-plus-circle"></i> Sale
+                        </button>
+                        <button class="tab-btn" id="finance-tab-expense" onclick="setFinanceFilter('expense')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-minus-circle"></i> Expense
+                        </button>
+                    </div>
+                    <!-- Container for history or empty message -->
+                    <div id="finance-history-list"
+                        style="flex-grow: 1; display: flex; flex-direction: column; min-height: 180px;">
+                        <div style="margin: auto; color: #475569; opacity: 0.5; text-align: center;">Rendering
+                            history...
+                        </div>
+                    </div>
+
+                    <div id="finance-pagination-container" class="pagination"
+                        style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                        <button id="finance-prev-btn" onclick="prevFinancePage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="finance-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of
+                            1</span>
+                        <button id="finance-next-btn" onclick="nextFinancePage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings View -->
+            <section id="settings-section" class="view-section">
+                <!-- Main Settings Menu -->
+                <div id="settings-main-menu">
+                    <div class="settings-menu-list">
+                        <!-- Bot Name Card (Red) -->
+                        <div class="settings-item" onclick="showSettingsSubView('bot-name')">
+                            <div class="settings-icon-box bg-red-soft">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Bot Name</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
+
+                        <!-- Prices Card (Blue) -->
+                        <div class="settings-item" onclick="showSettingsSubView('prices')">
+                            <div class="settings-icon-box bg-blue-soft">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Prices & Commissions</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
+
+                        <!-- Channels Card (Purple) -->
+                        <div class="settings-item" onclick="showSettingsSubView('channels-config')">
+                            <div class="settings-icon-box bg-purple-soft">
+                                <i class="fas fa-broadcast-tower"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Channels & Subscriptions</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subview: Bot Name -->
+                <div id="subview-bot-name" style="display: none;">
+                    <div class="subview-header">
+                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <h2 style="font-weight: 700;">Bot Name</h2>
+                    </div>
+                    <div class="card"
+                        style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="form-group">
+                            <label>Display Name (Inside Bot)</label>
+                            <input type="text" id="bot-name-input" class="input-field" placeholder="e.g. Billion Bot">
+                        </div>
+                        <button class="primary-btn" onclick="saveSettings()">Save Name</button>
+                    </div>
+                </div>
+
+                <!-- Subview: Prices & Commissions -->
+                <div id="subview-prices" style="display: none;">
+                    <div class="subview-header">
+                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <h2 style="font-weight: 700;">Prices & Commissions</h2>
+                    </div>
+                    <div class="card"
+                        style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="form-group">
+                            <label>Transfer Fee (%)</label>
+                            <input type="number" id="transfer-fee-input" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Daily Gift (Points)</label>
+                            <input type="number" id="daily-gift-input" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Min Transfer Amount</label>
+                            <input type="number" id="min-transfer-input" class="input-field">
+                        </div>
+                        <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
+                    </div>
+                </div>
+
+                <!-- Subview: Channels Config (Unified Management) -->
+                <div id="subview-channels-config" style="display: none;">
+                    <div class="subview-header">
+                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <h2 style="font-weight: 700;">Channels & Subscriptions</h2>
+                    </div>
+
+                    <div class="card"
+                        style="margin-bottom: 25px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="form-group">
+                            <label>Add New Channel</label>
+                            <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
+                                style="margin-bottom: 10px;">
+                            <input type="text" id="new-channel-link" class="input-field" placeholder="https://t.me/...">
+                        </div>
+                        <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
+                    </div>
+
+                    <!-- Unified Container for Managed Channels -->
+                    <div class="card"
+                        style="margin-top: 20px; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Managed Channels</h3>
+                        </div>
+                        <div id="channels-list" style="display: flex; flex-direction: column; gap: 15px;">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Broadcast View (v60) -->
+            <section id="broadcast-section" class="view-section">
+
+                <!-- Broadcast Stats (v109) -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <div class="card-label"
+                            style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Global Sent
+                        </div>
+                        <div id="stat-broadcast-global" style="font-size: 1.3rem; font-weight: 800; color: #3b82f6;">0
+                        </div>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <div class="card-label"
+                            style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Targeted
+                            Sent</div>
+                        <div id="stat-broadcast-targeted" style="font-size: 1.3rem; font-weight: 800; color: #10b981;">0
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Broadcast Card v39 -->
+                <div class="card"
+                    style="margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Send to All</h3>
+                    <div class="form-group">
+                        <label>Message Content (HTML)</label>
+                        <textarea id="broadcast-all-msg" class="input-field"
+                            style="min-height: 150px; resize: vertical; padding: 15px;"
+                            placeholder="Type your global message here..."></textarea>
+                    </div>
+                    <button class="primary-btn pulse-glow" onclick="sendBroadcast('all')"
+                        style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <i class="fas fa-bullhorn"></i> Send Message
+                    </button>
+                </div>
+
+                <!-- Targeted Broadcast Card v39 -->
+                <div class="card"
+                    style="padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Send to User</h3>
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" id="broadcast-user-id" class="input-field" placeholder="e.g. 123456789">
+                    </div>
+                    <div class="form-group">
+                        <label>Message Content (HTML)</label>
+                        <textarea id="broadcast-user-msg" class="input-field"
+                            style="min-height: 120px; resize: vertical; padding: 15px;"
+                            placeholder="Type your private message here..."></textarea>
+                    </div>
+                    <button class="primary-btn" onclick="sendBroadcast('user')"
+                        style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </section>
+
+            <!-- Coupons View (v102) -->
+            <section id="coupons-section" class="view-section">
+
+                <!-- Coupons Page Stats (v103) -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Active Coupons</span>
+                        <span class="card-value val-green" id="coupon-stat-active"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                        <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Finished Coupons</span>
+                        <span class="card-value" id="coupon-stat-finished"
+                            style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
+                    </div>
+                </div>
+
+                <div class="section-header" style="display: none;">
+                    <i class="fas fa-ticket-alt" style="color: #a855f7; font-size: 1.4rem;"></i>
+                    <h3 style="margin: 0;">Coupons</h3>
+                </div>
+
+                <!-- Generate Coupon Card -->
+                <div class="card"
+                    style="margin-bottom: 25px; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Create New Coupon
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Points Value</label>
+                            <div style="position: relative;">
+                                <span
+                                    style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i
+                                        class="fas fa-star" style="font-size: 0.75rem;"></i></span>
+                                <input type="number" id="coupon-points" class="input-field" placeholder="1000"
+                                    style="padding-left: 36px; box-sizing: border-box;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Max Uses</label>
+                            <div style="position: relative;">
+                                <span
+                                    style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b;"><i
+                                        class="fas fa-users" style="font-size: 0.75rem;"></i></span>
+                                <input type="number" id="coupon-uses" class="input-field" placeholder="1"
+                                    style="padding-left: 36px; box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="primary-btn" onclick="generateCoupon()"
+                        style="background: linear-gradient(135deg, #a855f7, #7e22ce); box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <i class="fas fa-magic"></i> Generate Coupon
+                    </button>
+                </div>
+
+                <!-- Unified Coupons Container with Tabs (v73) -->
+                <div class="card"
+                    style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Coupons Management</h3>
+                    </div>
+                    <!-- Modern Tabs -->
+                    <div class="tabs-row"
+                        style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                        <button class="tab-btn active" id="coupon-tab-active" onclick="setCouponFilter('active')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-bolt"></i> Active
+                        </button>
+                        <button class="tab-btn" id="coupon-tab-finished" onclick="setCouponFilter('finished')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-history"></i> Finished
+                        </button>
+                    </div>
+
+                    <div id="coupons-list-container">
+                        <!-- Cards will be injected here dynamically -->
+                    </div>
+
+                    <!-- Coupons Pagination (v76) -->
+                    <div id="coupons-pagination-container" class="pagination"
+                        style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                        <button id="coupons-prev-btn" onclick="prevCouponsPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="coupons-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of
+                            1</span>
+                        <button id="coupons-next-btn" onclick="nextCouponsPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Orders View (v113) -->
+            <section id="orders-section" class="view-section">
+                <!-- Orders Stats Summary (Vertical) v115 -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Orders</span>
+                        <span class="card-value val-purple" id="orders-stat-total"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Approved</span>
+                        <span class="card-value val-green" id="orders-stat-completed"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Pending</span>
+                        <span class="card-value val-orange" id="orders-stat-active"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Rejected</span>
+                        <span class="card-value" id="orders-stat-cancelled"
+                            style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
+                    </div>
+                </div>
+
+                <!-- Orders Search Box -->
+                <div class="card"
+                    style="padding: 18px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                    <div class="search-box-v2" style="margin-bottom: 14px;">
+                        <input type="text" id="order-search" placeholder="Search by User ID, Channel Name, Username..."
+                            style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
+                    </div>
+
+                    <button onclick="triggerOrderSearch()" class="gradient-btn"
+                        style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
+                        <i class="fas fa-search"></i> Find Order
+                    </button>
+
+                    <div id="reset-order-search-container" style="display: none;">
+                        <button onclick="resetOrderSearch()"
+                            style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 5px;">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card"
+                    style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Orders Management</h3>
+                    </div>
+
+                    <!-- Orders Filter Tabs v117 -->
+                    <div class="tabs-row"
+                        style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                        <button class="tab-btn active" id="order-tab-pending" onclick="setOrderFilter('pending')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-clock"></i> Pending
+                        </button>
+                        <button class="tab-btn" id="order-tab-finished" onclick="setOrderFilter('finished')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-check-double"></i> Finished
+                        </button>
+                        <button class="tab-btn" id="order-tab-rejected" onclick="setOrderFilter('rejected')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-times-circle"></i> Rejected
+                        </button>
+                    </div>
+                    <div id="orders-list-table">
+                        <!-- Cards will be injected here -->
+                    </div>
+
+                    <!-- Orders Pagination (v116) -->
+                    <div id="orders-pagination-container" class="pagination"
+                        style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                        <button id="orders-prev-btn" onclick="prevOrdersPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="orders-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of
+                            1</span>
+                        <button id="orders-next-btn" onclick="nextOrdersPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports View (v113) -->
+            <section id="reports-section" class="view-section">
+                <!-- Reports Stats Summary (Vertical) -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Reports</span>
+                        <span class="card-value val-purple" id="reports-stat-total"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Accepted</span>
+                        <span class="card-value val-green" id="reports-stat-accepted"
+                            style="font-size: 1.3rem; font-weight: 800;">0</span>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Rejected</span>
+                        <span class="card-value" id="reports-stat-rejected"
+                            style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
+                    </div>
+                </div>
+
+                <div class="card"
+                    style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Reports Management</h3>
+                    </div>
+
+                    <!-- Reports Filter Tabs -->
+                    <div class="tabs-row"
+                        style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                        <button class="tab-btn active" id="report-tab-pending" onclick="setReportFilter('pending')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-clock"></i> Pending
+                        </button>
+                        <button class="tab-btn" id="report-tab-rejected" onclick="setReportFilter('rejected')"
+                            style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-times"></i> Rejected
+                        </button>
+                    </div>
+
+                    <div id="reports-list-table">
+                        <!-- Cards will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <style>
+            @keyframes spin {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        <!-- Success Popup Modal (v62) -->
+        <div id="success-modal" class="modal-overlay" onclick="closeSuccessPopup()">
+            <div class="success-card" onclick="event.stopPropagation()">
+                <div class="success-icon-wrap">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 id="success-title">Success!</h3>
+                <p id="success-msg">Your action was completed successfully.</p>
+                <button class="success-close-btn" onclick="closeSuccessPopup()">Dismiss</button>
+            </div>
+        </div>
+
+        <!-- Error/Warning Popup Modal (v54) -->
+        <div id="error-modal" class="modal-overlay" onclick="closeErrorPopup()">
+            <div class="error-card" onclick="event.stopPropagation()">
+                <div class="error-icon-wrap">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 id="error-title">Oops!</h3>
+                <p id="error-msg">Something went wrong.</p>
+                <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
+            </div>
+        </div>
+
+        <!-- User Management Modal (v66) -->
+        <div id="user-manage-modal" class="modal-overlay" onclick="closeUserManageModal()">
+            <div class="manage-card" onclick="event.stopPropagation()">
+                <!-- Info Rows (v69) -->
+                <div style="margin-bottom: 25px; text-align: left;">
+                    <div class="user-stat-row"
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
+                        <span style="font-size: 0.8rem; color: #94a3b8;">Full Name</span>
+                        <span id="modal-user-name"
+                            style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">-</span>
+                    </div>
+                    <div class="user-stat-row"
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
+                        <span style="font-size: 0.8rem; color: #94a3b8;">User ID</span>
+                        <span id="modal-user-id"
+                            style="font-size: 0.9rem; font-weight: 600; color: #f59e0b; font-family: monospace;">-</span>
+                    </div>
+                    <div class="user-stat-row"
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02);">
+                        <span style="font-size: 0.8rem; color: #94a3b8;">Balance</span>
+                        <span id="modal-current-bal"
+                            style="font-size: 1.1rem; font-weight: 800; color: #10b981;">0</span>
+                    </div>
+                </div>
+
+                <!-- Inline Alert (v55) -->
+                <div id="modal-error-alert" class="inline-error-alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="modal-error-text">Message here</span>
+                </div>
+
+                <div class="modal-input-group">
+                    <label>Adjust Balance (Points)</label>
+                    <input type="number" id="modal-points-input" class="input-field" placeholder="0"
+                        style="margin-bottom: 0;">
+                </div>
+
+                <div class="modal-actions-grid">
+                    <button class="modal-action-btn btn-add" onclick="modalUpdatePoints('add')">
+                        <i class="fas fa-plus-circle"></i> Add
+                    </button>
+                    <button class="modal-action-btn btn-sub" onclick="modalUpdatePoints('sub')">
+                        <i class="fas fa-minus-circle"></i> Subtract
+                    </button>
+                    <button id="modal-ban-btn" class="modal-action-btn btn-ban" onclick="modalToggleBan()">
+                        <i class="fas fa-ban"></i> Ban Account
+                    </button>
+                </div>
+
+                <button class="success-close-btn" onclick="closeUserManageModal()"
+                    style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
+            </div>
+        </div>
+
+        <!-- Modal: Add Sale (v36) -->
+        <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
+            <div id="sale-modal-wrapper" onclick="event.stopPropagation()"
+                style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(34,197,94,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);"
+                oninput="document.getElementById('sale-alert').style.display='none'">
+                <!-- Header -->
+                <div
+                    style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(34,197,94,0.1); flex-shrink: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="width: 42px; height: 42px; background: rgba(34,197,94,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-plus" style="color: #22c55e; font-size: 1.1rem;"></i>
+                            </div>
+                            <div>
+                                <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record New Sale
+                                </h3>
+                                <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Add a sale to your records</p>
+                            </div>
+                        </div>
+                        <div onclick="closeAddSaleModal()"
+                            style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Body -->
+                <div id="sale-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
                     <style>
-                        #user-search::placeholder {
-                            color: var(--text-secondary) !important;
-                            opacity: 0.6;
+                        #sale-modal-body::-webkit-scrollbar {
+                            width: 6px;
+                        }
+
+                        #sale-modal-body::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+
+                        #sale-modal-body::-webkit-scrollbar-thumb {
+                            background: rgba(34, 197, 94, 0.5);
+                            border-radius: 4px;
+                        }
+
+                        #sale-modal-body::-webkit-scrollbar-thumb:hover {
+                            background: rgba(34, 197, 94, 0.8);
                         }
                     </style>
-                    <input type="text" id="user-search" placeholder="Search users..."
-                        style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
-                </div>
-
-                <!-- Find Button -->
-                <button onclick="triggerSearch()" class="gradient-btn" id="find-btn"
-                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
-                    <i class="fas fa-search"></i> Find
-                </button>
-
-                <!-- Reset Search Button (Styled like image) -->
-                <div id="reset-search-container" style="display: none;">
-                    <button onclick="resetSearch()"
-                        style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 20px;">
-                        Reset
+                    <div id="sale-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
+                    <div style="margin-bottom: 16px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount</label>
+                        <div style="position: relative;">
+                            <span
+                                style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #22c55e; font-weight: 700;">$</span>
+                            <input type="number" id="sale-amount" placeholder="0.00"
+                                style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Points</label>
+                        <div style="position: relative;">
+                            <span
+                                style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i
+                                    class="fas fa-star" style="font-size: 0.75rem;"></i></span>
+                            <input type="number" id="sale-points" placeholder="0"
+                                style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 36px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">User
+                            ID</label>
+                        <input type="number" id="sale-user-id" placeholder="Telegram User ID"
+                            style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
+                        <div id="sale-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
+                            <input type="hidden" id="sale-note" value="New Deposit">
+                            <div onclick="toggleSaleDropdown()" id="sale-dropdown-header"
+                                style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
+                                <span id="sale-dropdown-selected">New Deposit</span>
+                                <i class="fas fa-chevron-down" id="sale-dropdown-icon"
+                                    style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
+                            </div>
+                            <div id="sale-dropdown-list"
+                                style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
+                                <div onclick="selectSaleOption('New Deposit')"
+                                    style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                                    New Deposit</div>
+                                <div onclick="selectSaleOption('Other')"
+                                    style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sale-other-container" style="display: none;">
+                            <input type="text" id="sale-note-other" placeholder="Specify reason"
+                                style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    <button onclick="submitSale()"
+                        style="width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(34,197,94,0.2);">
+                        Confirm & Record
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- User Management List Card (v44 - Refined Depth) -->
-            <div class="card"
-                style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+        <!-- Modal: Add Expense (v36) -->
+        <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
+            <div id="expense-modal-wrapper" onclick="event.stopPropagation()"
+                style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(239,68,68,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);"
+                oninput="document.getElementById('expense-alert').style.display='none'">
+                <!-- Header -->
                 <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">User Management</h3>
-                </div>
-
-                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="tab-active" onclick="setUserFilter('active')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Active</button>
-                    <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Banned</button>
-                </div>
-
-                <div id="users-list">
-                    <!-- Premium cards will be injected here -->
-                </div>
-
-                <div id="pagination-container" class="pagination"
-                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button id="prev-btn" onclick="prevPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span id="page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button id="next-btn" onclick="nextPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Finance Section (v73) -->
-        <section id="finance-section" class="view-section">
-
-            <!-- Finance Stats (Stacked) - Updated styling v104 -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card finance-stat-card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Revenue</span>
-                    <span class="card-value" id="finance-total-revenue"
-                        style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
-                </div>
-                <div class="card finance-stat-card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Expenses</span>
-                    <span class="card-value" id="finance-total-expenses"
-                        style="font-size: 1.3rem; color: #ef4444; font-weight: 800;">$0.00</span>
-                </div>
-                <div class="card finance-stat-card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Net Profit</span>
-                    <span class="card-value" id="finance-stat-profit"
-                        style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
-                </div>
-                <div class="card finance-stat-card"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Sales</span>
-                    <span class="card-value" id="finance-total-sales"
-                        style="font-size: 1.3rem; color: #a855f7; font-weight: 800;">0</span>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                <!-- Premium Action Card: Add Sale v37 -->
-                <div class="card finance-action-card" onclick="openAddSaleModal()"
-                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
-                    <div
-                        style="width: 40px; height: 40px; background: rgba(34, 197, 94, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #22c55e; font-size: 1.1rem; border: 1px solid rgba(34,197,94,0.1);">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add Sale</span>
-                </div>
-
-                <!-- Premium Action Card: Add Expense v37 -->
-                <div class="card finance-action-card" onclick="openAddExpenseModal()"
-                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer;">
-                    <div
-                        style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #ef4444; font-size: 1.1rem; border: 1px solid rgba(239,68,68,0.1);">
-                        <i class="fas fa-minus"></i>
-                    </div>
-                    <span style="display: block; font-weight: 700; color: #fff; font-size: 0.85rem;">Add Expense</span>
-                </div>
-            </div>
-
-            <div class="card"
-                style="min-height: 250px; display: flex; flex-direction: column; overflow: hidden; position: relative; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Finance Management</h3>
-                </div>
-
-                <!-- Finance Filter Tabs v117 -->
-                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="finance-tab-sale" onclick="setFinanceFilter('sale')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-plus-circle"></i> Sale
-                    </button>
-                    <button class="tab-btn" id="finance-tab-expense" onclick="setFinanceFilter('expense')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-minus-circle"></i> Expense
-                    </button>
-                </div>
-                <!-- Container for history or empty message -->
-                <div id="finance-history-list"
-                    style="flex-grow: 1; display: flex; flex-direction: column; min-height: 180px;">
-                    <div style="margin: auto; color: #475569; opacity: 0.5; text-align: center;">Rendering history...
-                    </div>
-                </div>
-
-                <div id="finance-pagination-container" class="pagination"
-                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button id="finance-prev-btn" onclick="prevFinancePage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span id="finance-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button id="finance-next-btn" onclick="nextFinancePage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Settings View -->
-        <section id="settings-section" class="view-section">
-            <!-- Main Settings Menu -->
-            <div id="settings-main-menu">
-                <div class="settings-menu-list">
-                    <!-- Bot Name Card (Red) -->
-                    <div class="settings-item" onclick="showSettingsSubView('bot-name')">
-                        <div class="settings-icon-box bg-red-soft">
-                            <i class="fas fa-robot"></i>
+                    style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(185,28,28,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(239,68,68,0.1); flex-shrink: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="width: 42px; height: 42px; background: rgba(239,68,68,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-minus" style="color: #ef4444; font-size: 1.1rem;"></i>
+                            </div>
+                            <div>
+                                <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record Expense
+                                </h3>
+                                <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Log a business expense</p>
+                            </div>
                         </div>
-                        <div class="settings-info">
-                            <div class="settings-title">Bot Name</div>
+                        <div onclick="closeAddExpenseModal()"
+                            style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         </div>
-                        <i class="fas fa-chevron-right settings-chevron"></i>
-                    </div>
-
-                    <!-- Prices Card (Blue) -->
-                    <div class="settings-item" onclick="showSettingsSubView('prices')">
-                        <div class="settings-icon-box bg-blue-soft">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <div class="settings-info">
-                            <div class="settings-title">Prices & Commissions</div>
-                        </div>
-                        <i class="fas fa-chevron-right settings-chevron"></i>
-                    </div>
-
-                    <!-- Channels Card (Purple) -->
-                    <div class="settings-item" onclick="showSettingsSubView('channels-config')">
-                        <div class="settings-icon-box bg-purple-soft">
-                            <i class="fas fa-broadcast-tower"></i>
-                        </div>
-                        <div class="settings-info">
-                            <div class="settings-title">Channels & Subscriptions</div>
-                        </div>
-                        <i class="fas fa-chevron-right settings-chevron"></i>
                     </div>
                 </div>
-            </div>
+                <!-- Body -->
+                <div id="expense-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
+                    <style>
+                        #expense-modal-body::-webkit-scrollbar {
+                            width: 6px;
+                        }
 
-            <!-- Subview: Bot Name -->
-            <div id="subview-bot-name" style="display: none;">
-                <div class="subview-header">
-                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                    <h2 style="font-weight: 700;">Bot Name</h2>
-                </div>
-                <div class="card"
-                    style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
-                    <div class="form-group">
-                        <label>Display Name (Inside Bot)</label>
-                        <input type="text" id="bot-name-input" class="input-field" placeholder="e.g. Billion Bot">
-                    </div>
-                    <button class="primary-btn" onclick="saveSettings()">Save Name</button>
-                </div>
-            </div>
+                        #expense-modal-body::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
 
-            <!-- Subview: Prices & Commissions -->
-            <div id="subview-prices" style="display: none;">
-                <div class="subview-header">
-                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                    <h2 style="font-weight: 700;">Prices & Commissions</h2>
-                </div>
-                <div class="card"
-                    style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
-                    <div class="form-group">
-                        <label>Transfer Fee (%)</label>
-                        <input type="number" id="transfer-fee-input" class="input-field">
-                    </div>
-                    <div class="form-group">
-                        <label>Daily Gift (Points)</label>
-                        <input type="number" id="daily-gift-input" class="input-field">
-                    </div>
-                    <div class="form-group">
-                        <label>Min Transfer Amount</label>
-                        <input type="number" id="min-transfer-input" class="input-field">
-                    </div>
-                    <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
-                </div>
-            </div>
+                        #expense-modal-body::-webkit-scrollbar-thumb {
+                            background: rgba(239, 68, 68, 0.5);
+                            border-radius: 4px;
+                        }
 
-            <!-- Subview: Channels Config (Unified Management) -->
-            <div id="subview-channels-config" style="display: none;">
-                <div class="subview-header">
-                    <div class="back-btn-circle" onclick="hideSettingsSubView()">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                    <h2 style="font-weight: 700;">Channels & Subscriptions</h2>
-                </div>
-                
-                <div class="card"
-                    style="margin-bottom: 25px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
-                    <div class="form-group">
-                        <label>Add New Channel</label>
-                        <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
-                            style="margin-bottom: 10px;">
-                        <input type="text" id="new-channel-link" class="input-field"
-                            placeholder="https://t.me/...">
-                    </div>
-                    <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
-                </div>
-
-                <!-- Unified Container for Managed Channels -->
-                <div class="card" style="margin-top: 20px; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                    <h3 style="font-size: 1rem; color: #fff; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-list-ul" style="color: #6366f1;"></i> Managed Channels
-                    </h3>
-                    <div id="channels-list" style="display: flex; flex-direction: column; gap: 15px;">
-                        <!-- Injected via JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Broadcast View (v60) -->
-        <section id="broadcast-section" class="view-section">
-
-            <!-- Broadcast Stats (v109) -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card"
-                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Global Sent</div>
-                    <div id="stat-broadcast-global" style="font-size: 1.3rem; font-weight: 800; color: #3b82f6;">0</div>
-                </div>
-                <div class="card"
-                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <div class="card-label" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; margin-bottom: 0;">Targeted Sent</div>
-                    <div id="stat-broadcast-targeted" style="font-size: 1.3rem; font-weight: 800; color: #10b981;">0</div>
-                </div>
-            </div>
-
-            <!-- Global Broadcast Card v39 -->
-            <div class="card"
-                style="margin-bottom: 20px; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Send to All</h3>
-                <div class="form-group">
-                    <label>Message Content (HTML)</label>
-                    <textarea id="broadcast-all-msg" class="input-field"
-                        style="min-height: 150px; resize: vertical; padding: 15px;"
-                        placeholder="Type your global message here..."></textarea>
-                </div>
-                <button class="primary-btn pulse-glow" onclick="sendBroadcast('all')"
-                    style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    <i class="fas fa-bullhorn"></i> Send Message
-                </button>
-            </div>
-
-            <!-- Targeted Broadcast Card v39 -->
-            <div class="card"
-                style="padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Send to User</h3>
-                <div class="form-group">
-                    <label>User ID</label>
-                    <input type="text" id="broadcast-user-id" class="input-field" placeholder="e.g. 123456789">
-                </div>
-                <div class="form-group">
-                    <label>Message Content (HTML)</label>
-                    <textarea id="broadcast-user-msg" class="input-field"
-                        style="min-height: 120px; resize: vertical; padding: 15px;"
-                        placeholder="Type your private message here..."></textarea>
-                </div>
-                <button class="primary-btn" onclick="sendBroadcast('user')"
-                    style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </button>
-            </div>
-        </section>
-
-        <!-- Coupons View (v102) -->
-        <section id="coupons-section" class="view-section">
-
-            <!-- Coupons Page Stats (v103) -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Active Coupons</span>
-                    <span class="card-value val-green" id="coupon-stat-active" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
-                    <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Finished Coupons</span>
-                    <span class="card-value" id="coupon-stat-finished" style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
-                </div>
-            </div>
-
-            <div class="section-header" style="display: none;">
-                <i class="fas fa-ticket-alt" style="color: #a855f7; font-size: 1.4rem;"></i>
-                <h3 style="margin: 0;">Coupons</h3>
-            </div>
-            
-            <!-- Generate Coupon Card -->
-            <div class="card"
-                style="margin-bottom: 25px; padding: 25px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #fff;">Create New Coupon</h3>
-                
-                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Points Value</label>
+                        #expense-modal-body::-webkit-scrollbar-thumb:hover {
+                            background: rgba(239, 68, 68, 0.8);
+                        }
+                    </style>
+                    <div id="expense-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
+                    <div style="margin-bottom: 16px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount</label>
                         <div style="position: relative;">
-                            <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i class="fas fa-star" style="font-size: 0.75rem;"></i></span>
-                            <input type="number" id="coupon-points" class="input-field" placeholder="1000" style="padding-left: 36px; box-sizing: border-box;">
+                            <span
+                                style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #ef4444; font-weight: 700;">$</span>
+                            <input type="number" id="expense-amount" placeholder="0.00"
+                                style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
                         </div>
                     </div>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Max Uses</label>
-                        <div style="position: relative;">
-                            <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b;"><i class="fas fa-users" style="font-size: 0.75rem;"></i></span>
-                            <input type="number" id="coupon-uses" class="input-field" placeholder="1" style="padding-left: 36px; box-sizing: border-box;">
+                    <div style="margin-bottom: 24px;">
+                        <label
+                            style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
+                        <div id="expense-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
+                            <input type="hidden" id="expense-note" value="Prize">
+                            <div onclick="toggleExpenseDropdown()" id="expense-dropdown-header"
+                                style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
+                                <span id="expense-dropdown-selected">Prize</span>
+                                <i class="fas fa-chevron-down" id="expense-dropdown-icon"
+                                    style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
+                            </div>
+                            <div id="expense-dropdown-list"
+                                style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
+                                <div onclick="selectExpenseOption('Prize')"
+                                    style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                                    Prize</div>
+                                <div onclick="selectExpenseOption('Hosting')"
+                                    style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                                    Hosting</div>
+                                <div onclick="selectExpenseOption('Other')"
+                                    style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other
+                                </div>
+                            </div>
+                        </div>
+                        <div id="expense-other-container" style="display: none;">
+                            <input type="text" id="expense-note-other" placeholder="Specify reason"
+                                style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
                         </div>
                     </div>
-                </div>
-                
-                <button class="primary-btn" onclick="generateCoupon()"
-                    style="background: linear-gradient(135deg, #a855f7, #7e22ce); box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2); display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    <i class="fas fa-magic"></i> Generate Coupon
-                </button>
-            </div>
-
-            <!-- Unified Coupons Container with Tabs (v73) -->
-            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Coupons Management</h3>
-                </div>
-                <!-- Modern Tabs -->
-                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="coupon-tab-active" onclick="setCouponFilter('active')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-bolt"></i> Active
-                    </button>
-                    <button class="tab-btn" id="coupon-tab-finished" onclick="setCouponFilter('finished')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-history"></i> Finished
+                    <button onclick="submitExpense()"
+                        style="width: 100%; background: linear-gradient(135deg, #ef4444, #991b1b); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(239,68,68,0.2);">
+                        Save Expense
                     </button>
                 </div>
-
-                <div id="coupons-list-container">
-                    <!-- Cards will be injected here dynamically -->
-                </div>
-
-                <!-- Coupons Pagination (v76) -->
-                <div id="coupons-pagination-container" class="pagination"
-                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button id="coupons-prev-btn" onclick="prevCouponsPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span id="coupons-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button id="coupons-next-btn" onclick="nextCouponsPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Orders View (v113) -->
-        <section id="orders-section" class="view-section">
-            <!-- Orders Stats Summary (Vertical) v115 -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Orders</span>
-                    <span class="card-value val-purple" id="orders-stat-total" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Approved</span>
-                    <span class="card-value val-green" id="orders-stat-completed" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Pending</span>
-                    <span class="card-value val-orange" id="orders-stat-active" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Rejected</span>
-                    <span class="card-value" id="orders-stat-cancelled" style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
-                </div>
-            </div>
-
-            <!-- Orders Search Box -->
-            <div class="card"
-                style="padding: 18px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                <div class="search-box-v2" style="margin-bottom: 14px;">
-                    <input type="text" id="order-search" placeholder="Search by User ID, Channel Name, Username..."
-                        style="width: 100%; padding: 14px; background: #0f1116; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; margin-bottom: 2px;">
-                </div>
-
-                <button onclick="triggerOrderSearch()" class="gradient-btn"
-                    style="width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2); margin-bottom: 12px;">
-                    <i class="fas fa-search"></i> Find Order
-                </button>
-
-                <div id="reset-order-search-container" style="display: none;">
-                    <button onclick="resetOrderSearch()"
-                        style="width: 100%; padding: 15px; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; margin-bottom: 5px;">
-                        Reset
-                    </button>
-                </div>
-            </div>
-
-            <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Orders Management</h3>
-                </div>
-
-                <!-- Orders Filter Tabs v117 -->
-                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="order-tab-pending" onclick="setOrderFilter('pending')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-clock"></i> Pending
-                    </button>
-                    <button class="tab-btn" id="order-tab-finished" onclick="setOrderFilter('finished')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-check-double"></i> Finished
-                    </button>
-                    <button class="tab-btn" id="order-tab-rejected" onclick="setOrderFilter('rejected')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-times-circle"></i> Rejected
-                    </button>
-                </div>
-                <div id="orders-list-table">
-                    <!-- Cards will be injected here -->
-                </div>
-
-                <!-- Orders Pagination (v116) -->
-                <div id="orders-pagination-container" class="pagination"
-                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button id="orders-prev-btn" onclick="prevOrdersPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span id="orders-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button id="orders-next-btn" onclick="nextOrdersPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Reports View (v113) -->
-        <section id="reports-section" class="view-section">
-            <!-- Reports Stats Summary (Vertical) -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Reports</span>
-                    <span class="card-value val-purple" id="reports-stat-total" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Accepted</span>
-                    <span class="card-value val-green" id="reports-stat-accepted" style="font-size: 1.3rem; font-weight: 800;">0</span>
-                </div>
-                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
-                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Rejected</span>
-                    <span class="card-value" id="reports-stat-rejected" style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
-                </div>
-            </div>
-
-            <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Reports Management</h3>
-                </div>
-
-                <!-- Reports Filter Tabs -->
-                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="report-tab-pending" onclick="setReportFilter('pending')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-clock"></i> Pending
-                    </button>
-                    <button class="tab-btn" id="report-tab-rejected" onclick="setReportFilter('rejected')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-times"></i> Rejected
-                    </button>
-                </div>
-
-                <div id="reports-list-table">
-                    <!-- Cards will be injected here -->
-                </div>
-            </div>
-        </section>
-    </div>
-
-
-    <style>
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    <!-- Success Popup Modal (v62) -->
-    <div id="success-modal" class="modal-overlay" onclick="closeSuccessPopup()">
-        <div class="success-card" onclick="event.stopPropagation()">
-            <div class="success-icon-wrap">
-                <i class="fas fa-check"></i>
-            </div>
-            <h3 id="success-title">Success!</h3>
-            <p id="success-msg">Your action was completed successfully.</p>
-            <button class="success-close-btn" onclick="closeSuccessPopup()">Dismiss</button>
-        </div>
-    </div>
-
-    <!-- Error/Warning Popup Modal (v54) -->
-    <div id="error-modal" class="modal-overlay" onclick="closeErrorPopup()">
-        <div class="error-card" onclick="event.stopPropagation()">
-            <div class="error-icon-wrap">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h3 id="error-title">Oops!</h3>
-            <p id="error-msg">Something went wrong.</p>
-            <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
-        </div>
-    </div>
-
-    <!-- User Management Modal (v66) -->
-    <div id="user-manage-modal" class="modal-overlay" onclick="closeUserManageModal()">
-        <div class="manage-card" onclick="event.stopPropagation()">
-            <!-- Info Rows (v69) -->
-            <div style="margin-bottom: 25px; text-align: left;">
-                <div class="user-stat-row"
-                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8;">Full Name</span>
-                    <span id="modal-user-name" style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">-</span>
-                </div>
-                <div class="user-stat-row"
-                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02); margin-bottom: 10px;">
-                    <span style="font-size: 0.8rem; color: #94a3b8;">User ID</span>
-                    <span id="modal-user-id"
-                        style="font-size: 0.9rem; font-weight: 600; color: #f59e0b; font-family: monospace;">-</span>
-                </div>
-                <div class="user-stat-row"
-                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-radius: 12px; background: rgba(255,255,255,0.02);">
-                    <span style="font-size: 0.8rem; color: #94a3b8;">Balance</span>
-                    <span id="modal-current-bal" style="font-size: 1.1rem; font-weight: 800; color: #10b981;">0</span>
-                </div>
-            </div>
-
-            <!-- Inline Alert (v55) -->
-            <div id="modal-error-alert" class="inline-error-alert">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="modal-error-text">Message here</span>
-            </div>
-
-            <div class="modal-input-group">
-                <label>Adjust Balance (Points)</label>
-                <input type="number" id="modal-points-input" class="input-field" placeholder="0"
-                    style="margin-bottom: 0;">
-            </div>
-
-            <div class="modal-actions-grid">
-                <button class="modal-action-btn btn-add" onclick="modalUpdatePoints('add')">
-                    <i class="fas fa-plus-circle"></i> Add
-                </button>
-                <button class="modal-action-btn btn-sub" onclick="modalUpdatePoints('sub')">
-                    <i class="fas fa-minus-circle"></i> Subtract
-                </button>
-                <button id="modal-ban-btn" class="modal-action-btn btn-ban" onclick="modalToggleBan()">
-                    <i class="fas fa-ban"></i> Ban Account
-                </button>
-            </div>
-
-            <button class="success-close-btn" onclick="closeUserManageModal()"
-                style="margin-top: 25px; background: rgba(255,255,255,0.05); color: #94a3b8; box-shadow: none;">Close</button>
-        </div>
-    </div>
-
-    <!-- Modal: Add Sale (v36) -->
-    <div id="add-sale-modal" class="modal-overlay" onclick="closeAddSaleModal()">
-        <div id="sale-modal-wrapper" onclick="event.stopPropagation()"
-            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(34,197,94,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('sale-alert').style.display='none'">
-            <!-- Header -->
-            <div
-                style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(34,197,94,0.1); flex-shrink: 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div
-                            style="width: 42px; height: 42px; background: rgba(34,197,94,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-plus" style="color: #22c55e; font-size: 1.1rem;"></i>
-                        </div>
-                        <div>
-                            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record New Sale
-                            </h3>
-                            <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Add a sale to your records</p>
-                        </div>
-                    </div>
-                    <div onclick="closeAddSaleModal()"
-                        style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
-                        <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- Body -->
-            <div id="sale-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
-                <style>
-                    #sale-modal-body::-webkit-scrollbar { width: 6px; }
-                    #sale-modal-body::-webkit-scrollbar-track { background: transparent; }
-                    #sale-modal-body::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.5); border-radius: 4px; }
-                    #sale-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(34,197,94,0.8); }
-                </style>
-                <div id="sale-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
-                <div style="margin-bottom: 16px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount</label>
-                    <div style="position: relative;">
-                        <span
-                            style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #22c55e; font-weight: 700;">$</span>
-                        <input type="number" id="sale-amount" placeholder="0.00"
-                            style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Points</label>
-                    <div style="position: relative;">
-                        <span
-                            style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a855f7;"><i
-                                class="fas fa-star" style="font-size: 0.75rem;"></i></span>
-                        <input type="number" id="sale-points" placeholder="0"
-                            style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 36px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">User
-                        ID</label>
-                    <input type="number" id="sale-user-id" placeholder="Telegram User ID"
-                        style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
-                </div>
-                <div style="margin-bottom: 24px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
-                    <div id="sale-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
-                        <input type="hidden" id="sale-note" value="New Deposit">
-                        <div onclick="toggleSaleDropdown()" id="sale-dropdown-header"
-                             style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
-                            <span id="sale-dropdown-selected">New Deposit</span>
-                            <i class="fas fa-chevron-down" id="sale-dropdown-icon" style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
-                        </div>
-                        <div id="sale-dropdown-list"
-                             style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
-                            <div onclick="selectSaleOption('New Deposit')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">New Deposit</div>
-                            <div onclick="selectSaleOption('Other')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other</div>
-                        </div>
-                    </div>
-                    <div id="sale-other-container" style="display: none;">
-                        <input type="text" id="sale-note-other" placeholder="Specify reason"
-                            style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
-                    </div>
-                </div>
-                <button onclick="submitSale()"
-                    style="width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(34,197,94,0.2);">
-                    Confirm & Record
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- Modal: Add Expense (v36) -->
-    <div id="add-expense-modal" class="modal-overlay" onclick="closeAddExpenseModal()">
-        <div id="expense-modal-wrapper" onclick="event.stopPropagation()"
-            style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(239,68,68,0.2); border-radius: 24px; padding: 0; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.6);" oninput="document.getElementById('expense-alert').style.display='none'">
-            <!-- Header -->
-            <div
-                style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(185,28,28,0.08)); padding: 24px 24px 20px; border-bottom: 1px solid rgba(239,68,68,0.1); flex-shrink: 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div
-                            style="width: 42px; height: 42px; background: rgba(239,68,68,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-minus" style="color: #ef4444; font-size: 1.1rem;"></i>
-                        </div>
-                        <div>
-                            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 800; margin: 0;">Record Expense</h3>
-                            <p style="color: #64748b; font-size: 0.75rem; margin: 0;">Log a business expense</p>
-                        </div>
-                    </div>
-                    <div onclick="closeAddExpenseModal()"
-                        style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
-                        <i class="fas fa-times" style="color: #94a3b8; font-size: 0.8rem;"></i>
-                    </div>
+        <!-- Custom Confirmation Modal (v93) -->
+        <div id="confirm-modal" class="modal-overlay">
+            <div class="manage-card" style="text-align: center; border-color: rgba(245, 158, 11, 0.2);">
+                <div class="success-icon-wrap" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
-            </div>
-            <!-- Body -->
-            <div id="expense-modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
-                <style>
-                    #expense-modal-body::-webkit-scrollbar { width: 6px; }
-                    #expense-modal-body::-webkit-scrollbar-track { background: transparent; }
-                    #expense-modal-body::-webkit-scrollbar-thumb { background: rgba(239,68,68,0.5); border-radius: 4px; }
-                    #expense-modal-body::-webkit-scrollbar-thumb:hover { background: rgba(239,68,68,0.8); }
-                </style>
-                <div id="expense-alert" class="inline-alert" style="display: none; margin-bottom: 15px;"></div>
-                <div style="margin-bottom: 16px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Amount</label>
-                    <div style="position: relative;">
-                        <span
-                            style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #ef4444; font-weight: 700;">$</span>
-                        <input type="number" id="expense-amount" placeholder="0.00"
-                            style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px 12px 32px; color: #fff; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 24px;">
-                    <label
-                        style="display: block; font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">Reason</label>
-                    <div id="expense-dropdown-wrapper" style="position: relative; width: 100%; margin-bottom: 8px;">
-                        <input type="hidden" id="expense-note" value="Prize">
-                        <div onclick="toggleExpenseDropdown()" id="expense-dropdown-header"
-                             style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;">
-                            <span id="expense-dropdown-selected">Prize</span>
-                            <i class="fas fa-chevron-down" id="expense-dropdown-icon" style="color: #94a3b8; font-size: 0.8rem; transition: transform 0.3s;"></i>
-                        </div>
-                        <div id="expense-dropdown-list"
-                             style="display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-top: 5px; flex-direction: column; overflow: hidden;">
-                            <div onclick="selectExpenseOption('Prize')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">Prize</div>
-                            <div onclick="selectExpenseOption('Hosting')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.02);">Hosting</div>
-                            <div onclick="selectExpenseOption('Other')" style="padding: 12px 14px; color: #fff; font-size: 0.9rem; cursor: pointer;">Other</div>
-                        </div>
-                    </div>
-                    <div id="expense-other-container" style="display: none;">
-                        <input type="text" id="expense-note-other" placeholder="Specify reason"
-                            style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
-                    </div>
-                </div>
-                <button onclick="submitExpense()"
-                    style="width: 100%; background: linear-gradient(135deg, #ef4444, #991b1b); border: none; border-radius: 14px; padding: 15px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(239,68,68,0.2);">
-                    Save Expense
-                </button>
-            </div>
-        </div>
-    </div>
+                <h3 id="confirm-title" style="margin-bottom: 10px; font-weight: 800; color: #fff;">Confirm Action</h3>
+                <p id="confirm-msg"
+                    style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; padding: 0 10px;">
+                    Are you sure you want to perform this action?
+                </p>
 
-    <!-- Custom Confirmation Modal (v93) -->
-    <div id="confirm-modal" class="modal-overlay">
-        <div class="manage-card" style="text-align: center; border-color: rgba(245, 158, 11, 0.2);">
-            <div class="success-icon-wrap" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h3 id="confirm-title" style="margin-bottom: 10px; font-weight: 800; color: #fff;">Confirm Action</h3>
-            <p id="confirm-msg" style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; padding: 0 10px;">
-                Are you sure you want to perform this action?
-            </p>
-            
-            <div style="display: flex; gap: 12px;">
-                <button onclick="closeConfirmPopup(false)" 
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="closeConfirmPopup(false)"
                         style="flex: 1; padding: 14px; background: rgba(255,255,255,0.05); color: #94a3b8; border: none; border-radius: 14px; font-weight: 700; cursor: pointer;">
-                    Cancel
-                </button>
-                <button id="confirm-yes-btn" 
+                        Cancel
+                    </button>
+                    <button id="confirm-yes-btn"
                         style="flex: 1; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);">
-                    Confirm
-                </button>
+                        Confirm
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
     </main>
 
-    <script src="/static/app.js?v=56"></script>
+    <script src="/static/app.js?v=57"></script>
 </body>
 
 </html>
