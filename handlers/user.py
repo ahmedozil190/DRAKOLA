@@ -280,7 +280,7 @@ async def invite_link(call: CallbackQuery):
         await call.message.edit_text(text, reply_markup=kbd)
         await call.answer()
 
-@router.message(F.text & ~F.text.startswith("/"), StateFilter(None))
+@router.message(F.chat.type == "private", F.text & ~F.text.startswith("/"), StateFilter(None))
 async def check_for_coupon(message: Message, state: FSMContext):
 
     text = message.text.strip()

@@ -95,6 +95,19 @@ async def send_turbo_channels(user_id: int, bot, message=None, callback_query=No
             try:
                 chat = await bot.get_chat(o.chat_id)
                 url = chat.invite_link or (f"https://t.me/{chat.username}" if chat.username else f"https://t.me/c/{str(o.chat_id).replace('-100', '')}/1")
+                
+                # Sync Name and Username dynamically for the Web App
+                updated = False
+                if chat.title and o.chat_name != chat.title:
+                    o.chat_name = chat.title
+                    updated = True
+                if chat.username != o.chat_username:
+                    o.chat_username = chat.username
+                    updated = True
+                if updated:
+                    session.add(o)
+                    await session.commit()
+                
                 kbd_rows.append([
                     InlineKeyboardButton(text=f"{o.chat_name}", url=url), 
                     InlineKeyboardButton(text="ابلاغ", callback_data=f"report_{o.id}")
@@ -252,6 +265,18 @@ async def send_next_channel(user_id: int, bot, message=None, callback_query=None
         try:
             chat = await bot.get_chat(order_to_show.chat_id)
             url = chat.invite_link or (f"https://t.me/{chat.username}" if chat.username else f"https://t.me/c/{str(order_to_show.chat_id).replace('-100', '')}/1")
+            
+            # Sync Name and Username dynamically for the Web App
+            updated = False
+            if chat.title and order_to_show.chat_name != chat.title:
+                order_to_show.chat_name = chat.title
+                updated = True
+            if chat.username != order_to_show.chat_username:
+                order_to_show.chat_username = chat.username
+                updated = True
+            if updated:
+                session.add(order_to_show)
+                await session.commit()
             
             user = await crud.get_user(session, user_id)
             user_points = user.points if user else 0
