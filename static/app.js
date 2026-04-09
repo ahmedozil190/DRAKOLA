@@ -1790,8 +1790,8 @@ function renderReports(reports) {
     filteredReports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
         const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
-        const nameLabel = isGroup ? 'Group Name' : 'Channel Name';
-        const usernameLabel = isGroup ? 'Group Username' : 'Channel Username';
+        const nameLabel = 'Name';
+        const usernameLabel = 'Username';
 
         const card = document.createElement('div');
         card.className = 'user-card';
@@ -1844,8 +1844,8 @@ function renderReports(reports) {
                 ` : (r.status === 'rejected' ? `
                 <!-- Stylized Rejected Status (v118 Match Coupon Style) -->
                 <div style="margin-top: 5px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
-                    <i class="fas fa-times-circle" style="color: #ef4444; font-size: 0.9rem;"></i>
-                    <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">REJECTED</span>
+                    <i class="fas fa-times-circle" style="color: #64748b; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">REJECTED</span>
                 </div>
                 ` : `
                 <!-- Stylized Accepted Status (v118) -->
