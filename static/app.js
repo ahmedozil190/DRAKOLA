@@ -347,18 +347,24 @@ function renderChannels(channels) {
         div.style.background = 'rgba(255, 255, 255, 0.015)';
         
         div.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Username / ID</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${ch.id}</span>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Channel Username / ID</label>
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; color: #fff; font-size: 0.95rem; font-weight: 600;">
+                    ${ch.id}
+                </div>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Invite Link</span>
-                <span style="font-size: 0.85rem; color: #3b82f6; word-break: break-all; font-family: monospace;">${ch.link}</span>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Invite Link</label>
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; color: #3b82f6; font-size: 0.85rem; font-family: monospace; word-break: break-all;">
+                    ${ch.link}
+                </div>
             </div>
-            <button class="modal-action-btn btn-sub" onclick="deleteChannel('${ch.id}')" 
-                    style="margin-top: 5px; width: 100%; justify-content: center; padding: 10px; font-size: 0.85rem;">
-                <i class="fas fa-trash-alt"></i> Delete Channel
-            </button>
+            <div style="margin-top: 5px;">
+                <button class="modal-action-btn btn-sub" onclick="deleteChannel('${ch.id}')" 
+                        style="width: 100%; justify-content: center; padding: 14px; font-size: 0.9rem; border-radius: 14px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <i class="fas fa-trash-alt"></i> Delete Channel
+                </button>
+            </div>
         `;
         list.appendChild(div);
     });
