@@ -118,3 +118,15 @@ class CouponUsage(Base):
     coupon_id = Column(Integer, ForeignKey("coupons.id"), index=True)
     used_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+class UserReport(Base):
+    __tablename__ = "user_reports"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger, ForeignKey("users.user_id"), index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"), index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    status = Column(String, default="pending") # 'pending', 'resolved'
+
+    user = relationship("User")
+    order = relationship("Order")
+

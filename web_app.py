@@ -7,7 +7,7 @@ from config import ADMIN_ID
 import asyncio
 import logging
 from sqlalchemy import select, func
-from models import Order
+from models import Order, UserReport
 
 # Directory for static files (Frontend)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
@@ -202,6 +202,58 @@ async def delete_coupon_api(request):
         success = await crud.delete_coupon(session, code)
         return web.json_response({"status": "ok", "deleted": success})
 
+# --- Orders API (v113) ---
+async def get_orders_api(request):
+    async for session in get_session():
+        orders = await crud.get_all_orders(session)
+        return web.json_response([{
+            "id": o.id,
+            "user_id": o.user_id,
+            "chat_name": o.chat_name or "Unknown",
+            "chat_username": o.chat_username or "",
+            "chat_type": o.chat_type,
+            "required_members": o.required_members,
+            "current_members": o.current_members,
+            "status": o.status
+        } for o in orders])
+
+async def update_order_api(request):
+    data = await request.json()
+    async for session in get_session():
+        await crud.update_order_status(session, int(data['id']), data['status'])
+        return web.json_response({"status": "ok"})
+
+# --- Reports API (v113) ---
+async def get_reports_api(request):
+    async for session in get_session():
+        reports = await crud.get_all_reports(session)
+        # Use simple mapping for now
+        data = []
+        for r in reports:
+            # Load user and order manually for more info? 
+            # For speed, just get names if possible
+            # We'll just return raw IDs for now and maybe fetch user/order names in frontend if needed
+            # but better to fetch here
+            res_user = await crud.get_user(session, r.user_id)
+            res_order = await session.get(Order, r.order_id)
+            
+            data.append({
+                "id": r.id,
+                "user_id": r.user_id,
+                "user_name": res_user.first_name if res_user else str(r.user_id),
+                "order_id": r.order_id,
+                "chat_name": res_order.chat_name if res_order else "Deleted Order",
+                "created_at": r.created_at.strftime("%Y-%m-%d %H:%M"),
+                "status": r.status
+            })
+        return web.json_response(data)
+
+async def delete_report_api(request):
+    data = await request.json()
+    async for session in get_session():
+        await crud.delete_report(session, int(data['id']))
+        return web.json_response({"status": "ok"})
+
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
     try:
@@ -255,6 +307,12 @@ def setup_web_app(bot):
     app.router.add_get('/api/coupons', get_coupons_data)
     app.router.add_post('/api/coupons/add', add_coupon_api)
     app.router.add_post('/api/coupons/delete', delete_coupon_api)
+    
+    # New Orders & Reports API (v113)
+    app.router.add_get('/api/orders', get_orders_api)
+    app.router.add_post('/api/orders/update', update_order_api)
+    app.router.add_get('/api/reports', get_reports_api)
+    app.router.add_post('/api/reports/delete', delete_report_api)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')

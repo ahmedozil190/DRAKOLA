@@ -1,6 +1,6 @@
 from sqlalchemy import select, update, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import User, Order, Subscription, MandatoryChannel, GlobalSettings, FinancialRecord, Coupon, CouponUsage
+from models import User, Order, Subscription, MandatoryChannel, GlobalSettings, FinancialRecord, Coupon, CouponUsage, UserReport
 
 async def get_user(session: AsyncSession, user_id: int):
     result = await session.execute(select(User).where(User.user_id == user_id))
@@ -248,3 +248,38 @@ async def record_coupon_usage(session: AsyncSession, user_id: int, coupon_id: in
     session.add(usage)
     # Note: caller should commit
     return usage
+
+# --- Orders & Tasks Management (v113) ---
+async def get_all_orders(session: AsyncSession, limit: int = 50, offset: int = 0):
+    result = await session.execute(
+        select(Order).order_by(Order.id.desc()).limit(limit).offset(offset)
+    )
+    return result.scalars().all()
+
+async def update_order_status(session: AsyncSession, order_id: int, status: str):
+    # status can be 'active', 'cancelled', 'completed', or 'delete'
+    result = await session.execute(select(Order).where(Order.id == order_id))
+    order = result.scalar_one_or_none()
+    if order:
+        if status == 'delete':
+            await session.delete(order)
+        else:
+            order.status = status
+        await session.commit()
+    return order
+
+# --- User Reports Management (v113) ---
+async def get_all_reports(session: AsyncSession, limit: int = 50, offset: int = 0):
+    result = await session.execute(
+        select(UserReport).order_by(UserReport.id.desc()).limit(limit).offset(offset)
+    )
+    return result.scalars().all()
+
+async def delete_report(session: AsyncSession, report_id: int):
+    result = await session.execute(select(UserReport).where(UserReport.id == report_id))
+    report = result.scalar_one_or_none()
+    if report:
+        await session.delete(report)
+        await session.commit()
+        return True
+    return False

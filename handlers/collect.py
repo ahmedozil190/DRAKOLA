@@ -4,7 +4,7 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKe
 from sqlalchemy import select, or_, and_, func
 from database import get_session
 import crud
-from models import Order, Subscription, SkipRecord
+from models import Order, Subscription, SkipRecord, UserReport
 import datetime
 from keyboard import collect_menu_keyboard, collect_back_keyboard
 
@@ -416,6 +416,12 @@ async def verify_sub(call: CallbackQuery):
 
 @router.callback_query(F.data.startswith("report_"))
 async def report_channel(call: CallbackQuery):
+    order_id = int(call.data.split("_")[1])
+    async for session in get_session():
+        report = UserReport(user_id=call.from_user.id, order_id=order_id)
+        session.add(report)
+        await session.commit()
+        
     await call.answer("✅ تم استلام بلاغك، سيتم مراجعته من قبل الإدارة. شكراً لك!", show_alert=True)
 
 import html

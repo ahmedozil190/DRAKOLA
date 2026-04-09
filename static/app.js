@@ -125,7 +125,9 @@ function switchNav(viewId) {
         'users': 'User Management',
         'broadcast': 'Broadcast',
         'finance': 'Finance',
-        'coupons': 'Coupons'
+        'coupons': 'Coupons',
+        'orders': 'Orders',
+        'reports': 'Reports'
     };
     pageTitle.innerText = titles[viewId];
 
@@ -139,6 +141,10 @@ function switchNav(viewId) {
     } else if (viewId === 'coupons') {
         currentCouponsPage = 1;
         loadCoupons();
+    } else if (viewId === 'orders') {
+        loadOrders();
+    } else if (viewId === 'reports') {
+        loadReports();
     }
 
     // Update UI Active States
@@ -1400,4 +1406,126 @@ async function deleteCoupon(code) {
             }
         }
     );
+}
+// --- Orders Management (v113) ---
+async def loadOrders() {
+    try {
+        const response = await fetch('/api/orders');
+        const orders = await response.json();
+        renderOrders(orders);
+    } catch (e) {
+        console.error("Failed to load orders:", e);
+    }
+}
+
+function renderOrders(orders) {
+    const container = document.getElementById('orders-list-table');
+    if (!container) return;
+    
+    if (!orders || orders.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No orders found</div>';
+        return;
+    }
+    
+    container.innerHTML = orders.map(o => {
+        const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
+        return `
+            <div class="card" style="margin-bottom: 12px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div>
+                        <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">${o.chat_name}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Owner ID: ${o.user_id}</div>
+                    </div>
+                    <div style="padding: 4px 10px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
+                        ${o.status}
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="color: #94a3b8; font-size: 0.8rem;">Required: <span style="color: #fff; font-weight: 700;">${o.required_members}</span></div>
+                    <div style="color: #94a3b8; font-size: 0.8rem;">Current: <span style="color: #fff; font-weight: 700;">${o.current_members}</span></div>
+                    <div style="color: #94a3b8; font-size: 0.8rem;">Progress: <span style="color: #fff; font-weight: 700;">${Math.round((o.current_members/o.required_members)*100)}%</span></div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    ${o.status === 'active' ? 
+                        `<button onclick="updateOrderStatus(${o.id}, 'cancelled')" style="flex: 1; padding: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">Cancel</button>` : 
+                        `<button onclick="updateOrderStatus(${o.id}, 'active')" style="flex: 1; padding: 8px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">Activate</button>`
+                    }
+                    <button onclick="updateOrderStatus(${o.id}, 'delete')" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; font-size: 0.8rem; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+async def updateOrderStatus(orderId, status) {
+    if (status === 'delete' && !confirm("Are you sure you want to delete this order?")) return;
+    
+    try {
+        const response = await fetch('/api/orders/update', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id: orderId, status: status})
+        });
+        if (response.ok) {
+            tg.HapticFeedback.notificationOccurred('success');
+            loadOrders();
+        }
+    } catch (e) {
+        console.error("Update failed:", e);
+    }
+}
+
+// --- Reports Management (v113) ---
+async def loadReports() {
+    try {
+        const response = await fetch('/api/reports');
+        const reports = await response.json();
+        renderReports(reports);
+    } catch (e) {
+        console.error("Failed to load reports:", e);
+    }
+}
+
+function renderReports(reports) {
+    const container = document.getElementById('reports-list-table');
+    if (!container) return;
+    
+    if (!reports || reports.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No reports found</div>';
+        return;
+    }
+    
+    container.innerHTML = reports.map(r => `
+        <div class="card" style="margin-bottom: 12px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">Report #${r.id}</div>
+                <div style="font-size: 0.75rem; color: #64748b;">${r.created_at}</div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px;">Reported by: <span style="color: #fff; font-weight: 700;">${r.user_name}</span></div>
+                <div style="font-size: 0.85rem; color: #94a3b8;">Target Channel: <span style="color: #3b82f6; font-weight: 700;">${r.chat_name}</span></div>
+            </div>
+            <button onclick="dismissReport(${r.id})" style="width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fas fa-check-circle"></i> Dismiss Report
+            </button>
+        </div>
+    `).join('');
+}
+
+async def dismissReport(reportId) {
+    try {
+        const response = await fetch('/api/reports/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id: reportId})
+        });
+        if (response.ok) {
+            tg.HapticFeedback.notificationOccurred('success');
+            loadReports();
+        }
+    } catch (e) {
+        console.error("Dismiss failed:", e);
+    }
 }
