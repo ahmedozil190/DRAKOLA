@@ -701,7 +701,7 @@ function prevPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -712,7 +712,7 @@ function nextPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -1758,7 +1758,7 @@ function prevOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -1769,7 +1769,7 @@ function nextOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -2097,7 +2097,7 @@ function prevReportsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -2109,7 +2109,7 @@ function nextReportsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
