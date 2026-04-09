@@ -337,14 +337,13 @@ function renderChannels(channels) {
     list.innerHTML = '';
     channels.forEach(ch => {
         const div = document.createElement('div');
-        div.className = 'card';
-        div.style.padding = '20px';
-        div.style.marginBottom = '15px';
+        div.style.padding = '18px';
+        div.style.background = 'rgba(255, 255, 255, 0.02)';
+        div.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+        div.style.borderRadius = '16px';
         div.style.display = 'flex';
         div.style.flexDirection = 'column';
         div.style.gap = '12px';
-        div.style.minHeight = 'auto';
-        div.style.background = 'rgba(255, 255, 255, 0.015)';
         
         div.innerHTML = `
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">

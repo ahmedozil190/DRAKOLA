@@ -529,9 +529,14 @@
                     <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
                 </div>
 
-                <h3 style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px; font-weight: 700;">Managed Channels</h3>
-                <div id="channels-list">
-                    <!-- Injected via JS -->
+                <!-- Unified Container for Managed Channels -->
+                <div class="card" style="margin-top: 20px; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
+                    <h3 style="font-size: 1rem; color: #fff; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-list-ul" style="color: #6366f1;"></i> Managed Channels
+                    </h3>
+                    <div id="channels-list" style="display: flex; flex-direction: column; gap: 15px;">
+                        <!-- Injected via JS -->
+                    </div>
                 </div>
             </div>
         </section>
