@@ -485,10 +485,15 @@ async def notify_progress_milestones(session, bot, order_id: int):
             safe_name = html.escape(order.chat_name or "المهمة")
             chat_link = f"<a href='{chat_url}'>{safe_name}</a>"
             
-            text = f"• نسبة التمويل الحالي (<b>{reached_milestone}%</b>)\n"
-            text += f"- تم اضافة <b>{order.current_members}</b> علئ قيد الانتهاء\n"
-            text += f"- {chat_link}\n"
-            text += f"- العدد المطلوب : <b>{order.required_members}</b> 👤"
+            if reached_milestone == 100:
+                chat_type_text = "المجموعة" if order.chat_type in ["group", "supergroup"] else "القناة"
+                text = f"• تم نتهاء تمويل {chat_type_text} : <a href='{chat_url}'>{safe_name}</a>  ب {order.required_members} عضو 🚸 \n\n"
+                text += "- ❌ يرجى عدم إزالة البوت من المجموعة لضمان عدم مغادرة الأعضاء."
+            else:
+                text = f"• نسبة التمويل الحالي (<b>{reached_milestone}%</b>)\n"
+                text += f"- تم اضافة <b>{order.current_members}</b> علئ قيد الانتهاء\n"
+                text += f"- {chat_link}\n"
+                text += f"- العدد المطلوب : <b>{order.required_members}</b> 👤"
             
             try:
                 await bot.send_message(order.user_id, text, parse_mode="HTML", disable_web_page_preview=True)

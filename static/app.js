@@ -586,9 +586,7 @@ function renderUsers(users) {
         list.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
                 <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">🔍</div>
-                <b>No users found currently!</b><br>
-                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• It seems the list is empty or there are no search results.</p>
-                <p style="font-size: 0.85rem; opacity: 0.8;">• Make sure to check the filter or search query.</p>
+                <b>No users found currently!</b>
             </div>
         `;
         return;
