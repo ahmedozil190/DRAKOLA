@@ -186,19 +186,28 @@ function populateStats(stats) {
     document.getElementById('stat-active-tasks').innerText = stats.active_orders || 0;
     document.getElementById('stat-cancelled-tasks').innerText = stats.cancelled_orders || 0;
 
-    // Finance section mapping (v99)
+    // Finance section mapping (v112 Robust Fix)
     if (document.getElementById('stat-total-revenue')) {
-        const netProfit = (stats.total_revenue || 0) - (stats.total_expenses || 0);
-        document.getElementById('stat-total-revenue').innerText = `$${(stats.total_revenue || 0).toLocaleString()}`;
-        document.getElementById('stat-total-expenses').innerText = `$${(stats.total_expenses || 0).toLocaleString()}`;
+        const rev = parseFloat(stats.total_revenue || 0);
+        const exp = parseFloat(stats.total_expenses || 0);
+        const netProfit = rev - exp;
+
+        document.getElementById('stat-total-revenue').innerText = `$${rev.toLocaleString()}`;
+        document.getElementById('stat-total-expenses').innerText = `$${exp.toLocaleString()}`;
         document.getElementById('stat-total-sales-count').innerText = stats.total_sales || 0;
         
-        // Net Profit (v104)
-        if (document.getElementById('stat-net-profit-home')) {
-            const profitEl = document.getElementById('stat-net-profit-home');
-            profitEl.innerText = `$${netProfit.toLocaleString()}`;
-            profitEl.style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
+        // Net Profit logic for Home (v112 Fix)
+        const profitHomeEl = document.getElementById('stat-net-profit-home');
+        if (profitHomeEl) {
+            profitHomeEl.innerText = `$${netProfit.toLocaleString()}`;
+            profitHomeEl.style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
         }
+    }
+
+    // Broadcast mapping for Home (v112 Fix)
+    if (document.getElementById('stat-broadcast-global-home')) {
+        document.getElementById('stat-broadcast-global-home').innerText = stats.broadcast_global || 0;
+        document.getElementById('stat-broadcast-targeted-home').innerText = stats.broadcast_targeted || 0;
     }
 
     // Coupons section mapping (v101)
