@@ -283,3 +283,11 @@ async def delete_report(session: AsyncSession, report_id: int):
         await session.commit()
         return True
     return False
+
+async def update_report_status(session: AsyncSession, report_id: int, status: str):
+    result = await session.execute(select(UserReport).where(UserReport.id == report_id))
+    report = result.scalar_one_or_none()
+    if report:
+        report.status = status
+        await session.commit()
+    return report

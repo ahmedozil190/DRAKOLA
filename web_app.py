@@ -263,10 +263,6 @@ async def get_reports_api(request):
         # Use simple mapping for now
         data = []
         for r in reports:
-            # Load user and order manually for more info? 
-            # For speed, just get names if possible
-            # We'll just return raw IDs for now and maybe fetch user/order names in frontend if needed
-            # but better to fetch here
             res_user = await crud.get_user(session, r.user_id)
             res_order = await session.get(Order, r.order_id)
             
@@ -276,15 +272,16 @@ async def get_reports_api(request):
                 "user_name": res_user.first_name if res_user else str(r.user_id),
                 "order_id": r.order_id,
                 "chat_name": res_order.chat_name if res_order else "Deleted Order",
+                "chat_username": res_order.chat_username if res_order and res_order.chat_username else "",
                 "created_at": r.created_at.strftime("%Y-%m-%d %H:%M"),
                 "status": r.status
             })
         return web.json_response(data)
 
-async def delete_report_api(request):
+async def update_report_api(request):
     data = await request.json()
     async for session in get_session():
-        await crud.delete_report(session, int(data['id']))
+        await crud.update_report_status(session, int(data['id']), data['status'])
         return web.json_response({"status": "ok"})
 
 async def handle_index(request):
@@ -345,7 +342,7 @@ def setup_web_app(bot):
     app.router.add_get('/api/orders', get_orders_api)
     app.router.add_post('/api/orders/update', update_order_api)
     app.router.add_get('/api/reports', get_reports_api)
-    app.router.add_post('/api/reports/delete', delete_report_api)
+    app.router.add_post('/api/reports/update', update_report_api)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')

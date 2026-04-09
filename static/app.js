@@ -1667,43 +1667,124 @@ async function loadReports() {
 }
 
 function renderReports(reports) {
+    // 1. Update Top Stats
+    if (document.getElementById('reports-stat-total')) {
+        const total = reports.length;
+        const accepted = reports.filter(r => r.status === 'accepted').length;
+        const rejected = reports.filter(r => r.status === 'rejected').length;
+        document.getElementById('reports-stat-total').innerText = total;
+        document.getElementById('reports-stat-accepted').innerText = accepted;
+        document.getElementById('reports-stat-rejected').innerText = rejected;
+    }
+
     const container = document.getElementById('reports-list-table');
     if (!container) return;
 
     if (!reports || reports.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No reports found</div>';
+        container.innerHTML = `
+            <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
+                <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
+                <b>No reports found!</b><br>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• The reports list is currently empty.</p>
+            </div>
+        `;
         return;
     }
 
-    container.innerHTML = reports.map(r => `
-        <div class="card" style="margin-bottom: 12px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">Report #${r.id}</div>
-                <div style="font-size: 0.75rem; color: #64748b;">${r.created_at}</div>
+    // 2. Render Cards
+    container.innerHTML = '';
+    
+    // Sort so pending reports are at the top
+    reports.sort((a, b) => {
+        if (a.status === 'pending' && b.status !== 'pending') return -1;
+        if (a.status !== 'pending' && b.status === 'pending') return 1;
+        return 0;
+    });
+
+    reports.forEach((r, idx) => {
+        const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.style.marginBottom = '20px';
+
+        card.innerHTML = `
+            <div class="user-card-index">${idx + 1}</div>
+            <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
+                
+                <!-- Status -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Status</span>
+                    <div style="font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; color: ${statusColor}; text-transform: uppercase;">
+                        ${r.status}
+                    </div>
+                </div>
+
+                <!-- Reporter Name -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reporter Name</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #ffd700;">${r.user_name}</span>
+                </div>
+
+                <!-- Reporter ID -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reporter ID</span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${r.user_id}</span>
+                </div>
+
+                <!-- Target Channel Name -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Target Channel Name</span>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #60a5fa;">${r.chat_name}</span>
+                </div>
+
+                <!-- Target Username -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Target Username</span>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: #c084fc;">${r.chat_username ? '@' + r.chat_username : 'No Username'}</span>
+                </div>
+
+                <!-- Date -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: #94a3b8;">${r.created_at}</span>
+                </div>
+
+                <!-- Action Buttons -->
+                ${r.status === 'pending' ? `
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button onclick="updateReportStatus(${r.id}, 'accepted')" 
+                        style="flex: 1; padding: 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-check" style="margin-right: 5px;"></i> Accept
+                    </button>
+                    <button onclick="updateReportStatus(${r.id}, 'rejected')" 
+                        style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-times" style="margin-right: 5px;"></i> Reject
+                    </button>
+                </div>
+                ` : `
+                <div style="margin-top: 5px; padding: 10px; text-align: center; background: rgba(255,255,255,0.02); border-radius: 12px; color: ${statusColor}; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
+                    <i class="fas ${r.status === 'accepted' ? 'fa-check-circle' : 'fa-times-circle'}"></i> Report ${r.status.toUpperCase()}
+                </div>
+                `}
             </div>
-            <div style="margin-bottom: 15px;">
-                <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px;">Reported by: <span style="color: #fff; font-weight: 700;">${r.user_name}</span></div>
-                <div style="font-size: 0.85rem; color: #94a3b8;">Target Channel: <span style="color: #3b82f6; font-weight: 700;">${r.chat_name}</span></div>
-            </div>
-            <button onclick="dismissReport(${r.id})" style="width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <i class="fas fa-check-circle"></i> Dismiss Report
-            </button>
-        </div>
-    `).join('');
+        `;
+        container.appendChild(card);
+    });
 }
 
-async function dismissReport(reportId) {
+async function updateReportStatus(reportId, status) {
+    tg.HapticFeedback.impactOccurred('medium');
     try {
-        const response = await fetch('/api/reports/delete', {
+        const response = await fetch('/api/reports/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: reportId })
+            body: JSON.stringify({ id: reportId, status: status })
         });
         if (response.ok) {
             tg.HapticFeedback.notificationOccurred('success');
             loadReports();
         }
     } catch (e) {
-        console.error("Dismiss failed:", e);
+        console.error("Update failed:", e);
     }
 }
