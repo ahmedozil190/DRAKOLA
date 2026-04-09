@@ -386,8 +386,8 @@ async function addNewChannel() {
 
 async function deleteChannel(id) {
     showConfirmPopup(
-        "حذف القناة الإجبارية",
-        `هل أنت متأكد من حذف القناة (${id})؟ سيتمكن المستخدمون من استخدام البوت بدون الاشتراك فيها.`,
+        "Delete Mandatory Channel",
+        `Are you sure you want to delete the channel (${id})? Users will be able to use the bot without subscribing to it.`,
         async () => {
             tg.HapticFeedback.impactOccurred('light');
             await fetch('/api/channels/delete', {
@@ -396,7 +396,7 @@ async function deleteChannel(id) {
                 body: JSON.stringify({ id })
             });
             loadInitialData();
-            showSuccessPopup("تم الحذف", "تمت إزالة القناة من قائمة الاشتراك الإجباري.");
+            showSuccessPopup("Deleted Successfully", "The channel has been removed from the mandatory subscription list.");
         }
     );
 }
@@ -539,9 +539,9 @@ function renderUsers(users) {
         list.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
                 <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">🔍</div>
-                <b>لا يوجد مستخدمين حالياً!</b><br>
-                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• يبدو أن القائمة فارغة أو لا توجد نتائج للبحث.</p>
-                <p style="font-size: 0.85rem; opacity: 0.8;">• تأكد من صحة الفلتر أو كلمة البحث.</p>
+                <b>No users found currently!</b><br>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• It seems the list is empty or there are no search results.</p>
+                <p style="font-size: 0.85rem; opacity: 0.8;">• Make sure to check the filter or search query.</p>
             </div>
         `;
         return;
@@ -1315,8 +1315,8 @@ function nextCouponsPage() {
 
 async function deleteCoupon(code) {
     showConfirmPopup(
-        "حذف الكوبون", 
-        `هل أنت متأكد من حذف هذا الكوبون (${code})؟ \n لا يمكن التراجع عن هذا الإجراء.`,
+        "Delete Coupon", 
+        `Are you sure you want to delete this coupon (${code})? This action cannot be undone.`,
         async () => {
             tg.HapticFeedback.impactOccurred('light');
             showLoader(true);
@@ -1328,7 +1328,7 @@ async function deleteCoupon(code) {
                     body: JSON.stringify({ code })
                 });
                 if (res.ok) {
-                    showSuccessPopup("تم الحذف بنجاح", "تم تعطيل الكوبون وإزالته من القروض النشطة.");
+                    showSuccessPopup("Deleted Successfully", "The coupon has been deactivated and removed from active pools.");
                     loadCoupons();
                 }
             } catch (err) {
