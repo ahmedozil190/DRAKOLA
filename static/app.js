@@ -444,7 +444,7 @@ async function deleteChannel(id) {
 }
 
 let allUsers = [];
-let userFilter = 'all';
+let userFilter = 'active';
 let currentPage = 1;
 const usersPerPage = 5;
 let totalFilteredCount = 0;
@@ -486,7 +486,9 @@ function setUserFilter(filter) {
 
 function applyUserFilter() {
     let filtered = allUsers;
-    if (userFilter === 'banned') {
+    if (userFilter === 'active') {
+        filtered = allUsers.filter(u => !u.is_banned);
+    } else if (userFilter === 'banned') {
         filtered = allUsers.filter(u => u.is_banned);
     }
 
@@ -1799,13 +1801,15 @@ function renderReports(reports) {
             <div class="user-card-index">${idx + 1}</div>
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
                 
-                <!-- Status -->
+                <!-- Status row (Hidden for Rejected tab v118) -->
+                ${r.status !== 'rejected' ? `
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Status</span>
                     <div style="font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; color: ${statusColor}; text-transform: uppercase;">
                         ${r.status}
                     </div>
                 </div>
+                ` : ''}
 
                 <!-- Target Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
@@ -1837,11 +1841,19 @@ function renderReports(reports) {
                         <i class="fas fa-times" style="margin-right: 5px;"></i> Reject
                     </button>
                 </div>
-                ` : `
-                <div style="margin-top: 5px; padding: 10px; text-align: center; background: rgba(255,255,255,0.02); border-radius: 12px; color: ${statusColor}; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas ${r.status === 'accepted' ? 'fa-check-circle' : 'fa-times-circle'}"></i> Report(s) ${r.status.toUpperCase()}
+                ` : (r.status === 'rejected' ? `
+                <!-- Stylized Rejected Status (v118 Match Coupon Style) -->
+                <div style="margin-top: 5px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.7;">
+                    <i class="fas fa-times-circle" style="color: #ef4444; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">REJECTED</span>
                 </div>
-                `}
+                ` : `
+                <!-- Stylized Accepted Status (v118) -->
+                <div style="margin-top: 5px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: #10b981; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #10b981; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">ACCEPTED</span>
+                </div>
+                `)}
             </div>
         `;
         container.appendChild(card);

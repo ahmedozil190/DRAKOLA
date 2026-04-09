@@ -277,9 +277,8 @@
                     <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">User Management</h3>
                 </div>
 
-                <!-- Users Filter Tabs (Moved here) v117 -->
                 <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">All</button>
+                    <button class="tab-btn active" id="tab-active" onclick="setUserFilter('active')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Active</button>
                     <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Banned</button>
                 </div>
 
@@ -363,10 +362,7 @@
 
                 <!-- Finance Filter Tabs v117 -->
                 <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
-                    <button class="tab-btn active" id="finance-tab-all" onclick="setFinanceFilter('all')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fas fa-list"></i> All
-                    </button>
-                    <button class="tab-btn" id="finance-tab-sale" onclick="setFinanceFilter('sale')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <button class="tab-btn active" id="finance-tab-sale" onclick="setFinanceFilter('sale')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fas fa-plus-circle"></i> Sale
                     </button>
                     <button class="tab-btn" id="finance-tab-expense" onclick="setFinanceFilter('expense')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
