@@ -274,8 +274,13 @@ async def get_reports_api(request):
                 if db_user:
                     try:
                         tg_user = await bot.get_chat(r.user_id)
-                        if tg_user.first_name and db_user.first_name != tg_user.first_name:
-                            db_user.first_name = tg_user.first_name
+                        # Use full_name (first + last)
+                        full_name = tg_user.first_name
+                        if tg_user.last_name:
+                            full_name += f" {tg_user.last_name}"
+                        
+                        if full_name and db_user.first_name != full_name:
+                            db_user.first_name = full_name
                             updates_made = True
                     except Exception:
                         pass
