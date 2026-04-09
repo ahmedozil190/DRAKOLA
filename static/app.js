@@ -1656,10 +1656,21 @@ async function updateOrderStatus(orderId, status) {
 }
 
 // --- Reports Management (v113) ---
+let currentReportFilter = 'pending';
+let allReportsData = [];
+
+function setReportFilter(filter) {
+    currentReportFilter = filter;
+    document.querySelectorAll('#reports-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`report-tab-${filter}`).classList.add('active');
+    renderReports(allReportsData);
+}
+
 async function loadReports() {
     try {
         const response = await fetch(`/api/reports?t=${new Date().getTime()}`);
         const reports = await response.json();
+        allReportsData = reports;
         renderReports(reports);
     } catch (e) {
         console.error("Failed to load reports:", e);
@@ -1705,7 +1716,10 @@ function renderReports(reports) {
     const container = document.getElementById('reports-list-table');
     if (!container) return;
 
-    if (!finalReports || finalReports.length === 0) {
+    // Filter by tab
+    const filteredReports = finalReports.filter(r => r.status === currentReportFilter);
+
+    if (!filteredReports || filteredReports.length === 0) {
         container.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
                 <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
@@ -1719,7 +1733,7 @@ function renderReports(reports) {
     // 2. Render Cards
     container.innerHTML = '';
     
-    finalReports.forEach((r, idx) => {
+    filteredReports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
         const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
         const nameLabel = isGroup ? 'Group Name' : 'Channel Name';
