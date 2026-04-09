@@ -344,6 +344,7 @@ function populateSettings(settings) {
 function prevChannelsPage() {
     if (currentChannelsPage > 1) {
         currentChannelsPage--;
+        tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
         if (scroller) scroller.scrollTop = scroller.scrollHeight;
@@ -351,9 +352,11 @@ function prevChannelsPage() {
 }
 
 function nextChannelsPage() {
-    const maxPage = Math.ceil(allChannelsData.length / channelsPerPage);
+    const total = allChannelsData.length;
+    const maxPage = Math.ceil(total / channelsPerPage);
     if (currentChannelsPage < maxPage) {
         currentChannelsPage++;
+        tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
         if (scroller) scroller.scrollTop = scroller.scrollHeight;
@@ -387,30 +390,42 @@ function renderChannels() {
     const end = start + channelsPerPage;
     const paginated = channels.slice(start, end);
 
-    if (paginationContainer) {
-        paginationContainer.style.display = total > channelsPerPage ? 'flex' : 'none';
-        if (pageInfo) pageInfo.innerText = `Page ${currentChannelsPage} of ${maxPage}`;
-        if (prevBtn) prevBtn.style.opacity = currentChannelsPage === 1 ? '0.3' : '1';
-        if (nextBtn) nextBtn.style.opacity = currentChannelsPage === maxPage ? '0.3' : '1';
+    if (total > channelsPerPage) {
+        if (paginationContainer) {
+            paginationContainer.style.display = 'flex';
+            if (pageInfo) pageInfo.innerText = `Page ${currentChannelsPage} of ${maxPage}`;
+            
+            // Exact Users Matching Logic
+            if (prevBtn) {
+                prevBtn.style.opacity = currentChannelsPage === 1 ? '0.3' : '1';
+                prevBtn.style.pointerEvents = currentChannelsPage === 1 ? 'none' : 'auto';
+            }
+            if (nextBtn) {
+                nextBtn.style.opacity = currentChannelsPage === maxPage ? '0.3' : '1';
+                nextBtn.style.pointerEvents = currentChannelsPage === maxPage ? 'none' : 'auto';
+            }
+        }
+    } else {
+        if (paginationContainer) paginationContainer.style.display = 'none';
     }
 
     paginated.forEach((ch, index) => {
         const absoluteIndex = start + index + 1;
         const div = document.createElement('div');
+        div.className = 'card user-card'; // Matching Users Card Class
         div.style.padding = '18px';
+        div.style.paddingTop = '25px'; // Force same padding as Users
         div.style.background = 'rgba(255, 255, 255, 0.02)';
         div.style.border = '1px solid rgba(255, 255, 255, 0.08)';
         div.style.borderRadius = '16px';
         div.style.display = 'flex';
         div.style.flexDirection = 'column';
         div.style.gap = '12px';
-        div.style.position = 'relative';
+        // Position relative is already in .user-card from index.html
 
         div.innerHTML = `
-            <!-- Index Badge (v58) -->
-            <div style="position: absolute; top: -10px; right: 10px; background: #6366f1; color: #fff; padding: 2px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);">
-                #${absoluteIndex}
-            </div>
+            <!-- Exact Users Numbering Style (v59) -->
+            <div class="user-card-index">${absoluteIndex}</div>
 
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
                 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; flex-shrink: 0; margin-top: 2px;">Username</span>
