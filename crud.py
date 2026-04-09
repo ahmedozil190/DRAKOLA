@@ -284,10 +284,19 @@ async def delete_report(session: AsyncSession, report_id: int):
         return True
     return False
 
-async def update_report_status(session: AsyncSession, report_id: int, status: str):
-    result = await session.execute(select(UserReport).where(UserReport.id == report_id))
-    report = result.scalar_one_or_none()
-    if report:
+async def update_report_status(session: AsyncSession, order_id: int, status: str):
+    # 1. Update all related reports
+    result = await session.execute(select(UserReport).where(UserReport.order_id == order_id))
+    reports = result.scalars().all()
+    for report in reports:
         report.status = status
-        await session.commit()
-    return report
+        
+    # 2. If 'accepted' (meaning the report is valid), we punish/cancel the order
+    if status == 'accepted':
+        order_res = await session.execute(select(Order).where(Order.id == order_id))
+        order = order_res.scalar_one_or_none()
+        if order and order.status == 'active':
+            order.status = 'cancelled'
+            
+    await session.commit()
+    return True

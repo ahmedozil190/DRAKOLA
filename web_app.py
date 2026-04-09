@@ -335,7 +335,8 @@ async def get_reports_api(request):
 async def update_report_api(request):
     data = await request.json()
     async for session in get_session():
-        await crud.update_report_status(session, int(data['id']), data['status'])
+        # Pass order_id to bulk update reports and cancel the order if accepted
+        await crud.update_report_status(session, int(data['order_id']), data['status'])
         return web.json_response({"status": "ok"})
 
 async def handle_index(request):

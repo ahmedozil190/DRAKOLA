@@ -1667,12 +1667,37 @@ async function loadReports() {
 }
 
 function renderReports(reports) {
-    // 1. Update Top Stats
+    // 1. Grouping by Order ID
+    const grouped = {};
+    reports.forEach(r => {
+        if (!grouped[r.order_id]) {
+            grouped[r.order_id] = {
+                order_id: r.order_id,
+                chat_name: r.chat_name,
+                chat_username: r.chat_username,
+                chat_type: r.chat_type,
+                created_at: r.created_at,
+                status: r.status, // default to whatever first report has
+                count: 0
+            };
+        }
+        grouped[r.order_id].count++;
+        // If any report is pending, the whole group is considered pending
+        if (r.status === 'pending') {
+            grouped[r.order_id].status = 'pending';
+        }
+    });
+
+    const finalReports = Object.values(grouped).sort((a, b) => {
+        if (a.status === 'pending' && b.status !== 'pending') return -1;
+        if (a.status !== 'pending' && b.status === 'pending') return 1;
+        return 0;
+    });
+
     if (document.getElementById('reports-stat-total')) {
-        const total = reports.length;
-        const accepted = reports.filter(r => r.status === 'accepted').length;
-        const rejected = reports.filter(r => r.status === 'rejected').length;
-        document.getElementById('reports-stat-total').innerText = total;
+        const accepted = finalReports.filter(r => r.status === 'accepted').length;
+        const rejected = finalReports.filter(r => r.status === 'rejected').length;
+        document.getElementById('reports-stat-total').innerText = finalReports.length;
         document.getElementById('reports-stat-accepted').innerText = accepted;
         document.getElementById('reports-stat-rejected').innerText = rejected;
     }
@@ -1680,7 +1705,7 @@ function renderReports(reports) {
     const container = document.getElementById('reports-list-table');
     if (!container) return;
 
-    if (!reports || reports.length === 0) {
+    if (!finalReports || finalReports.length === 0) {
         container.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
                 <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
@@ -1694,14 +1719,7 @@ function renderReports(reports) {
     // 2. Render Cards
     container.innerHTML = '';
     
-    // Sort so pending reports are at the top
-    reports.sort((a, b) => {
-        if (a.status === 'pending' && b.status !== 'pending') return -1;
-        if (a.status !== 'pending' && b.status === 'pending') return 1;
-        return 0;
-    });
-
-    reports.forEach((r, idx) => {
+    finalReports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
         const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
         const nameLabel = isGroup ? 'Group Name' : 'Channel Name';
@@ -1723,16 +1741,10 @@ function renderReports(reports) {
                     </div>
                 </div>
 
-                <!-- Reporter Name -->
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reporter Name</span>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: #ffd700;">${r.user_name}</span>
-                </div>
-
-                <!-- Reporter ID -->
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Reporter ID</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${r.user_id}</span>
+                <!-- Report Count -->
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <span style="font-size: 0.8rem; color: #ef4444; font-weight: 700;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i> Report Count</span>
+                    <span style="font-size: 1.1rem; font-weight: 800; color: #ef4444;">${r.count}</span>
                 </div>
 
                 <!-- Target Channel Name -->
@@ -1749,25 +1761,25 @@ function renderReports(reports) {
 
                 <!-- Date -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Date</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Latest Date</span>
                     <span style="font-size: 0.85rem; font-weight: 600; color: #94a3b8;">${r.created_at}</span>
                 </div>
 
                 <!-- Action Buttons -->
                 ${r.status === 'pending' ? `
                 <div style="display: flex; gap: 8px; margin-top: 10px;">
-                    <button onclick="updateReportStatus(${r.id}, 'accepted')" 
+                    <button onclick="updateReportStatus(${r.order_id}, 'accepted')" 
                         style="flex: 1; padding: 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-check" style="margin-right: 5px;"></i> Accept
+                        <i class="fas fa-check" style="margin-right: 5px;"></i> Accept & Delete Channel
                     </button>
-                    <button onclick="updateReportStatus(${r.id}, 'rejected')" 
+                    <button onclick="updateReportStatus(${r.order_id}, 'rejected')" 
                         style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-times" style="margin-right: 5px;"></i> Reject
+                        <i class="fas fa-times" style="margin-right: 5px;"></i> Reject All
                     </button>
                 </div>
                 ` : `
                 <div style="margin-top: 5px; padding: 10px; text-align: center; background: rgba(255,255,255,0.02); border-radius: 12px; color: ${statusColor}; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas ${r.status === 'accepted' ? 'fa-check-circle' : 'fa-times-circle'}"></i> Report ${r.status.toUpperCase()}
+                    <i class="fas ${r.status === 'accepted' ? 'fa-check-circle' : 'fa-times-circle'}"></i> Report(s) ${r.status.toUpperCase()}
                 </div>
                 `}
             </div>
@@ -1776,13 +1788,13 @@ function renderReports(reports) {
     });
 }
 
-async function updateReportStatus(reportId, status) {
+async function updateReportStatus(orderId, status) {
     tg.HapticFeedback.impactOccurred('medium');
     try {
         const response = await fetch('/api/reports/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: reportId, status: status })
+            body: JSON.stringify({ order_id: orderId, status: status })
         });
         if (response.ok) {
             tg.HapticFeedback.notificationOccurred('success');
