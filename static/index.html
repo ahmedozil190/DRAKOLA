@@ -645,6 +645,26 @@
 
         <!-- Orders View (v113) -->
         <section id="orders-section" class="view-section">
+            <!-- Orders Stats Summary (Vertical) v115 -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Orders</span>
+                    <span class="card-value val-purple" id="orders-stat-total" style="font-size: 1.3rem; font-weight: 800;">0</span>
+                </div>
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Approved</span>
+                    <span class="card-value val-green" id="orders-stat-completed" style="font-size: 1.3rem; font-weight: 800;">0</span>
+                </div>
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Pending</span>
+                    <span class="card-value val-orange" id="orders-stat-active" style="font-size: 1.3rem; font-weight: 800;">0</span>
+                </div>
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Rejected</span>
+                    <span class="card-value" id="orders-stat-cancelled" style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
+                </div>
+            </div>
+
             <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Orders Management</h3>

@@ -1412,6 +1412,15 @@ async function loadOrders() {
     try {
         const response = await fetch('/api/orders');
         const orders = await response.json();
+        
+        // Update summary stats v115
+        if (document.getElementById('orders-stat-total')) {
+            document.getElementById('orders-stat-total').innerText = orders.length;
+            document.getElementById('orders-stat-active').innerText = orders.filter(o => o.status === 'active').length;
+            document.getElementById('orders-stat-completed').innerText = orders.filter(o => o.status === 'completed').length;
+            document.getElementById('orders-stat-cancelled').innerText = orders.filter(o => o.status === 'cancelled').length;
+        }
+        
         renderOrders(orders);
     } catch (e) {
         console.error("Failed to load orders:", e);
@@ -1429,28 +1438,67 @@ function renderOrders(orders) {
     
     container.innerHTML = orders.map(o => {
         const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
+        const progress = o.required_members > 0 ? Math.round((o.current_members / o.required_members) * 100) : 0;
+        
         return `
-            <div class="card" style="margin-bottom: 12px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <div>
-                        <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">${o.chat_name}</div>
-                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Owner ID: ${o.user_id}</div>
-                    </div>
-                    <div style="padding: 4px 10px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
+            <div class="card" style="margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px;">
+                <!-- 1. Status -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                    <span style="color: #64748b; font-size: 0.85rem; font-weight: 700;">STATUS</span>
+                    <span style="padding: 4px 12px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; border: 1px solid ${statusColor}44;">
                         ${o.status}
+                    </span>
+                </div>
+
+                <!-- 2. Group Name -->
+                <div style="margin-bottom: 10px;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">NAME</div>
+                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
+                </div>
+
+                <!-- 3. Group Username -->
+                <div style="margin-bottom: 10px;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">USERNAME</div>
+                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">@${o.chat_username || 'no_username'}</div>
+                </div>
+
+                <!-- 4. Owner ID -->
+                <div style="margin-bottom: 10px;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">OWNER ID</div>
+                    <div style="color: #94a3b8; font-family: monospace; font-size: 0.9rem;">${o.user_id}</div>
+                </div>
+
+                <!-- 5. Required -->
+                <div style="margin-bottom: 10px;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">REQUIRED</div>
+                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">${o.required_members} <span style="font-weight: 400; color: #64748b; font-size: 0.8rem;">Members</span></div>
+                </div>
+
+                <!-- 6. Current -->
+                <div style="margin-bottom: 10px;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">CURRENT</div>
+                    <div style="color: #10b981; font-weight: 700; font-size: 0.95rem;">${o.current_members} <span style="font-weight: 400; color: #64748b; font-size: 0.8rem;">Members</span></div>
+                </div>
+
+                <!-- 7. Progress -->
+                <div style="margin-bottom: 18px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="color: #64748b; font-size: 0.75rem; font-weight: 700;">PROGRESS</div>
+                        <div style="color: #3b82f6; font-size: 0.8rem; font-weight: 800;">${progress}%</div>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
+                        <div style="width: ${progress}%; height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 10px;"></div>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <div style="color: #94a3b8; font-size: 0.8rem;">Required: <span style="color: #fff; font-weight: 700;">${o.required_members}</span></div>
-                    <div style="color: #94a3b8; font-size: 0.8rem;">Current: <span style="color: #fff; font-weight: 700;">${o.current_members}</span></div>
-                    <div style="color: #94a3b8; font-size: 0.8rem;">Progress: <span style="color: #fff; font-weight: 700;">${Math.round((o.current_members/o.required_members)*100)}%</span></div>
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    ${o.status === 'active' ? 
-                        `<button onclick="updateOrderStatus(${o.id}, 'cancelled')" style="flex: 1; padding: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">Cancel</button>` : 
-                        `<button onclick="updateOrderStatus(${o.id}, 'active')" style="flex: 1; padding: 8px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">Activate</button>`
-                    }
-                    <button onclick="updateOrderStatus(${o.id}, 'delete')" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; font-size: 0.8rem; cursor: pointer;">
+
+                <!-- Actions -->
+                <div style="display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                    <button onclick="updateOrderStatus(${o.id}, '${o.status === 'active' ? 'cancelled' : 'active'}')" 
+                        style="flex: 1; padding: 10px; background: ${o.status === 'active' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(59, 130, 246, 0.1)'}; color: ${o.status === 'active' ? '#ef4444' : '#3b82f6'}; border: 1px solid ${o.status === 'active' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)'}; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;">
+                        ${o.status === 'active' ? 'Reject Order' : 'Approve Order'}
+                    </button>
+                    <button onclick="updateOrderStatus(${o.id}, 'delete')" 
+                        style="padding: 10px 15px; background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; font-size: 0.9rem; cursor: pointer; transition: 0.3s;">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
