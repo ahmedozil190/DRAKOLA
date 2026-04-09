@@ -1741,12 +1741,6 @@ function renderReports(reports) {
                     </div>
                 </div>
 
-                <!-- Report Count -->
-                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2);">
-                    <span style="font-size: 0.8rem; color: #ef4444; font-weight: 700;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i> Report Count</span>
-                    <span style="font-size: 1.1rem; font-weight: 800; color: #ef4444;">${r.count}</span>
-                </div>
-
                 <!-- Target Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${nameLabel}</span>
@@ -1759,10 +1753,10 @@ function renderReports(reports) {
                     <span style="font-size: 0.85rem; font-weight: 600; color: #c084fc;">${r.chat_username ? '@' + r.chat_username : 'No Username'}</span>
                 </div>
 
-                <!-- Date -->
+                <!-- Report Count -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Latest Date</span>
-                    <span style="font-size: 0.85rem; font-weight: 600; color: #94a3b8;">${r.created_at}</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Report Count</span>
+                    <span style="font-size: 1.1rem; font-weight: 800; color: #ef4444;">${r.count}</span>
                 </div>
 
                 <!-- Action Buttons -->
@@ -1770,11 +1764,11 @@ function renderReports(reports) {
                 <div style="display: flex; gap: 8px; margin-top: 10px;">
                     <button onclick="updateReportStatus(${r.order_id}, 'accepted')" 
                         style="flex: 1; padding: 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-check" style="margin-right: 5px;"></i> Accept & Delete Channel
+                        <i class="fas fa-check" style="margin-right: 5px;"></i> Accept
                     </button>
                     <button onclick="updateReportStatus(${r.order_id}, 'rejected')" 
                         style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-times" style="margin-right: 5px;"></i> Reject All
+                        <i class="fas fa-times" style="margin-right: 5px;"></i> Reject
                     </button>
                 </div>
                 ` : `
