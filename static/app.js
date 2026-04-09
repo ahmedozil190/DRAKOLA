@@ -359,7 +359,7 @@ function nextChannelsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -696,7 +696,8 @@ function prevPage() {
         currentPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -706,7 +707,8 @@ function nextPage() {
         currentPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        window.scrollTo({ top: document.getElementById('users-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -1212,7 +1214,8 @@ function prevFinancePage() {
         currentFinancePage--;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -1223,7 +1226,8 @@ function nextFinancePage() {
         currentFinancePage++;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -1560,15 +1564,17 @@ function prevCouponsPage() {
         currentCouponsPage--;
         tg.HapticFeedback.impactOccurred('light');
         loadCoupons();
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
 function nextCouponsPage() {
-    // We need the latest data to know total pages, but loadCoupons handles it.
-    // However, for immediate UI feedback:
     currentCouponsPage++;
     tg.HapticFeedback.impactOccurred('light');
     loadCoupons();
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller) scroller.scrollTop = 0;
 }
 
 
@@ -1751,7 +1757,8 @@ function prevOrdersPage() {
         currentOrdersPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
     }
 }
 
@@ -1761,7 +1768,8 @@ function nextOrdersPage() {
         currentOrdersPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -1895,10 +1903,13 @@ async function updateOrderStatus(orderId, status) {
 
 // --- Reports Management (v113) ---
 let currentReportFilter = 'pending';
+let currentReportsPage = 1;
+const reportsPerPage = 5;
 let allReportsData = [];
 
 function setReportFilter(filter) {
     currentReportFilter = filter;
+    currentReportsPage = 1; // Reset to page 1 on filter change
     document.querySelectorAll('#reports-section .tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`report-tab-${filter}`).classList.add('active');
     renderReports(allReportsData);
@@ -1915,26 +1926,22 @@ async function loadReports() {
     }
 }
 
-function renderReports(reports) {
-    // 1. Grouping by Order ID
+    // 1. Grouping by Order ID AND Status (v62 Fix)
     const grouped = {};
     reports.forEach(r => {
-        if (!grouped[r.order_id]) {
-            grouped[r.order_id] = {
+        const key = `${r.order_id}_${r.status}`;
+        if (!grouped[key]) {
+            grouped[key] = {
                 order_id: r.order_id,
                 chat_name: r.chat_name,
                 chat_username: r.chat_username,
                 chat_type: r.chat_type,
                 created_at: r.created_at,
-                status: r.status, // default to whatever first report has
+                status: r.status,
                 count: 0
             };
         }
-        grouped[r.order_id].count++;
-        // If any report is pending, the whole group is considered pending
-        if (r.status === 'pending') {
-            grouped[r.order_id].status = 'pending';
-        }
+        grouped[key].count++;
     });
 
     const finalReports = Object.values(grouped).sort((a, b) => {
@@ -1958,21 +1965,51 @@ function renderReports(reports) {
     // Filter by tab
     const filteredReports = finalReports.filter(r => r.status === currentReportFilter);
 
-    if (!filteredReports || filteredReports.length === 0) {
+    // 2. Pagination Logic (v62)
+    const total = filteredReports.length;
+    const paginationContainer = document.getElementById('reports-pagination-container');
+    const pageInfo = document.getElementById('reports-page-info');
+    const prevBtn = document.getElementById('reports-prev-btn');
+    const nextBtn = document.getElementById('reports-next-btn');
+
+    const totalPages = Math.ceil(total / reportsPerPage);
+    if (currentReportsPage > totalPages && totalPages > 0) currentReportsPage = totalPages;
+
+    if (total > reportsPerPage) {
+        if (paginationContainer) {
+            paginationContainer.style.display = 'flex';
+            if (pageInfo) pageInfo.innerText = `Page ${currentReportsPage} of ${totalPages}`;
+            if (prevBtn) {
+                prevBtn.style.opacity = currentReportsPage === 1 ? '0.3' : '1';
+                prevBtn.style.pointerEvents = currentReportsPage === 1 ? 'none' : 'auto';
+            }
+            if (nextBtn) {
+                nextBtn.style.opacity = currentReportsPage === totalPages ? '0.3' : '1';
+                nextBtn.style.pointerEvents = currentReportsPage === totalPages ? 'none' : 'auto';
+            }
+        }
+    } else {
+        if (paginationContainer) paginationContainer.style.display = 'none';
+    }
+
+    const start = (currentReportsPage - 1) * reportsPerPage;
+    const end = start + reportsPerPage;
+    const pagedReports = filteredReports.slice(start, end);
+
+    if (pagedReports.length === 0) {
         container.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
                 <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
                 <b>No reports found!</b><br>
-                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• The reports list is currently empty.</p>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• The reports list is currently empty for this tab.</p>
             </div>
         `;
         return;
     }
 
-    // 2. Render Cards
+    // 3. Render Cards
     container.innerHTML = '';
-
-    filteredReports.forEach((r, idx) => {
+    pagedReports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
         const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
         const nameLabel = 'Name';
@@ -2057,5 +2094,35 @@ async function updateReportStatus(orderId, status) {
         }
     } catch (e) {
         console.error("Update failed:", e);
+    }
+}
+
+function prevReportsPage() {
+    if (currentReportsPage > 1) {
+        currentReportsPage--;
+        tg.HapticFeedback.impactOccurred('light');
+        renderReports(allReportsData);
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    }
+}
+
+function nextReportsPage() {
+    // Re-calculate grouped counts for the current filter to find total pages
+    const grouped = {};
+    allReportsData.forEach(r => {
+        if (r.status === currentReportFilter) {
+            const key = `${r.order_id}_${r.status}`;
+            if (!grouped[key]) grouped[key] = true;
+        }
+    });
+    const totalPages = Math.ceil(Object.keys(grouped).length / reportsPerPage);
+
+    if (currentReportsPage < totalPages) {
+        currentReportsPage++;
+        tg.HapticFeedback.impactOccurred('light');
+        renderReports(allReportsData);
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
