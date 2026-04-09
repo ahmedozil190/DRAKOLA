@@ -8,6 +8,11 @@ const sideMenu = document.getElementById('side-menu');
 const menuOverlay = document.getElementById('menu-overlay');
 const pageTitle = document.getElementById('page-title');
 
+// --- Global UI State v116 ---
+let currentOrdersPage = 1;
+const ordersPerPage = 5;
+let allOrdersData = [];
+
 // --- Global UI Logic (v34) ---
 function openAddSaleModal() {
     const modal = document.getElementById('add-sale-modal');
@@ -142,6 +147,7 @@ function switchNav(viewId) {
         currentCouponsPage = 1;
         loadCoupons();
     } else if (viewId === 'orders') {
+        currentOrdersPage = 1;
         loadOrders();
     } else if (viewId === 'reports') {
         loadReports();
@@ -1412,6 +1418,7 @@ async function loadOrders() {
     try {
         const response = await fetch('/api/orders');
         const orders = await response.json();
+        allOrdersData = orders; // Cache for pagination
         
         // Update summary stats v115
         if (document.getElementById('orders-stat-total')) {
@@ -1421,70 +1428,159 @@ async function loadOrders() {
             document.getElementById('orders-stat-cancelled').innerText = orders.filter(o => o.status === 'cancelled').length;
         }
         
-        renderOrders(orders);
+        applyOrdersPagination();
     } catch (e) {
         console.error("Failed to load orders:", e);
     }
 }
 
-function renderOrders(orders) {
-    const container = document.getElementById('orders-list-table');
-    if (!container) return;
+function applyOrdersPagination() {
+    const totalOrders = allOrdersData.length;
+    const totalPages = Math.ceil(totalOrders / ordersPerPage);
     
-    if (!orders || orders.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No orders found</div>';
+    // Safety check for empty results or page bounds
+    if (currentOrdersPage > totalPages && totalPages > 0) currentOrdersPage = totalPages;
+    if (currentOrdersPage < 1) currentOrdersPage = 1;
+
+    const start = (currentOrdersPage - 1) * ordersPerPage;
+    const end = start + ordersPerPage;
+    const pagedOrders = allOrdersData.slice(start, end);
+
+    // Update Pagination UI
+    const container = document.getElementById('orders-pagination-container');
+    const prevBtn = document.getElementById('orders-prev-btn');
+    const nextBtn = document.getElementById('orders-next-btn');
+    const pageInfo = document.getElementById('orders-page-info');
+
+    if (totalOrders > ordersPerPage) {
+        container.style.display = 'flex';
+        pageInfo.innerText = `Page ${currentOrdersPage} of ${totalPages || 1}`;
+        
+        prevBtn.style.opacity = currentOrdersPage === 1 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = currentOrdersPage === 1 ? 'none' : 'auto';
+        
+        nextBtn.style.opacity = currentOrdersPage === totalPages ? '0.3' : '1';
+        nextBtn.style.pointerEvents = currentOrdersPage === totalPages ? 'none' : 'auto';
+    } else {
+        container.style.display = 'none';
+    }
+
+    renderOrders(pagedOrders);
+}
+
+function prevOrdersPage() {
+    if (currentOrdersPage > 1) {
+        currentOrdersPage--;
+        tg.HapticFeedback.impactOccurred('light');
+        applyOrdersPagination();
+        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+    }
+}
+
+function nextOrdersPage() {
+    const totalPages = Math.ceil(allOrdersData.length / ordersPerPage);
+    if (currentOrdersPage < totalPages) {
+        currentOrdersPage++;
+        tg.HapticFeedback.impactOccurred('light');
+        applyOrdersPagination();
+        window.scrollTo({ top: document.getElementById('orders-section').offsetTop - 100, behavior: 'smooth' });
+    }
+}
+
+function renderOrders(orders) {
+    const list = document.getElementById('orders-list-table');
+    if (!list) return;
+    list.innerHTML = '';
+    
+    if (orders.length === 0) {
+        list.innerHTML = `
+            <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
+                <div style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;">📊</div>
+                <b>No orders found!</b><br>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">• The orders list is currently empty.</p>
+            </div>
+        `;
         return;
     }
     
-    container.innerHTML = orders.map(o => {
-        const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
+    const startIdx = (currentOrdersPage - 1) * ordersPerPage;
+
+    orders.forEach((o, idx) => {
         const progress = o.required_members > 0 ? Math.round((o.current_members / o.required_members) * 100) : 0;
+        const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
         
-        return `
-            <div class="card" style="margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px;">
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.style.marginBottom = '20px';
+        
+        card.innerHTML = `
+            <div class="user-card-index">${startIdx + idx + 1}</div>
+            <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
+                
                 <!-- 1. Status -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
-                    <span style="color: #64748b; font-size: 0.85rem; font-weight: 700;">STATUS</span>
-                    <span style="padding: 4px 12px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; border: 1px solid ${statusColor}44;">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Order Status</span>
+                    </div>
+                    <span style="padding: 4px 10px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
                         ${o.status}
                     </span>
                 </div>
 
                 <!-- 2. Group Name -->
-                <div style="margin-bottom: 10px;">
-                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">NAME</div>
-                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
+                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Channel Name</span>
+                    </div>
+                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem; margin-left: 22px;">${o.chat_name}</div>
                 </div>
 
                 <!-- 3. Group Username -->
-                <div style="margin-bottom: 10px;">
-                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">USERNAME</div>
-                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">@${o.chat_username || 'no_username'}</div>
+                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-at" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
+                    </div>
+                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem; margin-left: 22px;">@${o.chat_username || 'no_username'}</div>
                 </div>
 
                 <!-- 4. Owner ID -->
-                <div style="margin-bottom: 10px;">
-                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">OWNER ID</div>
-                    <div style="color: #94a3b8; font-family: monospace; font-size: 0.9rem;">${o.user_id}</div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-id-badge" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Owner ID</span>
+                    </div>
+                    <div style="color: #fff; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
                 </div>
 
                 <!-- 5. Required -->
-                <div style="margin-bottom: 10px;">
-                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">REQUIRED</div>
-                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">${o.required_members} <span style="font-weight: 400; color: #64748b; font-size: 0.8rem;">Members</span></div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-users" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Required Members</span>
+                    </div>
+                    <div style="color: #fff; font-weight: 800;">${o.required_members}</div>
                 </div>
 
                 <!-- 6. Current -->
-                <div style="margin-bottom: 10px;">
-                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px;">CURRENT</div>
-                    <div style="color: #10b981; font-weight: 700; font-size: 0.95rem;">${o.current_members} <span style="font-weight: 400; color: #64748b; font-size: 0.8rem;">Members</span></div>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-user-check" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Current Members</span>
+                    </div>
+                    <div style="color: #10b981; font-weight: 800;">${o.current_members}</div>
                 </div>
 
                 <!-- 7. Progress -->
-                <div style="margin-bottom: 18px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                        <div style="color: #64748b; font-size: 0.75rem; font-weight: 700;">PROGRESS</div>
-                        <div style="color: #3b82f6; font-size: 0.8rem; font-weight: 800;">${progress}%</div>
+                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 8px; padding: 15px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Execution Progress</span>
+                        </div>
+                        <span style="color: #3b82f6; font-size: 0.8rem; font-weight: 800;">${progress}%</span>
                     </div>
                     <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
                         <div style="width: ${progress}%; height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 10px;"></div>
@@ -1492,19 +1588,20 @@ function renderOrders(orders) {
                 </div>
 
                 <!-- Actions -->
-                <div style="display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                <div style="display: flex; gap: 8px; margin-top: 5px;">
                     <button onclick="updateOrderStatus(${o.id}, '${o.status === 'active' ? 'cancelled' : 'active'}')" 
-                        style="flex: 1; padding: 10px; background: ${o.status === 'active' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(59, 130, 246, 0.1)'}; color: ${o.status === 'active' ? '#ef4444' : '#3b82f6'}; border: 1px solid ${o.status === 'active' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)'}; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s;">
-                        ${o.status === 'active' ? 'Reject Order' : 'Approve Order'}
+                        style="flex: 1; padding: 12px; background: linear-gradient(135deg, ${o.status === 'active' ? '#ef4444, #b91c1c' : '#3b82f6, #1d4ed8'}); color: #fff; border: none; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px ${o.status === 'active' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)'};">
+                        ${o.status === 'active' ? '<i class="fas fa-times"></i> Reject' : '<i class="fas fa-check"></i> Approve'}
                     </button>
                     <button onclick="updateOrderStatus(${o.id}, 'delete')" 
-                        style="padding: 10px 15px; background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; font-size: 0.9rem; cursor: pointer; transition: 0.3s;">
+                        style="padding: 12px 18px; background: #1a1d24; color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 0.9rem; cursor: pointer;">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
         `;
-    }).join('');
+        list.appendChild(card);
+    });
 }
 
 async function updateOrderStatus(orderId, status) {

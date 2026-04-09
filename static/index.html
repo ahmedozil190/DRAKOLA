@@ -672,6 +672,20 @@
                 <div id="orders-list-table">
                     <!-- Cards will be injected here -->
                 </div>
+
+                <!-- Orders Pagination (v116) -->
+                <div id="orders-pagination-container" class="pagination"
+                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                    <button id="orders-prev-btn" onclick="prevOrdersPage()" class="nav-arrow"
+                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="orders-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
+                    <button id="orders-next-btn" onclick="nextOrdersPage()" class="nav-arrow"
+                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
         </section>
 
