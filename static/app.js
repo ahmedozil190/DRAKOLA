@@ -347,17 +347,13 @@ function renderChannels(channels) {
         div.style.background = 'rgba(255, 255, 255, 0.015)';
         
         div.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <label style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Channel Username / ID</label>
-                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; color: #fff; font-size: 0.95rem; font-weight: 600;">
-                    ${ch.id}
-                </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Username</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">${ch.id}</span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <label style="font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Invite Link</label>
-                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; color: #3b82f6; font-size: 0.85rem; font-family: monospace; word-break: break-all;">
-                    ${ch.link}
-                </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Link</span>
+                <span style="font-size: 0.85rem; color: #3b82f6; word-break: break-all; font-family: monospace; max-width: 60%; text-align: right;">${ch.link}</span>
             </div>
             <div style="margin-top: 5px;">
                 <button class="modal-action-btn btn-sub" onclick="deleteChannel('${ch.id}')" 
