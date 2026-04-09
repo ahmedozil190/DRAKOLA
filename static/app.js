@@ -1408,7 +1408,7 @@ async function deleteCoupon(code) {
     );
 }
 // --- Orders Management (v113) ---
-async def loadOrders() {
+async function loadOrders() {
     try {
         const response = await fetch('/api/orders');
         const orders = await response.json();
@@ -1459,7 +1459,7 @@ function renderOrders(orders) {
     }).join('');
 }
 
-async def updateOrderStatus(orderId, status) {
+async function updateOrderStatus(orderId, status) {
     if (status === 'delete' && !confirm("Are you sure you want to delete this order?")) return;
     
     try {
@@ -1478,7 +1478,7 @@ async def updateOrderStatus(orderId, status) {
 }
 
 // --- Reports Management (v113) ---
-async def loadReports() {
+async function loadReports() {
     try {
         const response = await fetch('/api/reports');
         const reports = await response.json();
@@ -1514,7 +1514,7 @@ function renderReports(reports) {
     `).join('');
 }
 
-async def dismissReport(reportId) {
+async function dismissReport(reportId) {
     try {
         const response = await fetch('/api/reports/delete', {
             method: 'POST',
