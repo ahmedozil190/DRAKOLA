@@ -13,6 +13,11 @@ let currentOrdersPage = 1;
 const ordersPerPage = 5;
 let allOrdersData = [];
 
+// --- Channels State (v58) ---
+let currentChannelsPage = 1;
+const channelsPerPage = 5;
+let allChannelsData = [];
+
 // --- Global UI Logic (v34) ---
 function openAddSaleModal() {
     const modal = document.getElementById('add-sale-modal');
@@ -139,6 +144,9 @@ function resetDashboardState(viewId) {
 
     // Reset Coupons
     currentCouponFilter = 'active';
+
+    // Reset Channels (v58)
+    currentChannelsPage = 1;
 
     // Sync UI Tabs (v119)
     syncAllTabUI();
@@ -329,13 +337,65 @@ function populateSettings(settings) {
         sideMenuTitle.innerText = settings.bot_name || "Billion Bot Plus";
     }
 
-    renderChannels(settings.channels);
+    allChannelsData = settings.channels || [];
+    renderChannels();
 }
 
-function renderChannels(channels) {
+function prevChannelsPage() {
+    if (currentChannelsPage > 1) {
+        currentChannelsPage--;
+        renderChannels();
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    }
+}
+
+function nextChannelsPage() {
+    const maxPage = Math.ceil(allChannelsData.length / channelsPerPage);
+    if (currentChannelsPage < maxPage) {
+        currentChannelsPage++;
+        renderChannels();
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    }
+}
+
+function renderChannels() {
     const list = document.getElementById('channels-list');
+    const paginationContainer = document.getElementById('channels-pagination-container');
+    const pageInfo = document.getElementById('channels-page-info');
+    const prevBtn = document.getElementById('channels-prev-btn');
+    const nextBtn = document.getElementById('channels-next-btn');
+
+    if (!list) return;
     list.innerHTML = '';
-    channels.forEach(ch => {
+
+    const channels = allChannelsData;
+    const total = channels.length;
+
+    if (total === 0) {
+        list.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px; font-size: 0.9rem;">No managed channels yet.</div>`;
+        if (paginationContainer) paginationContainer.style.display = 'none';
+        return;
+    }
+
+    // Pagination Logic
+    const maxPage = Math.max(1, Math.ceil(total / channelsPerPage));
+    if (currentChannelsPage > maxPage) currentChannelsPage = maxPage;
+
+    const start = (currentChannelsPage - 1) * channelsPerPage;
+    const end = start + channelsPerPage;
+    const paginated = channels.slice(start, end);
+
+    if (paginationContainer) {
+        paginationContainer.style.display = total > channelsPerPage ? 'flex' : 'none';
+        if (pageInfo) pageInfo.innerText = `Page ${currentChannelsPage} of ${maxPage}`;
+        if (prevBtn) prevBtn.style.opacity = currentChannelsPage === 1 ? '0.3' : '1';
+        if (nextBtn) nextBtn.style.opacity = currentChannelsPage === maxPage ? '0.3' : '1';
+    }
+
+    paginated.forEach((ch, index) => {
+        const absoluteIndex = start + index + 1;
         const div = document.createElement('div');
         div.style.padding = '18px';
         div.style.background = 'rgba(255, 255, 255, 0.02)';
@@ -344,8 +404,14 @@ function renderChannels(channels) {
         div.style.display = 'flex';
         div.style.flexDirection = 'column';
         div.style.gap = '12px';
+        div.style.position = 'relative';
 
         div.innerHTML = `
+            <!-- Index Badge (v58) -->
+            <div style="position: absolute; top: -10px; right: 10px; background: #6366f1; color: #fff; padding: 2px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);">
+                #${absoluteIndex}
+            </div>
+
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
                 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; flex-shrink: 0; margin-top: 2px;">Username</span>
                 <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700; word-break: break-all; text-align: right;">${ch.id}</span>
