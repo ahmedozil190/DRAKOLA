@@ -1801,15 +1801,13 @@ function renderReports(reports) {
             <div class="user-card-index">${idx + 1}</div>
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
                 
-                <!-- Status row (Hidden for Rejected tab v118) -->
-                ${r.status !== 'rejected' ? `
+                <!-- Status row (v118) -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Status</span>
                     <div style="font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; color: ${statusColor}; text-transform: uppercase;">
                         ${r.status}
                     </div>
                 </div>
-                ` : ''}
 
                 <!-- Target Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
