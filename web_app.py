@@ -258,9 +258,52 @@ async def update_order_api(request):
 
 # --- Reports API (v113) ---
 async def get_reports_api(request):
+    bot = request.app['bot']
+    import asyncio
     async for session in get_session():
         reports = await crud.get_all_reports(session)
-        # Use simple mapping for now
+        
+        pending_reports = [r for r in reports if r.status == 'pending']
+        updates_made = False
+
+        async def sync_report_data(r):
+            nonlocal updates_made
+            try:
+                # Sync Reporter User
+                db_user = await crud.get_user(session, r.user_id)
+                if db_user:
+                    try:
+                        tg_user = await bot.get_chat(r.user_id)
+                        if tg_user.first_name and db_user.first_name != tg_user.first_name:
+                            db_user.first_name = tg_user.first_name
+                            updates_made = True
+                    except Exception:
+                        pass
+                
+                # Sync Target Order
+                db_order = await session.get(Order, r.order_id)
+                if db_order:
+                    try:
+                        tg_chat = await bot.get_chat(db_order.chat_id)
+                        if tg_chat.title and db_order.chat_name != tg_chat.title:
+                            db_order.chat_name = tg_chat.title
+                            updates_made = True
+                        if tg_chat.username != db_order.chat_username:
+                            db_order.chat_username = tg_chat.username
+                            updates_made = True
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+                
+        # Handle parallel live sync
+        for i in range(0, len(pending_reports), 10):
+            batch = pending_reports[i:i+10]
+            await asyncio.gather(*(sync_report_data(r) for r in batch))
+            
+        if updates_made:
+            await session.commit()
+
         data = []
         for r in reports:
             res_user = await crud.get_user(session, r.user_id)
@@ -277,7 +320,12 @@ async def get_reports_api(request):
                 "created_at": r.created_at.strftime("%Y-%m-%d %H:%M"),
                 "status": r.status
             })
-        return web.json_response(data)
+            
+        return web.json_response(data, headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        })
 
 async def update_report_api(request):
     data = await request.json()

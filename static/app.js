@@ -1658,7 +1658,7 @@ async function updateOrderStatus(orderId, status) {
 // --- Reports Management (v113) ---
 async function loadReports() {
     try {
-        const response = await fetch('/api/reports');
+        const response = await fetch(`/api/reports?t=${new Date().getTime()}`);
         const reports = await response.json();
         renderReports(reports);
     } catch (e) {
