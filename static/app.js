@@ -712,7 +712,8 @@ function nextPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        const section = document.getElementById('users-section');
+        if (scroller && section) scroller.scrollTop = section.offsetTop;
     }
 }
 
@@ -1769,7 +1770,8 @@ function nextOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        const section = document.getElementById('orders-section');
+        if (scroller && section) scroller.scrollTop = section.offsetTop;
     }
 }
 
@@ -2109,7 +2111,8 @@ function nextReportsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = 0;
+        const section = document.getElementById('reports-section');
+        if (scroller && section) scroller.scrollTop = section.offsetTop;
     }
 }
 
