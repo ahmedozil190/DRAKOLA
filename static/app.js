@@ -353,7 +353,11 @@ function prevChannelsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -365,7 +369,12 @@ function nextChannelsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        const section = document.getElementById('settings-section');
+        if (scroller && section) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = section.offsetTop - 100;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -703,7 +712,11 @@ function prevPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -714,7 +727,12 @@ function nextPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        const section = document.getElementById('users-section');
+        if (scroller && section) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = section.offsetTop - 100;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -1221,7 +1239,11 @@ function prevFinancePage() {
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -1233,7 +1255,12 @@ function nextFinancePage() {
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        const section = document.getElementById('finance-section');
+        if (scroller && section) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = section.offsetTop - 100;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -1573,7 +1600,11 @@ function prevCouponsPage() {
         tg.HapticFeedback.impactOccurred('light');
         loadCoupons();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -1584,7 +1615,12 @@ function nextCouponsPage() {
     tg.HapticFeedback.impactOccurred('light');
     loadCoupons();
     const scroller = document.getElementById('app-content-scroller');
-    if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+    const section = document.getElementById('coupons-section');
+    if (scroller && section) {
+        scroller.style.scrollBehavior = 'auto';
+        scroller.scrollTop = section.offsetTop - 100;
+        setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+    }
 }
 
 
@@ -1768,7 +1804,11 @@ function prevOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -1779,7 +1819,12 @@ function nextOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        const section = document.getElementById('orders-section');
+        if (scroller && section) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = section.offsetTop - 100;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -2106,7 +2151,11 @@ function prevReportsPage() {
         currentReportsPage--;
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        if (scroller) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = scroller.scrollHeight;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
@@ -2117,7 +2166,12 @@ function nextReportsPage() {
         currentReportsPage++;
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        const section = document.getElementById('reports-section');
+        if (scroller && section) {
+            scroller.style.scrollBehavior = 'auto';
+            scroller.scrollTop = section.offsetTop - 100;
+            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+        }
     }
 }
 
