@@ -103,9 +103,9 @@ function toggleMenu() {
 
 // v119: Global State Reset Function
 function resetDashboardState(viewId) {
-    // Reset Scroll (v119)
+    // Reset Scroll (v119 Instant)
     const scroller = document.getElementById('app-content-scroller');
-    if (scroller) scroller.scrollTo(0, 0);
+    if (scroller) scroller.scrollTop = 0;
     else window.scrollTo(0, 0);
 
     // Reset Users
@@ -164,9 +164,9 @@ function syncAllTabUI() {
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
 
-    // Reset Scroll Position (v119)
+    // Reset Scroll Position (v119 Instant)
     const scroller = document.getElementById('app-content-scroller');
-    if (scroller) scroller.scrollTo(0, 0);
+    if (scroller) scroller.scrollTop = 0;
     else window.scrollTo(0, 0);
 
     // PERSISTENCE v48: Save current view to session storage

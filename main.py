@@ -68,6 +68,12 @@ async def main():
     await set_commands(bot)
     dp = Dispatcher()
     
+    # Register Middlewares (v119)
+    from middlewares import UserSyncMiddleware
+    user_sync = UserSyncMiddleware()
+    dp.message.middleware(user_sync)
+    dp.callback_query.middleware(user_sync)
+
     # Include handler routers
     dp.include_router(handlers.user.router)
     dp.include_router(handlers.actions.router)
