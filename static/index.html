@@ -173,8 +173,12 @@
                     <span class="card-label">Total Expenses</span>
                     <span class="card-value" style="color: #ef4444;" id="stat-total-expenses">...</span>
                 </div>
-                <!-- Full Width Sales (v99) -->
-                <div class="card" style="grid-column: span 2; margin-top: 12px;">
+                <!-- Net Profit & Total Sales (v104) -->
+                <div class="card" style="margin-top: 12px;">
+                    <span class="card-label">Net Profit</span>
+                    <span class="card-value val-green" id="stat-net-profit-home">...</span>
+                </div>
+                <div class="card" style="margin-top: 12px;">
                     <span class="card-label">Total Sales</span>
                     <span class="card-value val-purple" id="stat-total-sales-count">...</span>
                 </div>
@@ -201,14 +205,14 @@
                 <i class="fas fa-ticket-alt"></i>
                 <h2>Coupons</h2>
             </div>
-            <div class="stats-grid">
-                <div class="card">
-                    <span class="card-label">Active</span>
-                    <span class="card-value" style="color: #22d3ee;" id="stat-active-coupons-home">...</span>
+            <div class="stats-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                    <span class="card-label" style="margin-bottom: 0;">Active</span>
+                    <span class="card-value val-green" id="stat-active-coupons-home">...</span>
                 </div>
-                <div class="card">
-                    <span class="card-label">Finished</span>
-                    <span class="card-value" style="color: #64748b;" id="stat-finished-coupons-home">...</span>
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                    <span class="card-label" style="margin-bottom: 0;">Finished</span>
+                    <span class="card-value" style="color: #ef4444;" id="stat-finished-coupons-home">...</span>
                 </div>
             </div>
         </section>
@@ -303,7 +307,7 @@
         <!-- Finance Section (v73) -->
         <section id="finance-section" class="view-section">
 
-            <!-- Finance Stats (Stacked) - Updated styling v37 -->
+            <!-- Finance Stats (Stacked) - Updated styling v104 -->
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
                 <div class="card finance-stat-card"
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
@@ -311,12 +315,17 @@
                     <span class="card-value" id="finance-total-revenue"
                         style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
                 </div>
-                <!-- Expenses moved to 2nd position v92 -->
                 <div class="card finance-stat-card"
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
                     <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Total Expenses</span>
                     <span class="card-value" id="finance-total-expenses"
                         style="font-size: 1.3rem; color: #ef4444; font-weight: 800;">$0.00</span>
+                </div>
+                <div class="card finance-stat-card"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
+                    <span class="card-label" style="margin-bottom: 0; color: #94a3b8;">Net Profit</span>
+                    <span class="card-value" id="finance-stat-profit"
+                        style="font-size: 1.3rem; color: #2ecc71; font-weight: 800;">$0.00</span>
                 </div>
                 <div class="card finance-stat-card"
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px; cursor: default;">
@@ -547,15 +556,15 @@
         <!-- Coupons View (v102) -->
         <section id="coupons-section" class="view-section">
 
-            <!-- Coupons Page Stats (v102) -->
-            <div class="stats-grid" style="margin-bottom: 25px;">
-                <div class="card" style="min-height: 80px; justify-content: center;">
-                    <span class="card-label" style="font-size: 0.75rem;">Active Coupons</span>
-                    <span class="card-value" id="coupon-stat-active" style="color: #22d3ee; font-size: 1.4rem;">0</span>
+            <!-- Coupons Page Stats (v103) -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                    <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Active Coupons</span>
+                    <span class="card-value val-green" id="coupon-stat-active" style="font-size: 1.3rem; font-weight: 800;">0</span>
                 </div>
-                <div class="card" style="min-height: 80px; justify-content: center;">
-                    <span class="card-label" style="font-size: 0.75rem;">Finished Coupons</span>
-                    <span class="card-value" id="coupon-stat-finished" style="color: #64748b; font-size: 1.4rem;">0</span>
+                <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; min-height: 60px; padding: 12px 20px;">
+                    <span class="card-label" style="margin-bottom: 0; font-size: 0.85rem;">Finished Coupons</span>
+                    <span class="card-value" id="coupon-stat-finished" style="font-size: 1.3rem; font-weight: 800; color: #ef4444;">0</span>
                 </div>
             </div>
 

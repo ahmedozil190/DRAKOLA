@@ -188,9 +188,17 @@ function populateStats(stats) {
 
     // Finance section mapping (v99)
     if (document.getElementById('stat-total-revenue')) {
+        const netProfit = (stats.total_revenue || 0) - (stats.total_expenses || 0);
         document.getElementById('stat-total-revenue').innerText = `$${(stats.total_revenue || 0).toLocaleString()}`;
         document.getElementById('stat-total-expenses').innerText = `$${(stats.total_expenses || 0).toLocaleString()}`;
         document.getElementById('stat-total-sales-count').innerText = stats.total_sales || 0;
+        
+        // Net Profit (v104)
+        if (document.getElementById('stat-net-profit-home')) {
+            const profitEl = document.getElementById('stat-net-profit-home');
+            profitEl.innerText = `$${netProfit.toLocaleString()}`;
+            profitEl.style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
+        }
     }
 
     // Coupons section mapping (v101)
@@ -880,9 +888,19 @@ function renderFinance() {
         if (el) el.innerText = text;
     };
 
-    safeSetText('finance-total-revenue', `$${parseFloat(stats.total_revenue || 0).toLocaleString()}`);
+    const rev = parseFloat(stats.total_revenue || 0);
+    const exp = parseFloat(stats.total_expenses || 0);
+    const net = rev - exp;
+
+    safeSetText('finance-total-revenue', `$${rev.toLocaleString()}`);
     safeSetText('finance-total-sales', stats.total_sales || 0);
-    safeSetText('finance-total-expenses', `$${parseFloat(stats.total_expenses || 0).toLocaleString()}`);
+    safeSetText('finance-total-expenses', `$${exp.toLocaleString()}`);
+    
+    const profitEl = document.getElementById('finance-stat-profit');
+    if (profitEl) {
+        profitEl.innerText = `$${net.toLocaleString()}`;
+        profitEl.style.color = net >= 0 ? '#2ecc71' : '#ef4444';
+    }
 
     // Render History
     const list = document.getElementById('finance-history-list');
