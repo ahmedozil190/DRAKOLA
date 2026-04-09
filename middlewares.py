@@ -1,35 +1,37 @@
 from typing import Any, Awaitable, Callable, Dict
+import logging
 from aiogram import BaseMiddleware
-from aiogram.types import Message, CallbackQuery, Update
+from aiogram.types import TelegramObject, Message, CallbackQuery
 from database import get_session
 import crud
 
 class UserSyncMiddleware(BaseMiddleware):
     async def __call__(
         self,
-        handler: Callable[[Update, Dict[str, Any]], Awaitable[Any]],
-        event: Message | CallbackQuery,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
         data: Dict[str, Any],
     ) -> Any:
-        # Get Telegram user details
-        user = event.from_user
-        if not user:
-            return await handler(event, data)
+        # Check if the event is a message or callback query
+        user = None
+        if isinstance(event, (Message, CallbackQuery)):
+            user = event.from_user
 
-        # Update or create user in background
-        async for session in get_session():
-            try:
-                # get_or_create_user already handles updating if name/username changed
-                db_user = await crud.get_or_create_user(
-                    session,
-                    user_id=user.id,
-                    first_name=user.full_name,
-                    username=user.username
-                )
-                # Attach db_user to data for convenience in handlers if needed later
-                data['db_user'] = db_user
-            except Exception as e:
-                print(f"UserSyncMiddleware error: {e}")
-            break # Exit after one session grab
-            
+        if user:
+            # Update user info in the database
+            async for session in get_session():
+                try:
+                    # crud.get_or_create_user also handles updates for existing users
+                    db_user = await crud.get_or_create_user(
+                        session,
+                        user_id=user.id,
+                        first_name=user.full_name,
+                        username=user.username
+                    )
+                    logging.info(f"UserSync: Synced user {user.id} ({user.full_name})")
+                    # data['db_user'] = db_user # Optional: pass to handlers
+                except Exception as e:
+                    logging.error(f"UserSync Error for {user.id}: {e}")
+                break # Ensure only one session usage
+
         return await handler(event, data)

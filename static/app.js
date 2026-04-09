@@ -103,10 +103,15 @@ function toggleMenu() {
 
 // v119: Global State Reset Function
 function resetDashboardState(viewId) {
-    // Reset Scroll (v119 Instant)
+    // Reset Scroll (v119 Force Instant)
     const scroller = document.getElementById('app-content-scroller');
-    if (scroller) scroller.scrollTop = 0;
-    else window.scrollTo(0, 0);
+    if (scroller) {
+        scroller.style.scrollBehavior = 'auto';
+        scroller.scrollTop = 0;
+        setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+    } else {
+        window.scrollTo(0, 0);
+    }
 
     // Reset Users
     userFilter = 'active';
@@ -164,10 +169,15 @@ function syncAllTabUI() {
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
 
-    // Reset Scroll Position (v119 Instant)
+    // Reset Scroll Position (v119 Force Instant)
     const scroller = document.getElementById('app-content-scroller');
-    if (scroller) scroller.scrollTop = 0;
-    else window.scrollTo(0, 0);
+    if (scroller) {
+        scroller.style.scrollBehavior = 'auto';
+        scroller.scrollTop = 0;
+        setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+    } else {
+        window.scrollTo(0, 0);
+    }
 
     // PERSISTENCE v48: Save current view to session storage
     sessionStorage.setItem('last_view', viewId);
@@ -515,9 +525,9 @@ async function loadUsers() {
     try {
         const res = await fetch('/api/users');
         allUsers = await res.json();
-        
+
         // Sorting: Newest First (High ID First) v117
-        allUsers.sort((a,b) => b.user_id - a.user_id);
+        allUsers.sort((a, b) => b.user_id - a.user_id);
 
         // Update top stats
         const total = allUsers.length;
@@ -961,7 +971,7 @@ async function loadFinanceData() {
         const res = await fetch('/api/finance');
         if (!res.ok) throw new Error("API error");
         financeDataCache = await res.json();
-        
+
         // Sorting: Newest First (High ID/Recent date first) v117
         if (financeDataCache.history) {
             financeDataCache.history.sort((a, b) => b.id - a.id);
@@ -1338,7 +1348,7 @@ async function loadCoupons() {
         const data = await res.json();
 
         // Sorting: Newest First (High ID weight or Date) v117
-        data.coupons.sort((a,b) => b.id - a.id);
+        data.coupons.sort((a, b) => b.id - a.id);
 
         const listContainer = document.getElementById('coupons-list-container');
 
@@ -1509,10 +1519,10 @@ async function loadOrders() {
     try {
         const response = await fetch(`/api/orders?t=${new Date().getTime()}`);
         const orders = await response.json();
-        
+
         // Sorting: Newest First (High ID first) v117
-        orders.sort((a,b) => b.order_id - a.order_id);
-        
+        orders.sort((a, b) => b.order_id - a.order_id);
+
         allOrdersData = orders; // Cache for pagination
 
         // Update summary stats v115
@@ -1559,9 +1569,9 @@ function triggerOrderSearch() {
     // Global Search Auto-Switch (v119)
     if (orderFilterText) {
         // Try finding match across all data to auto-switch tab
-        const match = allOrdersData.find(o => 
+        const match = allOrdersData.find(o =>
             (o.chat_name && o.chat_name.toLowerCase().includes(orderFilterText)) ||
-            (o.chat_username && o.chat_username.toLowerCase().includes(orderFilterText.replace('@',''))) ||
+            (o.chat_username && o.chat_username.toLowerCase().includes(orderFilterText.replace('@', ''))) ||
             (o.order_id && o.order_id.toString().includes(orderFilterText)) ||
             (o.user_id && o.user_id.toString().includes(orderFilterText))
         );
@@ -1610,7 +1620,7 @@ function applyOrdersPagination() {
     // Apply search filter if active
     if (orderFilterText) {
         const cleanFilter = orderFilterText.replace('@', '');
-        filteredOrders = filteredOrders.filter(o => 
+        filteredOrders = filteredOrders.filter(o =>
             (o.user_id && o.user_id.toString().includes(orderFilterText)) ||
             (o.chat_name && o.chat_name.toLowerCase().includes(orderFilterText)) ||
             (o.chat_username && o.chat_username.toLowerCase().includes(cleanFilter)) ||
@@ -1876,7 +1886,7 @@ function renderReports(reports) {
 
     // 2. Render Cards
     container.innerHTML = '';
-    
+
     filteredReports.forEach((r, idx) => {
         const statusColor = r.status === 'accepted' ? '#10b981' : (r.status === 'rejected' ? '#ef4444' : '#f59e0b');
         const isGroup = r.chat_type === 'supergroup' || r.chat_type === 'group';
