@@ -711,9 +711,7 @@ function nextPage() {
         currentPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('users-section');
-        if (scroller && section) scroller.scrollTop = section.offsetTop;
+        document.getElementById('users-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -1769,9 +1767,7 @@ function nextOrdersPage() {
         currentOrdersPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('orders-section');
-        if (scroller && section) scroller.scrollTop = section.offsetTop;
+        document.getElementById('orders-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -2110,9 +2106,7 @@ function nextReportsPage() {
         currentReportsPage++;
         tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('reports-section');
-        if (scroller && section) scroller.scrollTop = section.offsetTop;
+        document.getElementById('reports-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
