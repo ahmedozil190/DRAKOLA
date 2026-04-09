@@ -346,9 +346,9 @@ function renderChannels(channels) {
         div.style.gap = '12px';
         
         div.innerHTML = `
-            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Username</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700;">${ch.id}</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #ffd700; word-break: break-all; text-align: right; flex-grow: 1; min-width: 50%;">${ch.id}</span>
             </div>
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Link</span>
