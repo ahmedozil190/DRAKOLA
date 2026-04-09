@@ -103,7 +103,7 @@ function toggleMenu() {
 
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
-    
+
     // Reset Scroll Position (v83)
     window.scrollTo(0, 0);
 
@@ -207,7 +207,7 @@ function populateStats(stats) {
         document.getElementById('stat-total-revenue').innerText = `$${rev.toLocaleString()}`;
         document.getElementById('stat-total-expenses').innerText = `$${exp.toLocaleString()}`;
         document.getElementById('stat-total-sales-count').innerText = stats.total_sales || 0;
-        
+
         // Net Profit logic for Home (v112 Fix)
         const profitHomeEl = document.getElementById('stat-net-profit-home');
         if (profitHomeEl) {
@@ -758,13 +758,13 @@ function showConfirmPopup(title, message, onConfirm) {
     document.getElementById('confirm-title').innerText = title;
     document.getElementById('confirm-msg').innerText = message;
     onConfirmAction = onConfirm;
-    
+
     const confirmBtn = document.getElementById('confirm-yes-btn');
     confirmBtn.onclick = () => {
         if (onConfirmAction) onConfirmAction();
         closeConfirmPopup(true);
     };
-    
+
     document.getElementById('confirm-modal').classList.add('active');
     tg.HapticFeedback.notificationOccurred('warning');
 }
@@ -916,7 +916,7 @@ function renderFinance() {
     safeSetText('finance-total-revenue', `$${rev.toLocaleString()}`);
     safeSetText('finance-total-sales', stats.total_sales || 0);
     safeSetText('finance-total-expenses', `$${exp.toLocaleString()}`);
-    
+
     const profitEl = document.getElementById('finance-stat-profit');
     if (profitEl) {
         profitEl.innerText = `$${net.toLocaleString()}`;
@@ -1389,7 +1389,7 @@ function nextCouponsPage() {
 
 async function deleteCoupon(code) {
     showConfirmPopup(
-        "Delete Coupon", 
+        "Delete Coupon",
         `Are you sure you want to delete this coupon (${code})? This action cannot be undone.`,
         async () => {
             tg.HapticFeedback.impactOccurred('light');
@@ -1419,7 +1419,7 @@ async function loadOrders() {
         const response = await fetch('/api/orders');
         const orders = await response.json();
         allOrdersData = orders; // Cache for pagination
-        
+
         // Update summary stats v115
         if (document.getElementById('orders-stat-total')) {
             document.getElementById('orders-stat-total').innerText = orders.length;
@@ -1427,7 +1427,7 @@ async function loadOrders() {
             document.getElementById('orders-stat-completed').innerText = orders.filter(o => o.status === 'completed').length;
             document.getElementById('orders-stat-cancelled').innerText = orders.filter(o => o.status === 'cancelled').length;
         }
-        
+
         applyOrdersPagination();
     } catch (e) {
         console.error("Failed to load orders:", e);
@@ -1437,7 +1437,7 @@ async function loadOrders() {
 function applyOrdersPagination() {
     const totalOrders = allOrdersData.length;
     const totalPages = Math.ceil(totalOrders / ordersPerPage);
-    
+
     // Safety check for empty results or page bounds
     if (currentOrdersPage > totalPages && totalPages > 0) currentOrdersPage = totalPages;
     if (currentOrdersPage < 1) currentOrdersPage = 1;
@@ -1455,10 +1455,10 @@ function applyOrdersPagination() {
     if (totalOrders > ordersPerPage) {
         container.style.display = 'flex';
         pageInfo.innerText = `Page ${currentOrdersPage} of ${totalPages || 1}`;
-        
+
         prevBtn.style.opacity = currentOrdersPage === 1 ? '0.3' : '1';
         prevBtn.style.pointerEvents = currentOrdersPage === 1 ? 'none' : 'auto';
-        
+
         nextBtn.style.opacity = currentOrdersPage === totalPages ? '0.3' : '1';
         nextBtn.style.pointerEvents = currentOrdersPage === totalPages ? 'none' : 'auto';
     } else {
@@ -1491,7 +1491,7 @@ function renderOrders(orders) {
     const list = document.getElementById('orders-list-table');
     if (!list) return;
     list.innerHTML = '';
-    
+
     if (orders.length === 0) {
         list.innerHTML = `
             <div style="padding: 60px 20px 40px 20px; text-align: center; color: #94a3b8; font-size: 0.95rem; font-weight: 500;">
@@ -1502,17 +1502,17 @@ function renderOrders(orders) {
         `;
         return;
     }
-    
+
     const startIdx = (currentOrdersPage - 1) * ordersPerPage;
 
     orders.forEach((o, idx) => {
         const progress = o.required_members > 0 ? Math.round((o.current_members / o.required_members) * 100) : 0;
         const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
-        
+
         const card = document.createElement('div');
         card.className = 'user-card';
         card.style.marginBottom = '20px';
-        
+
         card.innerHTML = `
             <div class="user-card-index">${startIdx + idx + 1}</div>
             <div class="user-all-info-list" style="display: flex; flex-direction: column; gap: 8px;">
@@ -1529,21 +1529,21 @@ function renderOrders(orders) {
                 </div>
 
                 <!-- 2. Group Name -->
-                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Channel Name</span>
                     </div>
-                    <div style="color: #fff; font-weight: 700; font-size: 0.95rem; margin-left: 22px;">${o.chat_name}</div>
+                    <div style="color: #3b82f6; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
                 </div>
 
                 <!-- 3. Group Username -->
-                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-at" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
                     </div>
-                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem; margin-left: 22px;">@${o.chat_username || 'no_username'}</div>
+                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">@${o.chat_username || 'no_username'}</div>
                 </div>
 
                 <!-- 4. Owner ID -->
@@ -1552,7 +1552,7 @@ function renderOrders(orders) {
                         <i class="fas fa-id-badge" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Owner ID</span>
                     </div>
-                    <div style="color: #fff; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
+                    <div style="color: #3b82f6; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
                 </div>
 
                 <!-- 5. Required -->
@@ -1561,7 +1561,7 @@ function renderOrders(orders) {
                         <i class="fas fa-users" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Required Members</span>
                     </div>
-                    <div style="color: #fff; font-weight: 800;">${o.required_members}</div>
+                    <div style="color: #3b82f6; font-weight: 800;">${o.required_members}</div>
                 </div>
 
                 <!-- 6. Current -->
@@ -1574,17 +1574,12 @@ function renderOrders(orders) {
                 </div>
 
                 <!-- 7. Progress -->
-                <div class="user-stat-row" style="display: flex; flex-direction: column; gap: 8px; padding: 15px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 0.8rem;"></i>
-                            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Execution Progress</span>
-                        </div>
-                        <span style="color: #3b82f6; font-size: 0.8rem; font-weight: 800;">${progress}%</span>
+                <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 0.8rem;"></i>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Execution Progress</span>
                     </div>
-                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
-                        <div style="width: ${progress}%; height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 10px;"></div>
-                    </div>
+                    <span style="color: #3b82f6; font-size: 0.9rem; font-weight: 800;">${progress}%</span>
                 </div>
 
                 <!-- Actions -->
@@ -1606,12 +1601,12 @@ function renderOrders(orders) {
 
 async function updateOrderStatus(orderId, status) {
     if (status === 'delete' && !confirm("Are you sure you want to delete this order?")) return;
-    
+
     try {
         const response = await fetch('/api/orders/update', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id: orderId, status: status})
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: orderId, status: status })
         });
         if (response.ok) {
             tg.HapticFeedback.notificationOccurred('success');
@@ -1636,12 +1631,12 @@ async function loadReports() {
 function renderReports(reports) {
     const container = document.getElementById('reports-list-table');
     if (!container) return;
-    
+
     if (!reports || reports.length === 0) {
         container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No reports found</div>';
         return;
     }
-    
+
     container.innerHTML = reports.map(r => `
         <div class="card" style="margin-bottom: 12px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -1663,8 +1658,8 @@ async function dismissReport(reportId) {
     try {
         const response = await fetch('/api/reports/delete', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id: reportId})
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: reportId })
         });
         if (response.ok) {
             tg.HapticFeedback.notificationOccurred('success');
