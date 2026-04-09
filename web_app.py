@@ -202,8 +202,48 @@ async def delete_coupon_api(request):
         success = await crud.delete_coupon(session, code)
         return web.json_response({"status": "ok", "deleted": success})
 
+import asyncio
+
+_last_sync_time = 0
+
+async def background_sync_orders(bot):
+    global _last_sync_time
+    # Throttle to once every 60 seconds
+    if asyncio.get_event_loop().time() - _last_sync_time < 60:
+        return
+    _last_sync_time = asyncio.get_event_loop().time()
+    
+    try:
+        async for session in get_session():
+            orders = await crud.get_all_orders(session)
+            updates_made = False
+            for o in orders:
+                if o.status == 'active':
+                    try:
+                        chat = await bot.get_chat(o.chat_id)
+                        if chat.title and o.chat_name != chat.title:
+                            o.chat_name = chat.title
+                            updates_made = True
+                        if chat.username != o.chat_username:
+                            o.chat_username = chat.username
+                            updates_made = True
+                        if updates_made:
+                            session.add(o)
+                        # Minimal sleep to avoid flood limits
+                        await asyncio.sleep(0.05)
+                    except Exception:
+                        pass
+            if updates_made:
+                await session.commit()
+    except Exception as e:
+        import logging
+        logging.error(f"Background sync error: {e}")
+
 # --- Orders API (v113) ---
 async def get_orders_api(request):
+    bot = request.app['bot']
+    asyncio.create_task(background_sync_orders(bot))
+    
     async for session in get_session():
         orders = await crud.get_all_orders(session)
         return web.json_response([{

@@ -1526,11 +1526,11 @@ function renderOrders(orders) {
                     </div>
                 </div>
 
-                <!-- 2. Group Name -->
+                <!-- 2. Group / Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
-                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Channel Name</span>
+                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${['group', 'supergroup'].includes(o.chat_type) ? 'Group Name' : 'Channel Name'}</span>
                     </div>
                     <span style="font-size: 0.9rem; font-weight: 700; color: #ffd700;">${o.chat_name}</span>
                 </div>
