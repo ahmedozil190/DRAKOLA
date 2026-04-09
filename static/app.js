@@ -110,6 +110,19 @@ function toggleMenu() {
     menuOverlay.classList.toggle('active');
 }
 
+function scrollToFirstCard(listId) {
+    const listElement = document.getElementById(listId);
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller && listElement) {
+        const listTop = listElement.getBoundingClientRect().top;
+        const scrollerTop = scroller.getBoundingClientRect().top;
+        const targetScrollTop = scroller.scrollTop + (listTop - scrollerTop) - 20;
+        scroller.style.scrollBehavior = 'auto';
+        scroller.scrollTop = targetScrollTop;
+        setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
+    }
+}
+
 // v119: Global State Reset Function
 function resetDashboardState(viewId) {
     // Reset Scroll (v119 Force Instant)
@@ -352,13 +365,7 @@ function prevChannelsPage() {
         currentChannelsPage--;
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('settings-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('channels-list');
     }
 }
 
@@ -369,13 +376,7 @@ function nextChannelsPage() {
         currentChannelsPage++;
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('settings-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('channels-list');
     }
 }
 
@@ -712,13 +713,7 @@ function prevPage() {
         currentPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('users-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('users-list');
     }
 }
 
@@ -728,13 +723,7 @@ function nextPage() {
         currentPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('users-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('users-list');
     }
 }
 
@@ -1240,13 +1229,7 @@ function prevFinancePage() {
         currentFinancePage--;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('finance-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('finance-history-list');
     }
 }
 
@@ -1257,13 +1240,7 @@ function nextFinancePage() {
         currentFinancePage++;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('finance-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('finance-history-list');
     }
 }
 
@@ -1602,13 +1579,7 @@ function prevCouponsPage() {
         currentCouponsPage--;
         tg.HapticFeedback.impactOccurred('light');
         loadCoupons();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('coupons-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('coupons-list-container');
     }
 }
 
@@ -1618,13 +1589,7 @@ function nextCouponsPage() {
     currentCouponsPage++;
     tg.HapticFeedback.impactOccurred('light');
     loadCoupons();
-    const scroller = document.getElementById('app-content-scroller');
-    const section = document.getElementById('coupons-section');
-    if (scroller && section) {
-        scroller.style.scrollBehavior = 'auto';
-        scroller.scrollTop = section.offsetTop - 100;
-        setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-    }
+    scrollToFirstCard('coupons-list-container');
 }
 
 
@@ -1807,13 +1772,7 @@ function prevOrdersPage() {
         currentOrdersPage--;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('orders-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('orders-list-table');
     }
 }
 
@@ -1823,13 +1782,7 @@ function nextOrdersPage() {
         currentOrdersPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('orders-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('orders-list-table');
     }
 }
 
@@ -2155,13 +2108,7 @@ function prevReportsPage() {
     if (currentReportsPage > 1) {
         currentReportsPage--;
         renderReports(allReportsData);
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('reports-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('reports-list-table');
     }
 }
 
@@ -2171,13 +2118,7 @@ function nextReportsPage() {
     if (currentReportsPage < totalPages) {
         currentReportsPage++;
         renderReports(allReportsData);
-        const scroller = document.getElementById('app-content-scroller');
-        const section = document.getElementById('reports-section');
-        if (scroller && section) {
-            scroller.style.scrollBehavior = 'auto';
-            scroller.scrollTop = section.offsetTop - 100;
-            setTimeout(() => { scroller.style.scrollBehavior = 'smooth'; }, 50);
-        }
+        scrollToFirstCard('reports-list-table');
     }
 }
 
