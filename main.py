@@ -42,8 +42,7 @@ async def init_db():
             ("global_settings", "bot_name", "TEXT DEFAULT 'Billion Bot'"),
             ("global_settings", "total_global_broadcasts", "INTEGER DEFAULT 0"),
             ("global_settings", "total_targeted_broadcasts", "INTEGER DEFAULT 0"),
-            ("financial_records", "record_type", "TEXT DEFAULT 'sale'"),
-            ("users", "last_synced", "DATETIME")
+            ("financial_records", "record_type", "TEXT DEFAULT 'sale'")
         ]
         
         for table, col, definition in migrations:
@@ -85,9 +84,6 @@ async def main():
     asyncio.create_task(start_web_server(app, port=port)) # Run web server in background
     
     logging.info("Starting bot pooling...")
-    from worker import start_user_sync_worker
-    asyncio.create_task(start_user_sync_worker(bot))
-
     await bot.delete_webhook(drop_pending_updates=True)
     me = await bot.get_me()
     logging.info(f"✅ Bot @{me.username} is now online and listening for updates!")

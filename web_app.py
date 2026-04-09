@@ -56,9 +56,36 @@ async def delete_channel(request):
         return web.json_response({"status": "ok"})
 
 async def get_users(request):
+    bot = request.app['bot']
     async for session in get_session():
-        users = await crud.get_all_users(session)
+        users = await crud.get_all_users(session) # Returns all users
         
+        # Live Sync for a batch of users to ensure "Immediate" updates (v123)
+        # We sync first 30 to keep it fast.
+        sync_batch = users[:30] 
+        updates_made = False
+        
+        async def sync_user_info(u):
+            nonlocal updates_made
+            try:
+                chat = await bot.get_chat(u.user_id)
+                if chat.first_name and u.first_name != chat.first_name:
+                    u.first_name = chat.first_name
+                    updates_made = True
+                if chat.username != u.username:
+                    u.username = chat.username
+                    updates_made = True
+            except Exception:
+                pass
+        
+        # Sync in batches of 10
+        for i in range(0, len(sync_batch), 10):
+            batch = sync_batch[i:i+10]
+            await asyncio.gather(*(sync_user_info(u) for u in batch))
+
+        if updates_made:
+            await session.commit()
+
         # Get orders count per user
         orders_q = await session.execute(
             select(Order.user_id, func.count(Order.id).label('cnt')).group_by(Order.user_id)
