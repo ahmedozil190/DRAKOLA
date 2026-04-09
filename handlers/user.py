@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
-from aiogram.filters import CommandStart, CommandObject
+from aiogram.filters import CommandStart, CommandObject, StateFilter
 from aiogram.fsm.context import FSMContext
 from database import get_session
 import crud
@@ -280,12 +280,8 @@ async def invite_link(call: CallbackQuery):
         await call.message.edit_text(text, reply_markup=kbd)
         await call.answer()
 
-@router.message(F.text & ~F.text.startswith("/"))
+@router.message(F.text & ~F.text.startswith("/"), StateFilter(None))
 async def check_for_coupon(message: Message, state: FSMContext):
-    # Only process if user is not in a specific state
-    current_state = await state.get_state()
-    if current_state is not None:
-        return # Let State handlers do their job
 
     text = message.text.strip()
     async for session in get_session():
