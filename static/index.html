@@ -239,17 +239,11 @@
                 </div>
             </div>
 
-            <!-- Search & Tabs Consolidated Container (Compact) v47 -->
+            <!-- Search Container (v117) -->
             <div class="card"
-                style="padding: 18px; margin-top: -2px; margin-bottom: 30px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                <!-- Tabs (Connected & Unified) v47 -->
-                <div class="tabs-row">
-                    <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')">All</button>
-                    <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')">Banned</button>
-                </div>
-
+                style="padding: 18px; margin-top: -2px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
                 <!-- Search Input -->
-                <div class="search-box-v2" style="margin-bottom: 14px;">
+                <div class="search-box-v2" style="margin-bottom: 14px; margin-top: 0;">
                     <style>
                         #user-search::placeholder {
                             color: var(--text-secondary) !important;
@@ -279,8 +273,14 @@
             <div class="card"
                 style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
                 <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">User Management</h3>
+                </div>
+
+                <!-- Users Filter Tabs (Moved here) v117 -->
+                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                    <button class="tab-btn active" id="tab-all" onclick="setUserFilter('all')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">All</button>
+                    <button class="tab-btn" id="tab-banned" onclick="setUserFilter('banned')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">Banned</button>
                 </div>
 
                 <div id="users-list">
@@ -357,8 +357,21 @@
 
             <div class="card"
                 style="min-height: 250px; display: flex; flex-direction: column; overflow: hidden; position: relative; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Transaction History</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Finance Management</h3>
+                </div>
+
+                <!-- Finance Filter Tabs v117 -->
+                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                    <button class="tab-btn active" id="finance-tab-all" onclick="setFinanceFilter('all')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-list"></i> All
+                    </button>
+                    <button class="tab-btn" id="finance-tab-sale" onclick="setFinanceFilter('sale')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-plus-circle"></i> Sale
+                    </button>
+                    <button class="tab-btn" id="finance-tab-expense" onclick="setFinanceFilter('expense')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-minus-circle"></i> Expense
+                    </button>
                 </div>
                 <!-- Container for history or empty message -->
                 <div id="finance-history-list"
@@ -596,6 +609,9 @@
 
             <!-- Unified Coupons Container with Tabs (v73) -->
             <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Coupons Management</h3>
+                </div>
                 <!-- Modern Tabs -->
                 <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
                     <button class="tab-btn active" id="coupon-tab-active" onclick="setCouponFilter('active')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -689,6 +705,16 @@
             <div class="card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Orders Management</h3>
+                </div>
+
+                <!-- Orders Filter Tabs v117 -->
+                <div class="tabs-row" style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 14px; display: flex; gap: 5px;">
+                    <button class="tab-btn active" id="order-tab-pending" onclick="setOrderFilter('pending')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-clock"></i> Pending
+                    </button>
+                    <button class="tab-btn" id="order-tab-finished" onclick="setOrderFilter('finished')" style="flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: none !important; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-check-double"></i> Finished
+                    </button>
                 </div>
                 <div id="orders-list-table">
                     <!-- Cards will be injected here -->

@@ -454,6 +454,9 @@ async function loadUsers() {
     try {
         const res = await fetch('/api/users');
         allUsers = await res.json();
+        
+        // Sorting: Newest First (High ID First) v117
+        allUsers.sort((a,b) => b.user_id - a.user_id);
 
         // Update top stats
         const total = allUsers.length;
@@ -880,6 +883,16 @@ async function modalToggleBan() {
 let financeDataCache = null;
 let currentFinancePage = 1;
 const financePerPage = 5;
+let currentFinanceFilter = 'all';
+
+function setFinanceFilter(filter) {
+    currentFinanceFilter = filter;
+    currentFinancePage = 1;
+    document.querySelectorAll('#finance-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    const target = document.getElementById(`finance-tab-${filter}`);
+    if (target) target.classList.add('active');
+    renderFinance();
+}
 
 async function loadFinanceData() {
     showLoader(true);
@@ -887,6 +900,12 @@ async function loadFinanceData() {
         const res = await fetch('/api/finance');
         if (!res.ok) throw new Error("API error");
         financeDataCache = await res.json();
+        
+        // Sorting: Newest First (High ID/Recent date first) v117
+        if (financeDataCache.history) {
+            financeDataCache.history.sort((a, b) => b.id - a.id);
+        }
+
         currentFinancePage = 1;
         renderFinance();
     } catch (err) {
@@ -940,14 +959,22 @@ function renderFinance() {
         return;
     }
 
+    // Filter by type (v117)
+    let filteredHistory = data.history || [];
+    if (currentFinanceFilter === 'sale') {
+        filteredHistory = filteredHistory.filter(h => h.record_type === 'sale');
+    } else if (currentFinanceFilter === 'expense') {
+        filteredHistory = filteredHistory.filter(h => h.record_type === 'expense');
+    }
+
     // Pagination Logic (v59)
-    const totalTransactions = data.history.length;
+    const totalTransactions = filteredHistory.length;
     const totalPages = Math.ceil(totalTransactions / financePerPage);
     if (currentFinancePage > totalPages && totalPages > 0) currentFinancePage = totalPages;
 
     const start = (currentFinancePage - 1) * financePerPage;
     const end = start + financePerPage;
-    const pagedHistory = data.history.slice(start, end);
+    const pagedHistory = filteredHistory.slice(start, end);
 
     // UI Pagination Updates
     const paginationContainer = document.getElementById('finance-pagination-container');
@@ -1249,6 +1276,9 @@ async function loadCoupons() {
         if (!res.ok) return;
         const data = await res.json();
 
+        // Sorting: Newest First (High ID weight or Date) v117
+        data.coupons.sort((a,b) => b.id - a.id);
+
         const listContainer = document.getElementById('coupons-list-container');
 
         const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
@@ -1418,6 +1448,10 @@ async function loadOrders() {
     try {
         const response = await fetch(`/api/orders?t=${new Date().getTime()}`);
         const orders = await response.json();
+        
+        // Sorting: Newest First (High ID first) v117
+        orders.sort((a,b) => b.order_id - a.order_id);
+        
         allOrdersData = orders; // Cache for pagination
 
         // Update summary stats v115
@@ -1435,6 +1469,16 @@ async function loadOrders() {
 }
 
 let orderFilterText = '';
+let currentOrderTab = 'pending';
+
+function setOrderFilter(filter) {
+    currentOrderTab = filter;
+    currentOrdersPage = 1;
+    document.querySelectorAll('#orders-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    const target = document.getElementById(`order-tab-${filter}`);
+    if (target) target.classList.add('active');
+    applyOrdersPagination();
+}
 
 function triggerOrderSearch() {
     const query = document.getElementById('order-search').value.trim();
@@ -1463,7 +1507,14 @@ function resetOrderSearch() {
 
 function applyOrdersPagination() {
     let filteredOrders = allOrdersData;
-    
+
+    // Apply tab filter (v117)
+    if (currentOrderTab === 'pending') {
+        filteredOrders = filteredOrders.filter(o => o.status === 'active');
+    } else if (currentOrderTab === 'finished') {
+        filteredOrders = filteredOrders.filter(o => o.status === 'completed' || o.status === 'cancelled');
+    }
+
     // Apply search filter if active
     if (orderFilterText) {
         const cleanFilter = orderFilterText.replace('@', '');
@@ -1702,7 +1753,8 @@ function renderReports(reports) {
     const finalReports = Object.values(grouped).sort((a, b) => {
         if (a.status === 'pending' && b.status !== 'pending') return -1;
         if (a.status !== 'pending' && b.status === 'pending') return 1;
-        return 0;
+        // Newest First within same status (v117)
+        return b.order_id - a.order_id;
     });
 
     if (document.getElementById('reports-stat-total')) {
