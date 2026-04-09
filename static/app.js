@@ -1519,13 +1519,11 @@ function renderOrders(orders) {
                 
                 <!-- 1. Status -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.8rem;"></i>
-                        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Order Status</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Order Status</span>
+                    <div style="font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; color: ${statusColor};">
+                        <i class="fas ${o.status === 'active' ? 'fa-check' : (o.status === 'completed' ? 'fa-check-double' : 'fa-times')}"></i>
+                        ${o.status.toUpperCase()}
                     </div>
-                    <span style="padding: 4px 10px; border-radius: 6px; background: ${statusColor}22; color: ${statusColor}; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
-                        ${o.status}
-                    </span>
                 </div>
 
                 <!-- 2. Group Name -->
@@ -1534,7 +1532,7 @@ function renderOrders(orders) {
                         <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Channel Name</span>
                     </div>
-                    <div style="color: #ffffff; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #ffd700;">${o.chat_name}</span>
                 </div>
 
                 <!-- 3. Group Username -->
@@ -1543,7 +1541,7 @@ function renderOrders(orders) {
                         <i class="fas fa-at" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Username</span>
                     </div>
-                    <div style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">@${o.chat_username || 'no_username'}</div>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: #60a5fa;">@${o.chat_username || 'no_username'}</span>
                 </div>
 
                 <!-- 4. Owner ID -->
@@ -1552,7 +1550,7 @@ function renderOrders(orders) {
                         <i class="fas fa-id-badge" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Owner ID</span>
                     </div>
-                    <div style="color: #94a3b8; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${o.user_id}</span>
                 </div>
 
                 <!-- 5. Required -->
@@ -1561,7 +1559,7 @@ function renderOrders(orders) {
                         <i class="fas fa-users" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Required Members</span>
                     </div>
-                    <div style="color: #3b82f6; font-weight: 800;">${o.required_members}</div>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #c084fc;">${o.required_members}</span>
                 </div>
 
                 <!-- 6. Current -->
@@ -1570,7 +1568,7 @@ function renderOrders(orders) {
                         <i class="fas fa-user-check" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Current Members</span>
                     </div>
-                    <div style="color: #f59e0b; font-weight: 800;">${o.current_members}</div>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #2ecc71;">${o.current_members || 0}</span>
                 </div>
 
                 <!-- 7. Progress -->
