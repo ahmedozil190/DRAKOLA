@@ -202,50 +202,39 @@ async def delete_coupon_api(request):
         success = await crud.delete_coupon(session, code)
         return web.json_response({"status": "ok", "deleted": success})
 
-import asyncio
-
-_last_sync_time = 0
-
-async def background_sync_orders(bot):
-    global _last_sync_time
-    # Throttle to once every 60 seconds
-    if asyncio.get_event_loop().time() - _last_sync_time < 60:
-        return
-    _last_sync_time = asyncio.get_event_loop().time()
-    
-    try:
-        async for session in get_session():
-            orders = await crud.get_all_orders(session)
-            updates_made = False
-            for o in orders:
-                if o.status == 'active':
-                    try:
-                        chat = await bot.get_chat(o.chat_id)
-                        if chat.title and o.chat_name != chat.title:
-                            o.chat_name = chat.title
-                            updates_made = True
-                        if chat.username != o.chat_username:
-                            o.chat_username = chat.username
-                            updates_made = True
-                        if updates_made:
-                            session.add(o)
-                        # Minimal sleep to avoid flood limits
-                        await asyncio.sleep(0.05)
-                    except Exception:
-                        pass
-            if updates_made:
-                await session.commit()
-    except Exception as e:
-        import logging
-        logging.error(f"Background sync error: {e}")
-
 # --- Orders API (v113) ---
 async def get_orders_api(request):
     bot = request.app['bot']
-    asyncio.create_task(background_sync_orders(bot))
-    
     async for session in get_session():
         orders = await crud.get_all_orders(session)
+        
+        # Live Sync for Active Orders ONLY
+        active_orders = [o for o in orders if o.status == 'active']
+        updates_made = False
+        
+        async def sync_order(o):
+            nonlocal updates_made
+            try:
+                chat = await bot.get_chat(o.chat_id)
+                if chat.title and o.chat_name != chat.title:
+                    o.chat_name = chat.title
+                    updates_made = True
+                # If chat has username, or it used to have one, sync it
+                if chat.username != o.chat_username:
+                    o.chat_username = chat.username
+                    updates_made = True
+            except Exception:
+                pass
+                
+        # Limit parallel execution if many active orders (batch of 15)
+        for i in range(0, len(active_orders), 15):
+            batch = active_orders[i:i+15]
+            await asyncio.gather(*(sync_order(o) for o in batch))
+            
+        if updates_made:
+            session.add_all(active_orders)
+            await session.commit()
+            
         return web.json_response([{
             "id": o.id,
             "user_id": o.user_id,
@@ -255,7 +244,11 @@ async def get_orders_api(request):
             "required_members": o.required_members,
             "current_members": o.current_members,
             "status": o.status
-        } for o in orders])
+        } for o in orders], headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        })
 
 async def update_order_api(request):
     data = await request.json()

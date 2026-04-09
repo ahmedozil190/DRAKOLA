@@ -1416,7 +1416,7 @@ async function deleteCoupon(code) {
 // --- Orders Management (v113) ---
 async function loadOrders() {
     try {
-        const response = await fetch('/api/orders');
+        const response = await fetch(`/api/orders?t=${new Date().getTime()}`);
         const orders = await response.json();
         allOrdersData = orders; // Cache for pagination
 
