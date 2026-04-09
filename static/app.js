@@ -101,6 +101,64 @@ function toggleMenu() {
     menuOverlay.classList.toggle('active');
 }
 
+// v119: Global State Reset Function
+function resetDashboardState(viewId) {
+    // Reset Scroll
+    window.scrollTo(0, 0);
+
+    // Reset Users
+    userFilter = 'active';
+    currentPage = 1;
+    const userSearch = document.getElementById('user-search');
+    if (userSearch) userSearch.value = '';
+    const userResetSearch = document.getElementById('reset-search-container');
+    if (userResetSearch) userResetSearch.style.display = 'none';
+
+    // Reset Finance
+    currentFinanceFilter = 'sale';
+    currentFinancePage = 1;
+
+    // Reset Orders
+    currentOrderTab = 'pending';
+    currentOrdersPage = 1;
+    orderFilterText = '';
+    const orderSearch = document.getElementById('order-search');
+    if (orderSearch) orderSearch.value = '';
+    const resetOrderSearch = document.getElementById('reset-order-search-container');
+    if (resetOrderSearch) resetOrderSearch.style.display = 'none';
+
+    // Reset Reports
+    currentReportFilter = 'pending';
+
+    // Reset Coupons
+    currentCouponFilter = 'active';
+
+    // Sync UI Tabs (v119)
+    syncAllTabUI();
+}
+
+function syncAllTabUI() {
+    // Users
+    document.querySelectorAll('#users-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (document.getElementById('tab-active')) document.getElementById('tab-active').classList.add('active');
+
+    // Finance
+    document.querySelectorAll('#finance-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (document.getElementById('finance-tab-sale')) document.getElementById('finance-tab-sale').classList.add('active');
+
+    // Orders
+    document.querySelectorAll('#orders-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (document.getElementById('order-tab-pending')) document.getElementById('order-tab-pending').classList.add('active');
+
+    // Reports
+    document.querySelectorAll('#reports-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (document.getElementById('report-tab-pending')) document.getElementById('report-tab-pending').classList.add('active');
+
+    // Coupons
+    document.querySelectorAll('#coupons-section .tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (document.getElementById('coupon-tab-active')) document.getElementById('coupon-tab-active').classList.add('active');
+}
+
 function switchNav(viewId) {
     tg.HapticFeedback.selectionChanged();
 
@@ -114,8 +172,8 @@ function switchNav(viewId) {
     sideMenu.classList.remove('active');
     menuOverlay.classList.remove('active');
 
-    // Save current view for persistence
-    localStorage.setItem('currentView', viewId);
+    // Reset Dashboard State (v119)
+    resetDashboardState(viewId);
 
     // Reset settings sub-views to main menu when entering settings
     if (viewId === 'settings') {
@@ -136,9 +194,8 @@ function switchNav(viewId) {
     };
     pageTitle.innerText = titles[viewId];
 
-    // Reset Pagination to Page 1 when entering sections (v83)
+    // Reload Data for specific sections if needed (Pagination already reset to 1)
     if (viewId === 'users') {
-        currentPage = 1;
         loadUsers();
     } else if (viewId === 'finance') {
         currentFinancePage = 1;
@@ -883,7 +940,7 @@ async function modalToggleBan() {
 let financeDataCache = null;
 let currentFinancePage = 1;
 const financePerPage = 5;
-let currentFinanceFilter = 'all';
+let currentFinanceFilter = 'sale';
 
 function setFinanceFilter(filter) {
     currentFinanceFilter = filter;
@@ -1512,7 +1569,9 @@ function applyOrdersPagination() {
     if (currentOrderTab === 'pending') {
         filteredOrders = filteredOrders.filter(o => o.status === 'active');
     } else if (currentOrderTab === 'finished') {
-        filteredOrders = filteredOrders.filter(o => o.status === 'completed' || o.status === 'cancelled');
+        filteredOrders = filteredOrders.filter(o => o.status === 'completed');
+    } else if (currentOrderTab === 'rejected') {
+        filteredOrders = filteredOrders.filter(o => o.status === 'cancelled');
     }
 
     // Apply search filter if active
