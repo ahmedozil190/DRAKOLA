@@ -1466,10 +1466,12 @@ function applyOrdersPagination() {
     
     // Apply search filter if active
     if (orderFilterText) {
+        const cleanFilter = orderFilterText.replace('@', '');
         filteredOrders = filteredOrders.filter(o => 
             (o.user_id && o.user_id.toString().includes(orderFilterText)) ||
             (o.chat_name && o.chat_name.toLowerCase().includes(orderFilterText)) ||
-            (o.chat_username && o.chat_username.toLowerCase().includes(orderFilterText))
+            (o.chat_username && o.chat_username.toLowerCase().includes(cleanFilter)) ||
+            (o.chat_username && ('@' + o.chat_username.toLowerCase()).includes(orderFilterText))
         );
     }
 
