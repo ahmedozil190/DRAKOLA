@@ -298,6 +298,13 @@ function populateStats(stats) {
         document.getElementById('stat-active-coupons-home').innerText = stats.active_coupons || 0;
         document.getElementById('stat-finished-coupons-home').innerText = stats.finished_coupons || 0;
     }
+
+    // Reports section mapping
+    if (document.getElementById('stat-total-reports-home')) {
+        document.getElementById('stat-total-reports-home').innerText = stats.total_reports || 0;
+        document.getElementById('stat-accepted-reports-home').innerText = stats.accepted_reports || 0;
+        document.getElementById('stat-rejected-reports-home').innerText = stats.rejected_reports || 0;
+    }
 }
 
 function populateSettings(settings) {

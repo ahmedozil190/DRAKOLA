@@ -102,6 +102,16 @@ async def get_admin_stats(session: AsyncSession):
     q_finished_coupons = await session.execute(select(func.count(Coupon.id)).where((Coupon.is_active == False) | (Coupon.current_uses >= Coupon.max_uses)))
     finished_coupons = q_finished_coupons.scalar() or 0
     
+    # Reports Stats
+    q_total_reports = await session.execute(select(func.count(UserReport.id)))
+    total_reports = q_total_reports.scalar() or 0
+    
+    q_accepted_reports = await session.execute(select(func.count(UserReport.id)).where(UserReport.status == 'accepted'))
+    accepted_reports = q_accepted_reports.scalar() or 0
+    
+    q_rejected_reports = await session.execute(select(func.count(UserReport.id)).where(UserReport.status == 'rejected'))
+    rejected_reports = q_rejected_reports.scalar() or 0
+    
     return {
         "total_users": total_users,
         "banned_users": banned_users,
@@ -114,7 +124,10 @@ async def get_admin_stats(session: AsyncSession):
         "total_expenses": total_expenses,
         "total_sales": total_sales_count,
         "active_coupons": active_coupons,
-        "finished_coupons": finished_coupons
+        "finished_coupons": finished_coupons,
+        "total_reports": total_reports,
+        "accepted_reports": accepted_reports,
+        "rejected_reports": rejected_reports
     }
 
 async def get_mandatory_channels(session: AsyncSession):
