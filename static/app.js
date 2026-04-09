@@ -697,6 +697,18 @@ function closeErrorPopup() {
     document.getElementById('error-modal').classList.remove('active');
 }
 
+// ========== Clipboard Logic (v97) ==========
+function copyToClipboard(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+        tg.HapticFeedback.notificationOccurred('success');
+        // Simple visual feedback: using the success popup for consistency
+        showSuccessPopup("Copied!", "Coupon code has been copied to clipboard 📋");
+    }).catch(err => {
+        console.error('Could not copy text: ', err);
+    });
+}
+
 // ========== Custom Confirmation Modal Logic (v93) ==========
 let onConfirmAction = null;
 
@@ -1235,10 +1247,14 @@ async function loadCoupons() {
 
                 <!-- Boxed Info Fields -->
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- Coupon Box -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <!-- Coupon Box (v97: Click to Copy) -->
+                    <div onclick="copyToClipboard('${c.code}')" 
+                         style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s;">
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Coupon</span>
-                        <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #22d3ee;">${c.code}</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-family: monospace; font-size: 1rem; font-weight: 800; color: #22d3ee;">${c.code}</span>
+                            <i class="far fa-copy" style="font-size: 0.8rem; color: #22d3ee; opacity: 0.6;"></i>
+                        </div>
                     </div>
 
                     <!-- Points Box -->
