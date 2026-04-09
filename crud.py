@@ -79,6 +79,28 @@ async def get_admin_stats(session: AsyncSession):
     
     q_cancelled_orders = await session.execute(select(func.count(Order.id)).where(Order.status == 'cancelled'))
     cancelled_orders = q_cancelled_orders.scalar() or 0
+
+    # Finance Stats (v99)
+    # Sum of amount_usd where type = 'sale'
+    q_revenue = await session.execute(select(func.sum(FinancialRecord.amount_usd)).where(FinancialRecord.record_type == 'sale'))
+    total_revenue = q_revenue.scalar() or 0
+    
+    # Sum of amount_usd where type = 'expense'
+    q_expenses = await session.execute(select(func.sum(FinancialRecord.amount_usd)).where(FinancialRecord.record_type == 'expense'))
+    total_expenses = q_expenses.scalar() or 0
+    
+    # Count of sales
+    q_sales_count = await session.execute(select(func.count(FinancialRecord.id)).where(FinancialRecord.record_type == 'sale'))
+    total_sales_count = q_sales_count.scalar() or 0
+
+    # Coupon Stats (v101)
+    # Active coupons: is_active=True AND current_uses < max_uses
+    q_active_coupons = await session.execute(select(func.count(Coupon.id)).where(Coupon.is_active == True, Coupon.current_uses < Coupon.max_uses))
+    active_coupons = q_active_coupons.scalar() or 0
+    
+    # Finished coupons: is_active=False OR current_uses >= max_uses
+    q_finished_coupons = await session.execute(select(func.count(Coupon.id)).where((Coupon.is_active == False) | (Coupon.current_uses >= Coupon.max_uses)))
+    finished_coupons = q_finished_coupons.scalar() or 0
     
     return {
         "total_users": total_users,
@@ -87,7 +109,12 @@ async def get_admin_stats(session: AsyncSession):
         "total_orders": total_orders,
         "active_orders": active_orders,
         "completed_orders": completed_orders,
-        "cancelled_orders": cancelled_orders
+        "cancelled_orders": cancelled_orders,
+        "total_revenue": total_revenue,
+        "total_expenses": total_expenses,
+        "total_sales": total_sales_count,
+        "active_coupons": active_coupons,
+        "finished_coupons": finished_coupons
     }
 
 async def get_mandatory_channels(session: AsyncSession):

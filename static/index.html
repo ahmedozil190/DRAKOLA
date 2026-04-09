@@ -131,7 +131,7 @@
                 </div>
                 <div class="card">
                     <span class="card-label">Banned</span>
-                    <span class="card-value val-red" id="stat-banned-users">...</span>
+                    <span class="card-value" id="stat-banned-users" style="color: #ef4444;">...</span>
                 </div>
             </div>
 
@@ -155,7 +155,60 @@
                 </div>
                 <div class="card" style="margin-top: 12px;">
                     <span class="card-label">Rejected</span>
-                    <span class="card-value val-red" id="stat-cancelled-tasks">...</span>
+                    <span class="card-value" id="stat-cancelled-tasks" style="color: #ef4444;">...</span>
+                </div>
+            </div>
+
+            <!-- Finance Section (v99) -->
+            <div class="section-header">
+                <i class="fas fa-dollar-sign"></i>
+                <h2>Finance</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="card">
+                    <span class="card-label">Total Revenue</span>
+                    <span class="card-value val-green" id="stat-total-revenue">...</span>
+                </div>
+                <div class="card">
+                    <span class="card-label">Total Expenses</span>
+                    <span class="card-value" style="color: #ef4444;" id="stat-total-expenses">...</span>
+                </div>
+                <!-- Full Width Sales (v99) -->
+                <div class="card" style="grid-column: span 2; margin-top: 12px;">
+                    <span class="card-label">Total Sales</span>
+                    <span class="card-value val-purple" id="stat-total-sales-count">...</span>
+                </div>
+            </div>
+
+            <!-- Broadcast Section (v100) -->
+            <div class="section-header">
+                <i class="fas fa-bullhorn"></i>
+                <h2>Broadcast</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="card">
+                    <span class="card-label">Global Sent</span>
+                    <span class="card-value val-blue" id="stat-broadcast-global">...</span>
+                </div>
+                <div class="card">
+                    <span class="card-label">Targeted Sent</span>
+                    <span class="card-value val-orange" id="stat-broadcast-targeted">...</span>
+                </div>
+            </div>
+
+            <!-- Coupons Section (v101) -->
+            <div class="section-header">
+                <i class="fas fa-ticket-alt"></i>
+                <h2>Coupons</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="card">
+                    <span class="card-label">Active</span>
+                    <span class="card-value" style="color: #22d3ee;" id="stat-active-coupons-home">...</span>
+                </div>
+                <div class="card">
+                    <span class="card-label">Finished</span>
+                    <span class="card-value" style="color: #64748b;" id="stat-finished-coupons-home">...</span>
                 </div>
             </div>
         </section>
@@ -491,11 +544,24 @@
             </div>
         </section>
 
-        <!-- Coupons View (v68) -->
+        <!-- Coupons View (v102) -->
         <section id="coupons-section" class="view-section">
+
+            <!-- Coupons Page Stats (v102) -->
+            <div class="stats-grid" style="margin-bottom: 25px;">
+                <div class="card" style="min-height: 80px; justify-content: center;">
+                    <span class="card-label" style="font-size: 0.75rem;">Active Coupons</span>
+                    <span class="card-value" id="coupon-stat-active" style="color: #22d3ee; font-size: 1.4rem;">0</span>
+                </div>
+                <div class="card" style="min-height: 80px; justify-content: center;">
+                    <span class="card-label" style="font-size: 0.75rem;">Finished Coupons</span>
+                    <span class="card-value" id="coupon-stat-finished" style="color: #64748b; font-size: 1.4rem;">0</span>
+                </div>
+            </div>
+
             <div class="section-header" style="display: none;">
                 <i class="fas fa-ticket-alt" style="color: #a855f7; font-size: 1.4rem;"></i>
-                <h2 style="margin: 0;">Manage Coupons</h2>
+                <h3 style="margin: 0;">Coupons</h3>
             </div>
             
             <!-- Generate Coupon Card -->

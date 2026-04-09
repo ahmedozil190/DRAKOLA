@@ -125,7 +125,7 @@ function switchNav(viewId) {
         'users': 'User Management',
         'broadcast': 'Broadcast',
         'finance': 'Finance',
-        'coupons': 'Points Coupons'
+        'coupons': 'Coupons'
     };
     pageTitle.innerText = titles[viewId];
 
@@ -185,6 +185,19 @@ function populateStats(stats) {
     document.getElementById('stat-completed-tasks').innerText = stats.completed_orders || 0;
     document.getElementById('stat-active-tasks').innerText = stats.active_orders || 0;
     document.getElementById('stat-cancelled-tasks').innerText = stats.cancelled_orders || 0;
+
+    // Finance section mapping (v99)
+    if (document.getElementById('stat-total-revenue')) {
+        document.getElementById('stat-total-revenue').innerText = `$${(stats.total_revenue || 0).toLocaleString()}`;
+        document.getElementById('stat-total-expenses').innerText = `$${(stats.total_expenses || 0).toLocaleString()}`;
+        document.getElementById('stat-total-sales-count').innerText = stats.total_sales || 0;
+    }
+
+    // Coupons section mapping (v101)
+    if (document.getElementById('stat-active-coupons-home')) {
+        document.getElementById('stat-active-coupons-home').innerText = stats.active_coupons || 0;
+        document.getElementById('stat-finished-coupons-home').innerText = stats.finished_coupons || 0;
+    }
 }
 
 function populateSettings(settings) {
@@ -1201,6 +1214,12 @@ async function loadCoupons() {
 
         const activeCoupons = data.coupons.filter(c => c.is_active && c.current_uses < c.max_uses);
         const finishedCoupons = data.coupons.filter(c => !c.is_active || c.current_uses >= c.max_uses);
+
+        // Update Coupons Page Top Stats (v102)
+        if (document.getElementById('coupon-stat-active')) {
+            document.getElementById('coupon-stat-active').innerText = activeCoupons.length;
+            document.getElementById('coupon-stat-finished').innerText = finishedCoupons.length;
+        }
 
         const filteredList = currentCouponFilter === 'active' ? activeCoupons : finishedCoupons;
 
