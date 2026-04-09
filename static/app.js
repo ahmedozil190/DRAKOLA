@@ -337,7 +337,7 @@ function populateSettings(settings) {
         sideMenuTitle.innerText = settings.bot_name || "Billion Bot Plus";
     }
 
-    allChannelsData = settings.channels || [];
+    allChannelsData = [...(settings.channels || [])].reverse();
     renderChannels();
 }
 
@@ -565,17 +565,21 @@ async function addNewChannel() {
     const link = linkInput.value;
     if (!id || !link) return;
 
-    await fetch('/api/channels/add', {
+    const res = await fetch('/api/channels/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, link })
     });
 
-    // Clear inputs immediately
-    idInput.value = '';
-    linkInput.value = '';
-
-    loadInitialData();
+    if (res.ok) {
+        showSuccessPopup("Channel Added!", "The new channel has been added to your subscription list successfully. ✨");
+        // Clear inputs immediately
+        idInput.value = '';
+        linkInput.value = '';
+        loadInitialData();
+    } else {
+        tg.showAlert("Failed to add channel. Please check the ID and Link.");
+    }
 }
 
 async function deleteChannel(id) {
