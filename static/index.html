@@ -517,25 +517,21 @@
                     <h2 style="font-weight: 700;">Channels & Subscriptions</h2>
                 </div>
                 
-                <!-- Unified Channels List -->
-                <div id="channels-list">
-                    <!-- Injected via JS -->
-                </div>
-
                 <div class="card"
-                    style="margin-top: 20px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    style="margin-bottom: 25px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
                     <div class="form-group">
                         <label>Add New Channel</label>
-                        <!-- Only one set of inputs now (Primary) -->
                         <input type="text" id="new-channel-id" class="input-field" placeholder="@username"
                             style="margin-bottom: 10px;">
                         <input type="text" id="new-channel-link" class="input-field"
                             placeholder="https://t.me/...">
                     </div>
                     <button class="primary-btn" onclick="addNewChannel()">Add Channel</button>
-                    <p style="font-size: 0.75rem; color: #64748b; margin-top: 15px; line-height: 1.4;">
-                        * ID is used for bot checks, Link is shown to users.
-                    </p>
+                </div>
+
+                <h3 style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px; font-weight: 700;">Managed Channels</h3>
+                <div id="channels-list">
+                    <!-- Injected via JS -->
                 </div>
             </div>
         </section>

@@ -338,16 +338,27 @@ function renderChannels(channels) {
     channels.forEach(ch => {
         const div = document.createElement('div');
         div.className = 'card';
-        div.style.padding = '15px';
-        div.style.marginBottom = '10px';
-        div.style.flexDirection = 'row';
+        div.style.padding = '20px';
+        div.style.marginBottom = '15px';
+        div.style.display = 'flex';
+        div.style.flexDirection = 'column';
+        div.style.gap = '12px';
         div.style.minHeight = 'auto';
+        div.style.background = 'rgba(255, 255, 255, 0.015)';
+        
         div.innerHTML = `
-            <div style="flex: 1;">
-                <p style="font-size: 0.9rem; font-weight: 600;">${ch.id}</p>
-                <p style="font-size: 0.7rem; color: #8b8e9f;">${ch.link}</p>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Username / ID</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${ch.id}</span>
             </div>
-            <i class="fas fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteChannel('${ch.id}')"></i>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Invite Link</span>
+                <span style="font-size: 0.85rem; color: #3b82f6; word-break: break-all; font-family: monospace;">${ch.link}</span>
+            </div>
+            <button class="modal-action-btn btn-sub" onclick="deleteChannel('${ch.id}')" 
+                    style="margin-top: 5px; width: 100%; justify-content: center; padding: 10px; font-size: 0.85rem;">
+                <i class="fas fa-trash-alt"></i> Delete Channel
+            </button>
         `;
         list.appendChild(div);
     });
