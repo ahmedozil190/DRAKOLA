@@ -229,6 +229,8 @@ function switchNav(viewId) {
     } else if (viewId === 'coupons') {
         currentCouponsPage = 1;
         loadCoupons();
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (viewId === 'orders') {
         currentOrdersPage = 1;
         loadOrders();
@@ -351,7 +353,7 @@ function prevChannelsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -363,7 +365,7 @@ function nextChannelsPage() {
         tg.HapticFeedback.impactOccurred('light');
         renderChannels();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -701,7 +703,7 @@ function prevPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -711,7 +713,8 @@ function nextPage() {
         currentPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyUserFilter();
-        document.getElementById('users-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1217,7 +1220,8 @@ function prevFinancePage() {
         currentFinancePage--;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1228,7 +1232,8 @@ function nextFinancePage() {
         currentFinancePage++;
         tg.HapticFeedback.impactOccurred('light');
         renderFinance();
-        window.scrollTo({ top: document.getElementById('finance-section').offsetTop - 100, behavior: 'smooth' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1429,6 +1434,8 @@ function setCouponFilter(type) {
     document.getElementById('coupon-tab-active').classList.toggle('active', type === 'active');
     document.getElementById('coupon-tab-finished').classList.toggle('active', type === 'finished');
     loadCoupons();
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function loadCoupons() {
@@ -1565,6 +1572,8 @@ function prevCouponsPage() {
         currentCouponsPage--;
         tg.HapticFeedback.impactOccurred('light');
         loadCoupons();
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1574,6 +1583,8 @@ function nextCouponsPage() {
     currentCouponsPage++;
     tg.HapticFeedback.impactOccurred('light');
     loadCoupons();
+    const scroller = document.getElementById('app-content-scroller');
+    if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
@@ -1757,7 +1768,7 @@ function prevOrdersPage() {
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1767,7 +1778,8 @@ function nextOrdersPage() {
         currentOrdersPage++;
         tg.HapticFeedback.impactOccurred('light');
         applyOrdersPagination();
-        document.getElementById('orders-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -2092,10 +2104,9 @@ async function updateReportStatus(orderId, status) {
 function prevReportsPage() {
     if (currentReportsPage > 1) {
         currentReportsPage--;
-        tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
         const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -2104,9 +2115,9 @@ function nextReportsPage() {
     const totalPages = Math.ceil(filtered.length / reportsPerPage);
     if (currentReportsPage < totalPages) {
         currentReportsPage++;
-        tg.HapticFeedback.impactOccurred('light');
         renderReports(allReportsData);
-        document.getElementById('reports-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const scroller = document.getElementById('app-content-scroller');
+        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
