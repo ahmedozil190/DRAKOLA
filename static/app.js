@@ -1507,7 +1507,7 @@ function renderOrders(orders) {
 
     orders.forEach((o, idx) => {
         const progress = o.required_members > 0 ? Math.round((o.current_members / o.required_members) * 100) : 0;
-        const statusColor = o.status === 'active' ? '#3b82f6' : (o.status === 'completed' ? '#10b981' : '#ef4444');
+        const statusColor = o.status === 'active' ? '#10b981' : (o.status === 'completed' ? '#3b82f6' : '#ef4444');
 
         const card = document.createElement('div');
         card.className = 'user-card';
@@ -1534,7 +1534,7 @@ function renderOrders(orders) {
                         <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Channel Name</span>
                     </div>
-                    <div style="color: #3b82f6; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
+                    <div style="color: #ffffff; font-weight: 700; font-size: 0.95rem;">${o.chat_name}</div>
                 </div>
 
                 <!-- 3. Group Username -->
@@ -1552,7 +1552,7 @@ function renderOrders(orders) {
                         <i class="fas fa-id-badge" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Owner ID</span>
                     </div>
-                    <div style="color: #3b82f6; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
+                    <div style="color: #94a3b8; font-family: monospace; font-size: 0.9rem; font-weight: 600;">${o.user_id}</div>
                 </div>
 
                 <!-- 5. Required -->
@@ -1570,7 +1570,7 @@ function renderOrders(orders) {
                         <i class="fas fa-user-check" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Current Members</span>
                     </div>
-                    <div style="color: #10b981; font-weight: 800;">${o.current_members}</div>
+                    <div style="color: #f59e0b; font-weight: 800;">${o.current_members}</div>
                 </div>
 
                 <!-- 7. Progress -->
@@ -1579,7 +1579,7 @@ function renderOrders(orders) {
                         <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">Execution Progress</span>
                     </div>
-                    <span style="color: #3b82f6; font-size: 0.9rem; font-weight: 800;">${progress}%</span>
+                    <span style="color: #06b6d4; font-size: 0.9rem; font-weight: 800;">${progress}%</span>
                 </div>
 
                 <!-- Actions -->
