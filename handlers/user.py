@@ -271,14 +271,14 @@ async def account_info(call: CallbackQuery):
                     top_text += f"{ranks[i]}: ({u.invites_count or 0}) -> {u.user_id}\n"
             
             text = "• <b>مرحبا بك في معلومات حسابك في بوت التمويل 🌀</b>\n\n"
-            text += f"- عدد القنوات او المجموعات الجاري تمويلها : {ongoing_orders}\n"
-            text += f"- عدد نقاط حسابك : {user.points}\n\n"
-            text += f"- عدد عمليات التحويل التي قمت بها : {user.transfers_count or 0}\n"
-            text += f"- عدد القنوات التي شتركت بها : {joined_count}\n"
-            text += f"- عدد الهدايا اليومية التي جمعتها : {user.daily_gifts_count or 0}\n"
-            text += f"- عدد الاعضاء الذي قمت بطلبهم في عمليات التمويل : {total_members_requested}\n\n"
-            text += f"- عدد مشاركاتك لرابط الدعوة : {user.invites_count or 0}\n"
-            text += f"- عدد النقاط التي قمت بستخدامها : {user.points_used or 0}\n"
+            text += f"- عدد القنوات او المجموعات الجاري تمويلها : <b>{ongoing_orders}</b>\n"
+            text += f"- عدد نقاط حسابك : <b>{user.points}</b>\n\n"
+            text += f"- عدد عمليات التحويل التي قمت بها : <b>{user.transfers_count or 0}</b>\n"
+            text += f"- عدد القنوات التي شتركت بها : <b>{joined_count}</b>\n"
+            text += f"- عدد الهدايا اليومية التي جمعتها : <b>{user.daily_gifts_count or 0}</b>\n"
+            text += f"- عدد الاعضاء الذي قمت بطلبهم في عمليات التمويل : <b>{total_members_requested}</b>\n\n"
+            text += f"- عدد مشاركاتك لرابط الدعوة : <b>{user.invites_count or 0}</b>\n"
+            text += f"- عدد النقاط التي قمت بستخدامها : <b>{user.points_used or 0}</b>\n"
             text += top_text
             
             kbd = InlineKeyboardMarkup(inline_keyboard=[
