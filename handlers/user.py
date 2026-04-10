@@ -283,8 +283,11 @@ async def invite_link(call: CallbackQuery):
             for i, u in enumerate(top_users):
                 top_text += f"{ranks[i]}: ({u.invites_count or 0}) -> {u.user_id}\n"
         
+        settings = await crud.get_settings(session)
+        ref_reward = settings.referral_reward or 100
+        
         text = "انسخ الرابط ثم قم بمشاركته مع اصدقائك 📥 .\n\n"
-        text += "- كل شخص يقوم بالدخول ستحصل على 100 نقطه 📊 .\n\n"
+        text += f"- كل شخص يقوم بالدخول ستحصل على {ref_reward} نقطه 📊 .\n\n"
         text += "- بإمكانك عمل اعلان خاص برابط الدعوة الخاص بك 📬 .\n\n"
         text += "~ رابط الدعوة :\n\n"
         text += f"{link}\n\n"

@@ -29,10 +29,12 @@ async def collect_points(call: CallbackQuery):
         settings = await crud.get_settings(session)
         support = settings.support_username or "@A_M_E_15"
         
+        ref_reward = settings.referral_reward or 100
+        
         text = "<b>مرحبا بك في قسم تجميع النقاط 📥 .</b>\n\n"
         text += "• <b>يمكنك الحصول على نقاط بطريقتين :</b>\n\n"
         text += "1 - عن طريق الاشتراك في القنوات او المجموعات\n\n"
-        text += "2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على 100 نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
+        text += f"2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على {ref_reward} نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
         text += f"\n<b>~ اذ كانت طريقه التجميع صعبه راسل المطور لشراء النقاط 💰 .</b>\n\n"
         text += f"<b>~ المطـور :</b> {support}"
         

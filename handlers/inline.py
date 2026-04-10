@@ -30,37 +30,44 @@ BUTTON_LABELS = [
 
 @router.inline_query()
 async def inline_handler(query: InlineQuery):
-    user_id = query.from_user.id
-    bot_info = await query.bot.get_me()
-    bot_link = f"https://t.me/{bot_info.username}?start=REF{user_id}"
+    from database import get_session
+    import crud
     
-    # Pick random message and button label
-    promo_text = random.choice(PROMO_MESSAGES)
-    btn_text = random.choice(BUTTON_LABELS)
-    
-    # The button that will appear UNDER the shared message
-    kbd = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=btn_text, url=bot_link)]
-    ])
-    
-    # Result: Advertising / Referral Template (Optimized for Clarity)
-    result_ref = InlineQueryResultArticle(
-        id=f"ref_v7_{user_id}",
-        title="🎁 الحصول على 100 نقطة لكل صديق",
-        description="مشاركة رابط الدعوة مع اصدقائك",
-        thumbnail_url="https://img.icons8.com/color/48/add-user-male.png",
-        input_message_content=InputTextMessageContent(
-            message_text=promo_text
-        ),
-        reply_markup=kbd
-    )
-    
-    # Send only the referral result as a clear article
-    # Use switch_pm for the first option 'Start Bot' which preserves the query text on top
-    await query.answer(
-        results=[result_ref], 
-        cache_time=1, 
-        is_personal=True,
-        switch_pm_text="اضغط هنا للدخول الى البوت !",
-        switch_pm_parameter="start"
-    )
+    async for session in get_session():
+        settings = await crud.get_settings(session)
+        ref_reward = settings.referral_reward or 100
+        
+        user_id = query.from_user.id
+        bot_info = await query.bot.get_me()
+        bot_link = f"https://t.me/{bot_info.username}?start=REF{user_id}"
+        
+        # Pick random message and button label
+        promo_text = random.choice(PROMO_MESSAGES)
+        btn_text = random.choice(BUTTON_LABELS)
+        
+        # The button that will appear UNDER the shared message
+        kbd = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=btn_text, url=bot_link)]
+        ])
+        
+        # Result: Advertising / Referral Template (Optimized for Clarity)
+        result_ref = InlineQueryResultArticle(
+            id=f"ref_v7_{user_id}",
+            title=f"🎁 الحصول على {ref_reward} نقطة لكل صديق",
+            description="مشاركة رابط الدعوة مع اصدقائك",
+            thumbnail_url="https://img.icons8.com/color/48/add-user-male.png",
+            input_message_content=InputTextMessageContent(
+                message_text=promo_text
+            ),
+            reply_markup=kbd
+        )
+        
+        # Send only the referral result as a clear article
+        # Use switch_pm for the first option 'Start Bot' which preserves the query text on top
+        await query.answer(
+            results=[result_ref], 
+            cache_time=1, 
+            is_personal=True,
+            switch_pm_text="اضغط هنا للدخول الى البوت !",
+            switch_pm_parameter="start"
+        )
