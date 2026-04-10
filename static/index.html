@@ -7,7 +7,7 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=51">
+    <link rel="stylesheet" href="/static/style.css?v=52">
     <style>
         .user-card {
             position: relative;
@@ -123,11 +123,11 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
             background-color: #3b82f6;
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(20px);
             background-color: #ffffff;
         }
@@ -185,7 +185,8 @@
             <i class="fas fa-bars"></i>
         </div>
         <h1 id="page-title">Overview</h1>
-        <div class="avatar" id="avatar-circle" onclick="switchNav('admin-profile')" style="cursor: pointer; opacity: 0; transition: opacity 0.3s ease;"></div>
+        <div class="avatar" id="avatar-circle" onclick="switchNav('admin-profile')"
+            style="cursor: pointer; opacity: 0; transition: opacity 0.3s ease;"></div>
     </header>
 
     <!-- Purple Main Scroller (v119) -->
@@ -554,7 +555,8 @@
 
                         <!-- Points & Rewards Card (Yellow) -->
                         <div class="settings-item" onclick="showSettingsSubView('points')">
-                            <div class="settings-icon-box bg-yellow-soft" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <div class="settings-icon-box bg-yellow-soft"
+                                style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
                                 <i class="fas fa-coins"></i>
                             </div>
                             <div class="settings-info">
@@ -592,7 +594,8 @@
                         </div>
                         <div class="form-group">
                             <label>Bot Instructions Link</label>
-                            <input type="text" id="instruction-link-input" class="input-field" placeholder="https://...">
+                            <input type="text" id="instruction-link-input" class="input-field"
+                                placeholder="https://...">
                         </div>
                         <div class="form-group">
                             <label>Rules Link</label>
@@ -680,18 +683,21 @@
                     </div>
                     <div class="card"
                         style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
-                        
+
                         <!-- Status indicator -->
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.15); border-radius: 12px; margin-bottom: 24px;">
+                        <div
+                            style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.15); border-radius: 12px; margin-bottom: 24px;">
                             <i class="fas fa-gavel" style="color: #ef4444; font-size: 1.3rem;"></i>
                             <div>
                                 <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">Leave Penalty</div>
-                                <div style="color: #94a3b8; font-size: 0.8rem;">Points deducted when a user leaves a funded channel</div>
+                                <div style="color: #94a3b8; font-size: 0.8rem;">Points deducted when a user leaves a
+                                    funded channel</div>
                             </div>
                         </div>
 
                         <div class="switch-group">
-                            <label style="color: #94a3b8; font-weight: 600; font-size: 1rem;">Enable Penalty System</label>
+                            <label style="color: #94a3b8; font-weight: 600; font-size: 1rem;">Enable Penalty
+                                System</label>
                             <label class="switch">
                                 <input type="checkbox" id="penalty-enabled-toggle">
                                 <span class="slider"></span>
@@ -700,7 +706,8 @@
 
                         <div class="form-group" style="margin-top: 10px;">
                             <label>Penalty Multiplier</label>
-                            <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">Penalty = Join Reward × Multiplier. e.g. if reward is 10 pts and multiplier is 2, penalty is 20 pts.</div>
+                            <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">Penalty = Join Reward ×
+                                Multiplier. e.g. if reward is 10 pts and multiplier is 2, penalty is 20 pts.</div>
                             <input type="number" id="leave-penalty-input" class="input-field" min="1" max="10">
                         </div>
 
@@ -1078,81 +1085,107 @@
                     </div>
                 </div>
             </section>
-        <!-- Admin Profile Section -->
-        <section id="admin-profile-section" class="view-section">
-            
-            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; position: relative;">
-                <!-- Glowing background effect under avatar (v143: synced ID) -->
-                <div id="profile-avatar-glow" style="position: absolute; top: 10px; width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); filter: blur(30px); opacity: 0.5; z-index: 0; border-radius: 50%;"></div>
-                
-                <!-- Avatar: starts invisible to avoid flash, shown by JS after photo loads (v134) -->
-                <div id="profile-avatar" style="position: relative; z-index: 1; width: 110px; height: 110px; border-radius: 50%; background: transparent; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; border: 4px solid rgba(255, 255, 255, 0.15); background-size: cover; background-position: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease;">
-                </div>
-            </div>
+            <!-- Admin Profile Section -->
+            <section id="admin-profile-section" class="view-section">
 
-            <!-- Fields Container (v133: No icons, label-left value-right) -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
-                <!-- Full Name Row -->
-                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</span>
-                    <div id="profile-name" style="font-size: 0.95rem; font-weight: 800; color: #ffd700;">Admin Name</div>
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; position: relative;">
+                    <!-- Glowing background effect under avatar (v144: synced ID) -->
+                    <div id="profile-avatar-glow"
+                        style="position: absolute; top: 10px; width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); filter: blur(30px); opacity: 0.5; z-index: 0; border-radius: 50%;">
+                    </div>
+
+                    <!-- Avatar: starts invisible to avoid flash, shown by JS after photo loads (v134) -->
+                    <div id="profile-avatar"
+                        style="position: relative; z-index: 1; width: 110px; height: 110px; border-radius: 50%; background: transparent; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; border: 4px solid rgba(255, 255, 255, 0.15); background-size: cover; background-position: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease;">
+                    </div>
                 </div>
 
-                <!-- Username Row -->
-                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Username</span>
-                    <div id="profile-username" style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">@username</div>
+                <!-- Fields Container (v133: No icons, label-left value-right) -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                    <!-- Full Name Row -->
+                    <div
+                        style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                        <span
+                            style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Full
+                            Name</span>
+                        <div id="profile-name" style="font-size: 0.95rem; font-weight: 800; color: #ffd700;">Admin Name
+                        </div>
+                    </div>
+
+                    <!-- Username Row -->
+                    <div
+                        style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                        <span
+                            style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Username</span>
+                        <div id="profile-username" style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">
+                            @username</div>
+                    </div>
+
+                    <!-- Telegram ID Row -->
+                    <div
+                        style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                        <span
+                            style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Telegram
+                            ID</span>
+                        <div id="profile-id"
+                            style="font-size: 0.95rem; font-weight: 800; color: #f59e0b; font-family: monospace; letter-spacing: 1px;">
+                            00000000</div>
+                    </div>
                 </div>
 
-                <!-- Telegram ID Row -->
-                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Telegram ID</span>
-                    <div id="profile-id" style="font-size: 0.95rem; font-weight: 800; color: #f59e0b; font-family: monospace; letter-spacing: 1px;">00000000</div>
-                </div>
-            </div>
-            
-            <!-- Add New Admin Card (v133) -->
-            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Add New Admin</h3>
+                <!-- Add New Admin Card (v133) -->
+                <div class="card"
+                    style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Add New Admin</h3>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label
+                            style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; display: block;">Admin
+                            Telegram ID</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="new-admin-id" class="input-field" placeholder="e.g. 123456789"
+                                style="flex: 1; margin-bottom: 0;">
+                            <button onclick="addAdmin()" class="primary-btn"
+                                style="width: auto; padding: 0 25px; margin-top: 0; white-space: nowrap; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; display: block;">Admin Telegram ID</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="number" id="new-admin-id" class="input-field" placeholder="e.g. 123456789" style="flex: 1; margin-bottom: 0;">
-                        <button onclick="addAdmin()" class="primary-btn" style="width: auto; padding: 0 25px; margin-top: 0; white-space: nowrap; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);">
-                            <i class="fas fa-plus"></i> Add
+                <!-- Manage Administrators List Card (v132) -->
+                <div class="card"
+                    style="margin-top: 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Manage Administrators</h3>
+                    </div>
+
+                    <div id="admins-list">
+                        <!-- Injected via JS -->
+                        <div style="text-align: center; color: #475569; padding: 15px; font-size: 0.85rem;">Loading
+                            admins...</div>
+                    </div>
+
+                    <div id="admins-pagination-container" class="pagination"
+                        style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
+                        <button id="admins-prev-btn" onclick="prevAdminsPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="admins-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of
+                            1</span>
+                        <button id="admins-next-btn" onclick="nextAdminsPage()" class="nav-arrow"
+                            style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
+                            <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Manage Administrators List Card (v132) -->
-            <div class="card" style="margin-top: 20px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Manage Administrators</h3>
-                </div>
-
-                <div id="admins-list">
-                    <!-- Injected via JS -->
-                    <div style="text-align: center; color: #475569; padding: 15px; font-size: 0.85rem;">Loading admins...</div>
-                </div>
-
-                <div id="admins-pagination-container" class="pagination"
-                    style="display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px;">
-                    <button id="admins-prev-btn" onclick="prevAdminsPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <span id="admins-page-info" style="font-size: 0.9rem; font-weight: 600; color: #fff;">Page 1 of 1</span>
-                    <button id="admins-next-btn" onclick="nextAdminsPage()" class="nav-arrow"
-                        style="background: rgba(255,255,255,0.05); border: none; width: 40px; height: 40px; border-radius: 12px; color: #fff; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
 
 
@@ -1185,7 +1218,9 @@
                 opacity: 1 !important;
             }
 
-            .success-card, .error-card, .manage-card {
+            .success-card,
+            .error-card,
+            .manage-card {
                 transform: scale(0.9);
                 transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
@@ -1504,7 +1539,7 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=70"></script>
+    <script src="/static/app.js?v=71"></script>
 </body>
 
 </html>

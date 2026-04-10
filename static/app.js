@@ -12,7 +12,7 @@ const pageTitle = document.getElementById('page-title');
 let currentOrdersPage = 1;
 const ordersPerPage = 5;
 let allOrdersData = [];
- 
+
 // --- Telegram Avatar Colors v141 ---
 const TG_AVATAR_COLORS = [
     '#ef4444', // Red
@@ -381,7 +381,7 @@ function populateSettings(settings) {
     if (document.getElementById('bot-name-input')) {
         document.getElementById('bot-name-input').value = settings.bot_name || "Billion Bot";
     }
-    
+
     // Bot Links
     if (document.getElementById('instruction-link-input')) {
         const iLink = settings.instruction_link || "";
@@ -1022,7 +1022,7 @@ function showConfirmPopup(title, message, onConfirm) {
     setTimeout(() => {
         modal.classList.add('active');
     }, 10);
-    
+
     tg.HapticFeedback.notificationOccurred('warning');
 }
 
@@ -2226,7 +2226,6 @@ function initAdminProfile(user) {
     const avatarChars = user.first_name ? user.first_name.substring(0, 2).toUpperCase() : 'AD';
     const avatarCircle = document.getElementById('avatar-circle');
     const profileAvatar = document.getElementById('profile-avatar');
-    const profileGlow = document.getElementById('profile-avatar-glow');
 
     const resetAvatar = (el) => {
         if (!el) return;
@@ -2238,10 +2237,6 @@ function initAdminProfile(user) {
         el.style.backgroundPosition = '';
         el.style.boxShadow = ''; // Clear custom glows if any
     };
-
-    if (profileGlow) {
-        profileGlow.style.background = 'linear-gradient(135deg, #3b82f6, #8b5cf6)'; // Default
-    }
 
     resetAvatar(avatarCircle);
     resetAvatar(profileAvatar);
@@ -2257,35 +2252,17 @@ function initAdminProfile(user) {
             profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
             profileAvatar.style.backgroundSize = 'cover';
             profileAvatar.style.backgroundPosition = 'center';
-            profileAvatar.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
-        }
-        if (profileGlow) {
-            // Stronger white glow for photos
-            profileGlow.style.background = 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)';
         }
     } else {
         const bgColor = getTelegramColor(user.id || user.user_id);
-        console.log(`[Avatar Sync] ID: ${user.id || user.user_id} -> Color: ${bgColor}`);
-        
         if (avatarCircle) {
-            avatarCircle.style.backgroundImage = 'none';
-            avatarCircle.style.backgroundColor = bgColor;
-            avatarCircle.style.background = bgColor; // Ensure shorthand override
+            avatarCircle.style.background = bgColor;
             avatarCircle.innerText = avatarChars;
-            avatarCircle.style.boxShadow = `0 4px 15px ${bgColor}66`; 
+            avatarCircle.style.boxShadow = `0 4px 15px ${bgColor}44`;
         }
         if (profileAvatar) {
-            profileAvatar.style.backgroundImage = 'none';
-            profileAvatar.style.backgroundColor = bgColor;
             profileAvatar.style.background = bgColor;
             profileAvatar.innerText = avatarChars;
-            profileAvatar.style.boxShadow = `0 8px 25px ${bgColor}66`;
-        }
-        if (profileGlow) {
-            profileGlow.style.backgroundImage = 'none';
-            profileGlow.style.backgroundColor = bgColor;
-            profileGlow.style.background = bgColor;
-            profileGlow.style.opacity = '0.35';
         }
     }
 
@@ -2387,7 +2364,7 @@ function renderAdmins() {
             <!-- Boxed Row 2: Username -->
             <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Username</span>
-                <span style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">${admin.username ? '@'+admin.username : '---'}</span>
+                <span style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">${admin.username ? '@' + admin.username : '---'}</span>
             </div>
 
             <!-- Boxed Row 3: User ID -->
@@ -2477,7 +2454,7 @@ async function addAdmin() {
 async function removeAdmin(userId) {
     // Removed debug alert as requested (v131)
     console.log("🚀 removeAdmin triggered for ID:", userId);
-    
+
     showConfirmPopup(
         "Remove Administrator",
         `Are you sure you want to revoke admin permissions for user ID: ${userId}?`,
@@ -2490,7 +2467,7 @@ async function removeAdmin(userId) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_id: userId })
                 });
-                
+
                 if (res.ok) {
                     showSuccessPopup("Deleted!", "Administrator revoked. ✨");
                     loadAdmins();
