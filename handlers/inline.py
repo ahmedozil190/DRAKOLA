@@ -57,7 +57,8 @@ async def inline_handler(query: InlineQuery):
             description="مشاركة رابط الدعوة مع اصدقائك",
             thumbnail_url="https://img.icons8.com/color/48/add-user-male.png",
             input_message_content=InputTextMessageContent(
-                message_text=promo_text
+                message_text=promo_text,
+                parse_mode="HTML"
             ),
             reply_markup=kbd
         )

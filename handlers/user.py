@@ -176,7 +176,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         
                         # Message to NEW USER
                         referred_text = f"• لقد دخلت بنجاح عبر الرابط الذي قدمه صديقك كدعوة، ونتيجة لذلك، حصل صديقك على <b>{ref_reward}</b> نقطه كمكافأة ✨."
-                        await message.reply(referred_text)
+                        await message.reply(referred_text, parse_mode="HTML")
                         
                         # Welcome message
                         welcome_text = "مرحباً! لتبدأ التجربة مع البوت, فقط ارسل /start ودعونا نبدأ المغامرة معاً.. 🚀"
@@ -298,7 +298,7 @@ async def invite_link(call: CallbackQuery):
             [InlineKeyboardButton(text="مشاركة مع اصدقائك", switch_inline_query="")],
             [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]
         ])
-        await call.message.edit_text(text, reply_markup=kbd)
+        await call.message.edit_text(text, reply_markup=kbd, parse_mode="HTML")
         await call.answer()
 
 @router.message(F.chat.type == "private", F.text & ~F.text.startswith("/"), StateFilter(None))

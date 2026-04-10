@@ -389,6 +389,8 @@ async def verify_sub(call: CallbackQuery):
     async for session in get_session():
         order = await session.get(Order, order_id)
         user = await crud.get_user(session, call.from_user.id)
+        settings = await crud.get_settings(session)
+        join_reward = settings.join_reward or 10
         
         if not order or order.status != 'active':
             await call.answer("هذه المهمة لم تعد نشطة!", show_alert=True)

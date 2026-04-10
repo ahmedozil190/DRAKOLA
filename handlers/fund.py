@@ -113,12 +113,12 @@ async def process_members_buttons(call: CallbackQuery, state: FSMContext):
 @router.message(FundState.waiting_for_members)
 async def process_members_input(message: Message, state: FSMContext):
     if not message.text.isdigit():
-        await message.reply("يرجى إرسال رقم صحيح.")
+        await message.reply("يرجى إرسال رقم صحيح.", parse_mode="HTML")
         return
         
     members = int(message.text)
     if members < 5:
-        await message.reply("الحد الأدنى للتمويل هو 5 مشتركين.")
+        await message.reply("الحد الأدنى للتمويل هو <b>5</b> مشتركين.", parse_mode="HTML")
         return
         
     async for session in get_session():
@@ -127,7 +127,7 @@ async def process_members_input(message: Message, state: FSMContext):
         cost_per = settings.member_cost or 15
         cost = members * cost_per
         if user.points < cost:
-            await message.reply(f"نقاطك غير كافية لتمويل <b>{members}</b> عضو.\nالتكلفة: <b>{cost}</b> نقطة\nرصيدك: <b>{user.points}</b>")
+            await message.reply(f"نقاطك غير كافية لتمويل <b>{members}</b> عضو.\nالتكلفة: <b>{cost}</b> نقطة\nرصيدك: <b>{user.points}</b>", parse_mode="HTML")
             return
             
         await send_type_selection(message, members, state)
