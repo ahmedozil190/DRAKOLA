@@ -245,6 +245,7 @@ function switchNav(viewId) {
         if (profileRefreshInterval) clearInterval(profileRefreshInterval);
         profileRefreshInterval = setInterval(() => {
             refreshAdminProfile();
+            loadAdmins(false); // v136: Refresh list in background (preserves page)
         }, 30000);
     } else {
         // Stop auto-refresh when leaving admin profile page
@@ -2278,11 +2279,11 @@ let currentAdminsPage = 1;
 const ADMINS_PER_PAGE = 5;
 let allAdmins = [];
 
-async function loadAdmins() {
+async function loadAdmins(resetPage = true) {
     try {
         const res = await fetch('/api/admins');
         allAdmins = await res.json();
-        currentAdminsPage = 1;
+        if (resetPage) currentAdminsPage = 1;
         renderAdmins();
     } catch (err) {
         console.error("Admins load error:", err);

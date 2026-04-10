@@ -389,12 +389,34 @@ async def get_admins_api(request):
 
 async def add_admin_api(request):
     data = await request.json()
-    user_id = int(data.get('user_id'))
+    user_id_str = data.get('user_id')
+    if not user_id_str:
+        return web.json_response({"status": "error", "message": "Missing user_id"}, status=400)
+        
+    try:
+        user_id = int(str(user_id_str).strip())
+    except (ValueError, TypeError):
+        return web.json_response({"status": "error", "message": "Invalid user ID format"}, status=400)
+        
+    bot = request.app['bot']
     async for session in get_session():
+        # 1. Try to set admin directly if exists
         user = await crud.set_user_admin(session, user_id, True)
         if user:
             return web.json_response({"status": "ok"})
-        return web.json_response({"status": "error", "message": "User not found. They must start the bot first."}, status=404)
+            
+        # 2. If not in DB, try to fetch from Telegram (v136)
+        try:
+            chat = await bot.get_chat(user_id)
+            # Create user record in our DB
+            user = await crud.get_or_create_user(session, user_id, chat.first_name, chat.username)
+            # Promote to admin
+            user.is_admin = True
+            await session.commit()
+            return web.json_response({"status": "ok"})
+        except Exception as e:
+            logging.error(f"Failed to fetch user {user_id} from Telegram: {e}")
+            return web.json_response({"status": "error", "message": f"User not found on Telegram: {str(e)}"}, status=404)
 
 async def remove_admin_api(request):
     data = await request.json()
