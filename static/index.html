@@ -1489,32 +1489,32 @@
             </div>
 
 
-        <!-- Custom Confirmation Modal (v93) -->
-        <div id="confirm-modal" class="modal-overlay">
-            <div class="manage-card" style="text-align: center; border-color: rgba(245, 158, 11, 0.2);">
-                <div class="success-icon-wrap" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <h3 id="confirm-title" style="margin-bottom: 10px; font-weight: 800; color: #fff;">Confirm Action</h3>
-                <p id="confirm-msg"
-                    style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; padding: 0 10px;">
-                    Are you sure you want to perform this action?
-                </p>
+    </main>
 
-                <div style="display: flex; gap: 12px;">
-                    <button onclick="closeConfirmPopup(false)"
-                        style="flex: 1; padding: 14px; background: rgba(255,255,255,0.05); color: #94a3b8; border: none; border-radius: 14px; font-weight: 700; cursor: pointer;">
-                        Cancel
-                    </button>
-                    <button id="confirm-yes-btn"
-                        style="flex: 1; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);">
-                        Confirm
-                    </button>
-                </div>
+    <!-- Custom Confirmation Modal (v132: Moved outside main to fix z-index/overflow clipping) -->
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="manage-card" style="text-align: center; border-color: rgba(245, 158, 11, 0.2);">
+            <div class="success-icon-wrap" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirm-title" style="margin-bottom: 10px; font-weight: 800; color: #fff;">Confirm Action</h3>
+            <p id="confirm-msg"
+                style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; padding: 0 10px;">
+                Are you sure you want to perform this action?
+            </p>
+
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeConfirmPopup(false)"
+                    style="flex: 1; padding: 14px; background: rgba(255,255,255,0.05); color: #94a3b8; border: none; border-radius: 14px; font-weight: 700; cursor: pointer;">
+                    Cancel
+                </button>
+                <button id="confirm-yes-btn"
+                    style="flex: 1; padding: 14px; background: #ef4444; color: #fff; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);">
+                    Confirm
+                </button>
             </div>
         </div>
-
-    </main>
+    </div>
 
     <script src="/static/app.js?v=69"></script>
 </body>
