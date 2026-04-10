@@ -92,9 +92,9 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         await session.commit()
                         
                         # Show Recipient Success first
-                        text_recipient = f"• تم اضافة {voucher.amount} نقاط الى حسابك ✅\n"
+                        text_recipient = f"• تم اضافة <b>{voucher.amount}</b> نقاط الى حسابك ✅\n"
                         text_recipient += f"• بواسطه رابط التحويل من قبل : {voucher.sender_id} \n\n"
-                        text_recipient += f"• اصبحت نقاطك : {user.points}"
+                        text_recipient += f"• اصبحت نقاطك : <b>{user.points}</b>"
                         
                         kbd = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]])
                         await message.reply(text_recipient, reply_markup=kbd)
@@ -102,7 +102,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         # Then show Sender Notification
                         bot_info = await message.bot.get_me()
                         link = f"https://t.me/{bot_info.username}?start=to{voucher.code}"
-                        text_sender = f"• تم اضافة {voucher.amount} نقاط الى حساب {user.user_id} ✅\n"
+                        text_sender = f"• تم اضافة <b>{voucher.amount}</b> نقاط الى حساب {user.user_id} ✅\n"
                         text_sender += f"• بواسطه رابط التحويل الخاص بك :\n {link}"
                         await message.reply(text_sender, disable_web_page_preview=True)
                         return
@@ -113,9 +113,9 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         await session.commit()
                         
                         # Notify Recipient
-                        text_recipient = f"• تم اضافة {voucher.amount} نقاط الى حسابك ✅\n"
+                        text_recipient = f"• تم اضافة <b>{voucher.amount}</b> نقاط الى حسابك ✅\n"
                         text_recipient += f"• بواسطه رابط التحويل من قبل : {voucher.sender_id} \n\n"
-                        text_recipient += f"• اصبحت نقاطك : {user.points}"
+                        text_recipient += f"• اصبحت نقاطك : <b>{user.points}</b>"
                         
                         kbd = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]])
                         await message.reply(text_recipient, reply_markup=kbd)
@@ -124,7 +124,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         try:
                             bot_info = await message.bot.get_me()
                             link = f"https://t.me/{bot_info.username}?start=to{voucher.code}"
-                            text_sender = f"• تم اضافة {voucher.amount} نقاط الى حساب {user.user_id} ✅\n"
+                            text_sender = f"• تم اضافة <b>{voucher.amount}</b> نقاط الى حساب {user.user_id} ✅\n"
                             text_sender += f"• بواسطه رابط التحويل الخاص بك :\n {link}"
                             await message.bot.send_message(voucher.sender_id, text_sender, disable_web_page_preview=True)
                         except:
@@ -151,19 +151,19 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                     if referrer:
                         referrer.points += ref_reward
                         try:
-                            referrer.total_earned = (referrer.total_earned or 0) + ref_reward  # v73
+                            referrer.total_earned = (referrer.total_earned or 0) + ref_reward
                         except Exception:
                             pass
                         referrer.invites_count = (referrer.invites_count or 0) + 1
                         await session.commit()
                         
-                        # Message to REFERRER (the one who shared the link)
+                        # Message to REFERRER
                         new_user_name = message.from_user.first_name or "مستخدم"
                         new_user_id = message.from_user.id
                         referrer_text = (
                             f"🎉 هنيئاً لك! <a href='tg://user?id={new_user_id}'>{new_user_name}</a> قام بالانضمام عبر رابط الدعوة الخاص بك\n"
-                            f"وقد حصلت على <b>{ref_reward}</b> نقطة/نقاط كمكافأة! ✨\n\n"
-                            f"- رصيدك الحالي من النقاط هو: {referrer.points}"
+                            f"وقد حصلت على <b>{ref_reward}</b> نقطه كمكافأة! ✨\n\n"
+                            f"- رصيدك الحالي من النقاط هو: <b>{referrer.points}</b>"
                         )
                         try:
                             await message.bot.send_message(
@@ -174,11 +174,11 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         except:
                             pass
                         
-                        # Message to NEW USER (the referred one) - reply to /start
-                        referred_text = f"• لقد دخلت بنجاح عبر الرابط الذي قدمه صديقك كدعوة، ونتيجة لذلك، حصل صديقك على {ref_reward} نقطة/نقاط كمكافأة ✨."
+                        # Message to NEW USER
+                        referred_text = f"• لقد دخلت بنجاح عبر الرابط الذي قدمه صديقك كدعوة، ونتيجة لذلك، حصل صديقك على <b>{ref_reward}</b> نقطه كمكافأة ✨."
                         await message.reply(referred_text)
                         
-                        # Welcome message (separate) - reply to /start
+                        # Welcome message
                         welcome_text = "مرحباً! لتبدأ التجربة مع البوت, فقط ارسل /start ودعونا نبدأ المغامرة معاً.. 🚀"
                         await message.reply(welcome_text)
             except:
@@ -281,17 +281,17 @@ async def invite_link(call: CallbackQuery):
         if top_users:
             top_text += "\n- المستخدمين الاكثر مشاركة لرابط الدعوى : \n"
             for i, u in enumerate(top_users):
-                top_text += f"{ranks[i]}: ({u.invites_count or 0}) -> {u.user_id}\n"
+                top_text += f"{ranks[i]}: (<b>{u.invites_count or 0}</b>) -> {u.user_id}\n"
         
         settings = await crud.get_settings(session)
         ref_reward = settings.referral_reward or 100
         
         text = "انسخ الرابط ثم قم بمشاركته مع اصدقائك 📥 .\n\n"
-        text += f"- كل شخص يقوم بالدخول ستحصل على {ref_reward} نقطه 📊 .\n\n"
+        text += f"- كل شخص يقوم بالدخول ستحصل على <b>{ref_reward}</b> نقطه 📊 .\n\n"
         text += "- بإمكانك عمل اعلان خاص برابط الدعوة الخاص بك 📬 .\n\n"
         text += "~ رابط الدعوة :\n\n"
         text += f"{link}\n\n"
-        text += f"- مشاركتك للرابط : {user.invites_count or 0} 🌀\n"
+        text += f"- مشاركتك للرابط : <b>{user.invites_count or 0}</b> 🌀\n"
         text += top_text
         
         kbd = InlineKeyboardMarkup(inline_keyboard=[

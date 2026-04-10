@@ -37,7 +37,7 @@ async def start_funding(call: CallbackQuery, state: FSMContext):
         
         text = "• <b>ارسل عدد الاعضاء المراد تمويلهم او يمكنك الاختيار من الازرار 🌐</b>\n\n"
         text += f"- <b>ملاحضة</b> : كل 1 عضو يساوي <b>{cost_per}</b> نقطه \n\n"
-        text += f"<b>- عدد نقاطك : {user.points}</b>"
+        text += f"<b>- عدد نقاطك : <b>{user.points}</b></b>"
         
         kbd = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="تمويل جميع نقاطك", callback_data="fund_max")],
@@ -127,7 +127,7 @@ async def process_members_input(message: Message, state: FSMContext):
         cost_per = settings.member_cost or 15
         cost = members * cost_per
         if user.points < cost:
-            await message.reply(f"نقاطك غير كافية لتمويل {members} عضو.\nالتكلفة: {cost} نقطة\nرصيدك: {user.points}")
+            await message.reply(f"نقاطك غير كافية لتمويل <b>{members}</b> عضو.\nالتكلفة: <b>{cost}</b> نقطة\nرصيدك: <b>{user.points}</b>")
             return
             
         await send_type_selection(message, members, state)

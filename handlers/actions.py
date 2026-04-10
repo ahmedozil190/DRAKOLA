@@ -49,7 +49,7 @@ async def daily_gift(call: CallbackQuery):
         user.daily_gifts_count = (user.daily_gifts_count or 0) + 1
         await session.commit()
         
-        text = f"• <b>لقد حصلت على {settings.daily_gift_amount} نقاط هدية يومية </b>🎁"
+        text = f"• <b>لقد حصلت على <b>{settings.daily_gift_amount}</b> نقاط هدية يومية </b>🎁"
         kbd = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]])
         await call.message.edit_text(text, reply_markup=kbd, parse_mode="HTML")
         await call.answer()
@@ -60,7 +60,7 @@ async def start_transfer(call: CallbackQuery, state: FSMContext):
         settings = await crud.get_settings(session)
         text = "• <b>يمكنك تحويل عدد من النقاط الى شخص اخر من هنا  🌐</b>\n\n"
         text += "- فقط ارسل عدد النقاط التي تريد ارسالها وسيتم صنع رابط ارسله الى الشخاص المراد استلام نقاط\n\n"
-        text += f"- عموله التحويل : <b>{settings.transfer_fee}</b>"
+        text += f"- عموله التحويل : <b><b>{settings.transfer_fee}</b></b>"
         
         kbd = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]
@@ -89,7 +89,7 @@ async def process_transfer_amount(message: Message, state: FSMContext):
         # 1. Check for insufficient points first
         if sender.points < total_cost:
             text = "• ليس لديك هذه القدر من النقاط 🚫!\n"
-            text += f"- عموله التحويل : <b>{fee}</b>"
+            text += f"- عموله التحويل : <b><b>{fee}</b></b>"
             kbd = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]
             ])

@@ -31,10 +31,12 @@ async def collect_points(call: CallbackQuery):
         
         ref_reward = settings.referral_reward or 100
         
+        ref_reward = settings.referral_reward or 100
+        
         text = "<b>مرحبا بك في قسم تجميع النقاط 📥 .</b>\n\n"
         text += "• <b>يمكنك الحصول على نقاط بطريقتين :</b>\n\n"
         text += "1 - عن طريق الاشتراك في القنوات او المجموعات\n\n"
-        text += f"2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على {ref_reward} نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
+        text += f"2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على <b>{ref_reward}</b> نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
         text += f"\n<b>~ اذ كانت طريقه التجميع صعبه راسل المطور لشراء النقاط 💰 .</b>\n\n"
         text += f"<b>~ المطـور :</b> {support}"
         
@@ -96,7 +98,7 @@ async def send_turbo_channels(user_id: int, bot, message=None, callback_query=No
         total_reward = len(valid_orders) * join_reward
         
         text = "• <b>اشترك في جميع القنوات التي تظهر في الازرار ادناه ✈️</b>\n"
-        text += f"<b>- لكي تحصل على : {total_reward} نقطه</b>"
+        text += f"<b>- لكي تحصل على : <b>{total_reward}</b> نقطه</b>"
         
         kbd_rows = []
         for o in valid_orders:
@@ -200,7 +202,7 @@ async def turbo_verify(call: CallbackQuery):
                         await notify_progress_milestones(session, call.bot, oid)
                     except: pass
                 
-                summary_text = f"<b>• تم اضافة {{{total_reward}}} نقاط الى حسابك </b>✅\n"
+                summary_text = f"<b>• تم اضافة <b>{{{total_reward}}}</b> نقاط الى حسابك </b>✅\n"
                 summary_text += f"• بسبب الاشتراك في <b>{success_count}</b> قنوات \n\n"
                 summary_text += "- (<b>اذا قمت بمغادرة اي قناة سيتم خصم ضعف النقاط</b>)"
                 reward_kbd = InlineKeyboardMarkup(inline_keyboard=[
@@ -297,7 +299,7 @@ async def send_next_channel(user_id: int, bot, message=None, callback_query=None
             chat_type_text = "المجموعة" if chat.type in ["group", "supergroup"] else "القناة"
             
             text = f"• <b>اشترك في {chat_type_text} : </b><a href='{url}'>{order_to_show.chat_name}</a>\n\n"
-            text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b>{join_reward}<b> نقطه 🌎</b>\n\n"
+            text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b><b>{join_reward}</b><b> نقطه 🌎</b>\n\n"
             text += f"• نقاطك الحاليه : <b>{user_points}</b>"
             
             kbd = InlineKeyboardMarkup(inline_keyboard=[
@@ -350,6 +352,7 @@ async def skip_channel(call: CallbackQuery):
                         order.current_members = (order.current_members or 0) + 1
                         if order.current_members >= order.required_members:
                             order.status = 'completed'
+                        await session.commit()
                         await session.commit()
                         try:
                             await call.answer(f"تم التحقق! حصلت على {join_reward} نقاط ✅", show_alert=True)
