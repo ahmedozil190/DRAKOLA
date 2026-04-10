@@ -24,6 +24,7 @@ async def show_no_channels(message=None, callback_query=None):
         await callback_query.message.edit_text(text, parse_mode="HTML", reply_markup=kbd)
 
 @router.callback_query(F.data == "collect_points")
+async def collect_points(call: CallbackQuery):
     async for session in get_session():
         settings = await crud.get_settings(session)
         support = settings.support_username or "@A_M_E_15"
