@@ -14,3 +14,7 @@ DB_PATH = f"sqlite+aiosqlite:///{os.path.join(DATA_DIR, 'bot_database.sqlite3')}
 
 # Mandatory subscription channels
 MANDATORY_CHANNELS = []
+
+# Admin Dashboard URL
+ADMIN_WEB_APP_URL = os.getenv("ADMIN_WEB_APP_URL", "https://web-production-435fd.up.railway.app")
+

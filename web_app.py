@@ -43,7 +43,7 @@ async def get_settings_data(request):
             "min_order_members": settings.min_order_members or 5,
             "min_points_to_order": settings.min_points_to_order or 300,
             "leave_penalty_multiplier": settings.leave_penalty_multiplier or 2,
-            "support_username": settings.support_username or "@A_M_E_15",
+            "support_username": settings.support_username or "",
             "channels": [{"id": c.channel_id, "link": c.channel_link} for c in channels]
         })
 

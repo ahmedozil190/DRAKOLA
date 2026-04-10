@@ -208,7 +208,7 @@ async def cmd_eeok(message: Message):
     async for session in get_session():
         settings = await crud.get_settings(session)
         min_p = settings.min_points_to_order or 300
-        support = settings.support_username or "@A_M_E_15"
+        support = settings.support_username
         
         text = "📍 <b>تعليمات بوت تمويل دراكولا:</b>\n\n"
         text += "1. أجمع النقاط من خلال قسم 'تجميع النقاط' بالاشتراك في القنوات.\n"

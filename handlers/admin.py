@@ -4,15 +4,12 @@ from aiogram.filters import Command
 from sqlalchemy import select, func
 from database import get_session
 import crud
-from config import ADMIN_ID
+from config import ADMIN_ID, ADMIN_WEB_APP_URL
 from models import User, Order
 
 router = Router()
 
-# ⚠️ هام جداً: استبدل الرابط أدناه بالرابط الذي يظهر لك من خدمة Railway (Public Domain)
-# مثال: ADMIN_WEB_APP_URL = "https://your-app.up.railway.app"
-ADMIN_WEB_APP_URL = "https://web-production-435fd.up.railway.app" 
-
+# Admin Dashboard URL now comes from config.py
 def is_admin(user_id: int):
     return user_id == ADMIN_ID
 
