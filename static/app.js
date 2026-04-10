@@ -2,6 +2,16 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
+// v148: Global Safety - ensure loader is hidden if any script error occurs
+window.onerror = function() {
+    console.error("Dashboard Global Error caught");
+    const ld = document.getElementById('loader');
+    if (ld) {
+        ld.style.opacity = '0';
+        setTimeout(() => ld.style.display = 'none', 300);
+    }
+};
+
 // DOM Elements
 const loader = document.getElementById('loader');
 const sideMenu = document.getElementById('side-menu');
@@ -114,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("🚀 Rendering instant data from cache...");
             const stats = JSON.parse(cachedStats);
             allUsers = JSON.parse(cachedUsers);
-            renderStats(stats);
+            populateStats(stats);
             applyUserFilter();
             // hideLoader() will clear the infinite spinner safely (v58)
             hideLoader();
@@ -1936,7 +1946,6 @@ function renderOrders(orders) {
 
                 <!-- 2. Group / Channel Name -->
                 <div class="user-stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <div style="display: flex; align-items: center; gap: 10px;">
                         <i class="fas fa-tag" style="color: #94a3b8; font-size: 0.8rem;"></i>
                         <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">${['group', 'supergroup'].includes(o.chat_type) ? 'Group Name' : 'Channel Name'}</span>
                     </div>
