@@ -72,8 +72,10 @@ async def on_chat_member_update(update: ChatMemberUpdated):
                 
                 await update.bot.send_message(
                     user_id,
-                    f"⚠️ <b>تنبيه مغادرة</b> : لقد قمت بمغادرة {chat_link}.\n"
-                    f"تم خصم <b>{penalty_points}</b> نقطه من رصيدك كعقوبة.",
+                    f"🚫 <b>تنبيه: تم رصد مغادرة!</b>\n\n"
+                    f"• لقد قمت للتو بمغادرة {chat_link}، وهو ما يخالف شروط البوت.\n"
+                    f"• <b>العقوبة:</b> تم خصم <b>{penalty_points}</b> نقطة من رصيدك.\n\n"
+                    f"<i>يرجى الالتزام بالبقاء في القنوات المموّلة لتجنب المزيد من الخصومات.</i>",
                     parse_mode="HTML",
                     disable_web_page_preview=True
                 )
