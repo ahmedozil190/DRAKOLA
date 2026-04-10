@@ -42,8 +42,12 @@ async def on_chat_member_update(update: ChatMemberUpdated):
         if not subs:
             return
 
-        # 3. Apply penalty for each subscription found (usually just one)
+        # 3. Check if penalty system is enabled
         settings = await crud.get_settings(session)
+        if not settings.penalty_enabled:
+            logging.info(f"Penalty system is disabled. Skipping penalty for user {user_id}.")
+            return
+        
         multiplier = settings.leave_penalty_multiplier or 2
         join_reward = settings.join_reward or 10
         penalty_points = join_reward * multiplier

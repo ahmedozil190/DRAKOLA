@@ -97,6 +97,7 @@ class GlobalSettings(Base):
     min_order_members = Column(Integer, default=5)
     min_points_to_order = Column(Integer, default=300)
     leave_penalty_multiplier = Column(Integer, default=2)
+    penalty_enabled = Column(Boolean, default=True)
 
 class FinancialRecord(Base):
     __tablename__ = "financial_records"

@@ -364,6 +364,7 @@ function populateSettings(settings) {
         document.getElementById('min-order-members-input').value = settings.min_order_members || 5;
         document.getElementById('min-points-to-order-input').value = settings.min_points_to_order || 300;
         document.getElementById('leave-penalty-input').value = settings.leave_penalty_multiplier || 2;
+        document.getElementById('penalty-enabled-toggle').checked = (settings.penalty_enabled !== false);
     }
 
     // Broadcast Stats (v44)
@@ -501,7 +502,8 @@ async function saveSettings() {
         member_cost: parseInt(document.getElementById('member-cost-input')?.value || 15),
         min_order_members: parseInt(document.getElementById('min-order-members-input')?.value || 5),
         min_points_to_order: parseInt(document.getElementById('min-points-to-order-input')?.value || 300),
-        leave_penalty_multiplier: parseInt(document.getElementById('leave-penalty-input')?.value || 2)
+        leave_penalty_multiplier: parseInt(document.getElementById('leave-penalty-input')?.value || 2),
+        penalty_enabled: document.getElementById('penalty-enabled-toggle')?.checked
     };
 
     tg.HapticFeedback.impactOccurred('medium');

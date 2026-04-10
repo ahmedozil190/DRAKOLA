@@ -223,21 +223,46 @@ async def cmd_eeok(message: Message):
         
 @router.callback_query(F.data == "check_mandatory")
 async def check_mandatory(call: CallbackQuery):
-    # This handler is only reached if the middleware passes (i.e., user joined all channels)
-    # The middleware already allows this callback data to reach here if it wants.
-    # Actually, we should check again here just to be sure, or let the middleware handle it.
-    # Since the middleware blocks, this handler will only execute IF they are subscribed.
-    
-    # We just send the main menu again
     async for session in get_session():
-        user = await crud.get_user(session, call.from_user.id)
+        channels = await crud.get_mandatory_channels(session)
+        user_id = call.from_user.id
+        bot = call.bot
+        
+        unsubscribed = []
+        for ch in channels:
+            try:
+                member = await bot.get_chat_member(ch.channel_id, user_id)
+                if member.status in ["left", "kicked"]:
+                    unsubscribed.append(ch)
+            except:
+                unsubscribed.append(ch)
+        
+        if unsubscribed:
+            # Still not joined all
+            await call.answer("• عذراً، لم تشترك في كافة القنوات المطلوبة بعد! ⚠️", show_alert=True)
+            return
+
+        # Success! Joined all.
+        user = await crud.get_user(session, user_id)
         settings = await crud.get_settings(session)
+        
+        # Replicate Greeting Message
+        user_mention = f'{{<a href="tg://user?id={user_id}">{call.from_user.first_name}</a>}}'
+        greeting = f"<b>اهلاً بك </b>{user_mention}\n\n"
+        greeting += "<b>ـ في بوت تمويل دراكولا➕🤖</b>\n\n"
+        greeting += "<b>•البوت مخصص لتمويل القنوات</b>\n"
+        greeting += "<b>والمجموعات عن طريق التجميع النقاط ✔️</b>\n\n"
+        greeting += "<b>•أجمع نقاط وأستبدلها بـ مشتركين ♻️👤</b>\n"
+        greeting += "<b>•العدد الكلي المستخدمين = 5m 🎖</b>\n" 
+        greeting += "<b>• ارسل أمر /EeoK تعليماتي 📍</b>"
+
         await call.message.delete()
         await call.message.answer(
-            f"<b>تم التحقق بنجاح! شكراً لك على الاشتراك ✅</b>\n\nيمكنك الآن البدء باستخدام البوت.",
+            greeting,
             parse_mode="HTML",
             reply_markup=main_keyboard(
-                points=user.points,
+                points=user.points, 
+                is_start=True,
                 instruction_link=settings.instruction_link,
                 rules_link=settings.rules_link,
                 buy_points_link=settings.buy_points_link

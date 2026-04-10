@@ -28,10 +28,7 @@ class MandatorySubMiddleware(BaseMiddleware):
             if event.text.startswith("/admin") or event.text.startswith("/id"):
                 return await handler(event, data)
             
-        # 2. Skip for callback data starting with 'check_mandatory' or 'rules_' etc if needed
-        if isinstance(event, CallbackQuery) and event.data == "check_mandatory":
-            return await handler(event, data)
-
+        
         async for session in get_session():
             channels = await crud.get_mandatory_channels(session)
             if not channels:
