@@ -37,27 +37,33 @@ class MandatorySubMiddleware(BaseMiddleware):
             if not channels:
                 return await handler(event, data)
                 
-            unsubscribed = []
+            unsubscribed_info = []
             for ch in channels:
                 try:
                     # Check membership
-                    # For private channels, the bot must be an admin to check non-admins?
-                    # No, if the bot is in the channel, it can check.
                     member = await bot.get_chat_member(ch.channel_id, user_id)
                     if member.status in ["left", "kicked"]:
-                        unsubscribed.append(ch)
+                        # Get Chat Title for the button
+                        try:
+                            chat = await bot.get_chat(ch.channel_id)
+                            name = chat.title or "قناة/مجموعة"
+                        except:
+                            name = "قناة/مجموعة"
+                        unsubscribed_info.append({"link": ch.channel_link, "name": name})
                 except Exception as e:
                     logging.error(f"Error checking sub for {ch.channel_id}: {e}")
-                    unsubscribed.append(ch)
+                    # If we can't check, we assume they need to subscribe? 
+                    # Or we skip? Usually safer to assume they need to join if it's mandatory.
+                    unsubscribed_info.append({"link": ch.channel_link, "name": "قناة مطلوبة"})
             
-            if unsubscribed:
+            if unsubscribed_info:
                 # User is not subscribed to all channels!
                 text = "<b>• عذراً، يجب عليك الاشتراك في القنوات التالية لاستخدام البوت 🔐:</b>\n\n"
                 text += "- يرجى الاشتراك ثم الضغط على زر 'تم الاشتراك ✅' بالأسفل."
                 
                 btns = []
-                for ch in unsubscribed:
-                    btns.append([InlineKeyboardButton(text="اضغط هنا للاشتراك ➕", url=ch.channel_link)])
+                for info in unsubscribed_info:
+                    btns.append([InlineKeyboardButton(text=f"➕ {info['name']}", url=info['link'])])
                 
                 btns.append([InlineKeyboardButton(text="تم الاشتراك ✅", callback_data="check_mandatory")])
                 kbd = InlineKeyboardMarkup(inline_keyboard=btns)
