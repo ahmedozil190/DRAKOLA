@@ -561,6 +561,17 @@
                             </div>
                             <i class="fas fa-chevron-right settings-chevron"></i>
                         </div>
+
+                        <!-- Penalty System Card (Red) -->
+                        <div class="settings-item" onclick="showSettingsSubView('penalty')">
+                            <div class="settings-icon-box" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                                <i class="fas fa-gavel"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Penalty System</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -654,17 +665,44 @@
                             <label>Min Points to start Funding</label>
                             <input type="number" id="min-points-to-order-input" class="input-field">
                         </div>
+                        <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
+                    </div>
+                </div>
+
+                <!-- Subview: Penalty System -->
+                <div id="subview-penalty" style="display: none;">
+                    <div class="subview-header">
+                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <h2 style="font-weight: 700;">Penalty System</h2>
+                    </div>
+                    <div class="card"
+                        style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        
+                        <!-- Status indicator -->
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.15); border-radius: 12px; margin-bottom: 24px;">
+                            <i class="fas fa-gavel" style="color: #ef4444; font-size: 1.3rem;"></i>
+                            <div>
+                                <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">Leave Penalty</div>
+                                <div style="color: #94a3b8; font-size: 0.8rem;">Points deducted when a user leaves a funded channel</div>
+                            </div>
+                        </div>
+
                         <div class="switch-group">
-                            <label style="color: #94a3b8; font-weight: 600;">Enable Leave Penalty</label>
+                            <label style="color: #94a3b8; font-weight: 600; font-size: 1rem;">Enable Penalty System</label>
                             <label class="switch">
                                 <input type="checkbox" id="penalty-enabled-toggle">
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <div class="form-group">
-                            <label>Leave Penalty Multiplier (x Reward)</label>
-                            <input type="number" id="leave-penalty-input" class="input-field">
+
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label>Penalty Multiplier</label>
+                            <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">Penalty = Join Reward × Multiplier. e.g. if reward is 10 pts and multiplier is 2, penalty is 20 pts.</div>
+                            <input type="number" id="leave-penalty-input" class="input-field" min="1" max="10">
                         </div>
+
                         <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
                     </div>
                 </div>

@@ -537,6 +537,7 @@ function showSettingsSubView(viewId) {
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
     document.getElementById('subview-points').style.display = 'none';
+    document.getElementById('subview-penalty').style.display = 'none';
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
@@ -552,6 +553,7 @@ function hideSettingsSubView() {
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-points').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
+    document.getElementById('subview-penalty').style.display = 'none';
 }
 
 // ========== Broadcast Logic (v60) ==========
