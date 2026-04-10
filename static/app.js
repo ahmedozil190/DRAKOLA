@@ -2180,34 +2180,45 @@ function getFilteredReports() {
 
 // --- Admin Profile Rendering ---
 function initAdminProfile(user) {
-    const avatarChar = user.first_name?.[0]?.toUpperCase() || 'A';
+    // FIXED v127: Get first 2 letters for a more professional look
+    const avatarChars = user.first_name ? user.first_name.substring(0, 2).toUpperCase() : 'AD';
     const avatarCircle = document.getElementById('avatar-circle');
     const profileAvatar = document.getElementById('profile-avatar');
     
-    avatarCircle.innerText = avatarChar;
-    profileAvatar.innerText = avatarChar;
+    // Default initial text
+    if (avatarCircle) avatarCircle.innerText = avatarChars;
+    if (profileAvatar) profileAvatar.innerText = avatarChars;
 
     if (user.photo_url) {
-        avatarCircle.innerText = '';
-        avatarCircle.style.backgroundImage = `url('${user.photo_url}')`;
-        avatarCircle.style.backgroundSize = 'cover';
-        avatarCircle.style.backgroundPosition = 'center';
+        if (avatarCircle) {
+            avatarCircle.innerText = '';
+            avatarCircle.style.backgroundImage = `url('${user.photo_url}')`;
+            avatarCircle.style.backgroundSize = 'cover';
+            avatarCircle.style.backgroundPosition = 'center';
+        }
         
-        profileAvatar.innerText = '';
-        profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
-        profileAvatar.style.backgroundSize = 'cover';
-        profileAvatar.style.backgroundPosition = 'center';
+        if (profileAvatar) {
+            profileAvatar.innerText = '';
+            profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
+            profileAvatar.style.backgroundSize = 'cover';
+            profileAvatar.style.backgroundPosition = 'center';
+        }
     } else {
-        // FIXED v126: Explicitly clear background if photo is removed
-        avatarCircle.style.backgroundImage = 'none';
-        profileAvatar.style.backgroundImage = 'none';
-        
-        // Ensure initials are visible
-        avatarCircle.innerText = avatarChar;
-        profileAvatar.innerText = avatarChar;
+        // FIXED v127: Blue background as requested (#3b82f6)
+        if (avatarCircle) {
+            avatarCircle.style.backgroundImage = 'none';
+            avatarCircle.style.background = '#3b82f6';
+            avatarCircle.innerText = avatarChars;
+        }
+        if (profileAvatar) {
+            profileAvatar.style.backgroundImage = 'none';
+            profileAvatar.style.background = '#3b82f6';
+            profileAvatar.innerText = avatarChars;
+        }
     }
 
-    document.getElementById('profile-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    document.getElementById('profile-name').innerText = fullName;
     document.getElementById('profile-username').innerText = user.username ? '@' + user.username : 'No Username';
     document.getElementById('profile-id').innerText = user.id;
 }
