@@ -89,10 +89,20 @@ function closeAddExpenseModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial Setup - Admin Profile
-    const user = tg.initDataUnsafe?.user;
-    if (user) {
-        initAdminProfile(user);
+    // Initial Setup - Admin Profile (v148: Use cache first to avoid "AM" vs "AH" flicker)
+    const cachedProfile = localStorage.getItem('admin_profile_cache');
+    if (cachedProfile) {
+        try {
+            const parsed = JSON.parse(cachedProfile);
+            initAdminProfile(parsed);
+        } catch (e) { 
+            console.error("Profile cache error", e); 
+            const user = tg.initDataUnsafe?.user;
+            if (user) initAdminProfile(user);
+        }
+    } else {
+        const user = tg.initDataUnsafe?.user;
+        if (user) initAdminProfile(user);
     }
 
     // -- Instant Rendering from Cache (v58) --
@@ -123,10 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch fresh data in background
     loadInitialData(true);
     
-    // v147: Force refresh profile immediately to sync Header Avatar (AH vs AM issue)
+    // v148: Refresh profile promptly but smooth
     setTimeout(() => {
         refreshAdminProfile();
-    }, 1500); 
+    }, 500); 
 });
 
 // Sidebar & Navigation
@@ -2314,6 +2324,8 @@ async function refreshAdminProfile() {
         const res = await fetch(`/api/admin/profile?user_id=${user.id}&t=${Date.now()}`);
         if (res.ok) {
             const freshUser = await res.json();
+            // v148: Save to cache to ensure instant correct rendering next time
+            localStorage.setItem('admin_profile_cache', JSON.stringify(freshUser));
             initAdminProfile(freshUser);
         } else {
             // Fallback to initData if API fails
