@@ -12,6 +12,24 @@ const pageTitle = document.getElementById('page-title');
 let currentOrdersPage = 1;
 const ordersPerPage = 5;
 let allOrdersData = [];
+ 
+// --- Telegram Avatar Colors v141 ---
+const TG_AVATAR_COLORS = [
+    '#ef4444', // Red
+    '#f97316', // Orange
+    '#22c55e', // Green
+    '#06b6d4', // Cyan
+    '#3b82f6', // Blue
+    '#6366f1', // Indigo
+    '#a855f7', // Purple
+    '#ec4899'  // Pink
+];
+
+function getTelegramColor(userId) {
+    if (!userId) return '#3b82f6';
+    const idNum = parseInt(userId) || 0;
+    return TG_AVATAR_COLORS[idNum % TG_AVATAR_COLORS.length];
+}
 
 // --- Admin Profile Auto-Refresh (v135) ---
 let profileRefreshInterval = null;
@@ -2225,15 +2243,16 @@ function initAdminProfile(user) {
             profileAvatar.style.backgroundPosition = 'center';
         }
     } else {
-        // No photo: show blue background with initials
+        // No photo: show deterministic color background with initials (v141)
+        const bgColor = getTelegramColor(user.id || user.user_id);
         if (avatarCircle) {
             avatarCircle.style.backgroundImage = 'none';
-            avatarCircle.style.background = '#3b82f6';
+            avatarCircle.style.background = bgColor;
             avatarCircle.innerText = avatarChars;
         }
         if (profileAvatar) {
             profileAvatar.style.backgroundImage = 'none';
-            profileAvatar.style.background = '#3b82f6';
+            profileAvatar.style.background = bgColor;
             profileAvatar.innerText = avatarChars;
         }
     }
