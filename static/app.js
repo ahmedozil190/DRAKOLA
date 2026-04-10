@@ -2189,23 +2189,19 @@ function getFilteredReports() {
 
 // --- Admin Profile Rendering ---
 function initAdminProfile(user) {
-    // FIXED v127: Get first 2 letters for a more professional look
+    // v134: Get first 2 letters
     const avatarChars = user.first_name ? user.first_name.substring(0, 2).toUpperCase() : 'AD';
     const avatarCircle = document.getElementById('avatar-circle');
     const profileAvatar = document.getElementById('profile-avatar');
-    
-    // Default initial text
-    if (avatarCircle) avatarCircle.innerText = avatarChars;
-    if (profileAvatar) profileAvatar.innerText = avatarChars;
 
     if (user.photo_url) {
+        // Has photo: set background image, then fade in
         if (avatarCircle) {
             avatarCircle.innerText = '';
             avatarCircle.style.backgroundImage = `url('${user.photo_url}')`;
             avatarCircle.style.backgroundSize = 'cover';
             avatarCircle.style.backgroundPosition = 'center';
         }
-        
         if (profileAvatar) {
             profileAvatar.innerText = '';
             profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
@@ -2213,7 +2209,7 @@ function initAdminProfile(user) {
             profileAvatar.style.backgroundPosition = 'center';
         }
     } else {
-        // FIXED v127: Blue background as requested (#3b82f6)
+        // No photo: show blue background with initials
         if (avatarCircle) {
             avatarCircle.style.backgroundImage = 'none';
             avatarCircle.style.background = '#3b82f6';
@@ -2224,6 +2220,11 @@ function initAdminProfile(user) {
             profileAvatar.style.background = '#3b82f6';
             profileAvatar.innerText = avatarChars;
         }
+    }
+
+    // v134: Fade in avatar after state is set (eliminates flash)
+    if (profileAvatar) {
+        setTimeout(() => { profileAvatar.style.opacity = '1'; }, 50);
     }
 
     const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
