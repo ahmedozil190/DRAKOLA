@@ -2226,6 +2226,7 @@ function initAdminProfile(user) {
     const avatarChars = user.first_name ? user.first_name.substring(0, 2).toUpperCase() : 'AD';
     const avatarCircle = document.getElementById('avatar-circle');
     const profileAvatar = document.getElementById('profile-avatar');
+    const profileGlow = document.getElementById('profile-avatar-glow');
 
     const resetAvatar = (el) => {
         if (!el) return;
@@ -2237,6 +2238,10 @@ function initAdminProfile(user) {
         el.style.backgroundPosition = '';
         el.style.boxShadow = ''; // Clear custom glows if any
     };
+
+    if (profileGlow) {
+        profileGlow.style.background = 'linear-gradient(135deg, #3b82f6, #8b5cf6)'; // Default
+    }
 
     resetAvatar(avatarCircle);
     resetAvatar(profileAvatar);
@@ -2252,17 +2257,27 @@ function initAdminProfile(user) {
             profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
             profileAvatar.style.backgroundSize = 'cover';
             profileAvatar.style.backgroundPosition = 'center';
+            profileAvatar.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+        }
+        if (profileGlow) {
+            profileGlow.style.background = 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)';
         }
     } else {
-        const bgColor = getTelegramColor(user.id || user.user_id);
+        const bgColor = '#3b82f6'; // Premium Telegram Blue (Standardized v146)
+        
         if (avatarCircle) {
-            avatarCircle.style.background = bgColor;
+            avatarCircle.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`; 
             avatarCircle.innerText = avatarChars;
-            avatarCircle.style.boxShadow = `0 4px 15px ${bgColor}44`;
+            avatarCircle.style.boxShadow = `0 4px 15px rgba(59, 130, 246, 0.4)`; 
         }
         if (profileAvatar) {
-            profileAvatar.style.background = bgColor;
+            profileAvatar.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`;
             profileAvatar.innerText = avatarChars;
+            profileAvatar.style.boxShadow = `0 8px 25px rgba(59, 130, 246, 0.4)`;
+        }
+        if (profileGlow) {
+            profileGlow.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`;
+            profileGlow.style.opacity = '0.35';
         }
     }
 
