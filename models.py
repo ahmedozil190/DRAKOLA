@@ -87,6 +87,9 @@ class GlobalSettings(Base):
     bot_name = Column(String, default="Billion Bot")
     total_global_broadcasts = Column(Integer, default=0)
     total_targeted_broadcasts = Column(Integer, default=0)
+    instruction_link = Column(String, default="https://")
+    rules_link = Column(String, default="https://")
+    buy_points_link = Column(String, default="https://")
 
 class FinancialRecord(Base):
     __tablename__ = "financial_records"

@@ -343,6 +343,13 @@ function populateSettings(settings) {
     if (document.getElementById('bot-name-input')) {
         document.getElementById('bot-name-input').value = settings.bot_name || "Billion Bot";
     }
+    
+    // Bot Links
+    if (document.getElementById('instruction-link-input')) {
+        document.getElementById('instruction-link-input').value = settings.instruction_link || "https://";
+        document.getElementById('rules-link-input').value = settings.rules_link || "https://";
+        document.getElementById('buy-points-link-input').value = settings.buy_points_link || "https://";
+    }
 
     // Broadcast Stats (v44)
     if (document.getElementById('stat-broadcast-global')) {
@@ -469,7 +476,10 @@ async function saveSettings() {
         transfer_fee: parseFloat(document.getElementById('transfer-fee-input').value),
         daily_gift_amount: parseFloat(document.getElementById('daily-gift-input').value),
         min_transfer_amount: parseFloat(document.getElementById('min-transfer-input').value),
-        bot_name: document.getElementById('bot-name-input')?.value || "Billion Bot"
+        bot_name: document.getElementById('bot-name-input')?.value || "Billion Bot",
+        instruction_link: document.getElementById('instruction-link-input')?.value || "https://",
+        rules_link: document.getElementById('rules-link-input')?.value || "https://",
+        buy_points_link: document.getElementById('buy-points-link-input')?.value || "https://"
     };
 
     tg.HapticFeedback.impactOccurred('medium');
@@ -502,6 +512,7 @@ function showSettingsSubView(viewId) {
     document.getElementById('subview-bot-name').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
+    document.getElementById('subview-bot-links').style.display = 'none';
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
@@ -516,6 +527,7 @@ function hideSettingsSubView() {
     document.getElementById('subview-bot-name').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
+    document.getElementById('subview-bot-links').style.display = 'none';
 }
 
 // ========== Broadcast Logic (v60) ==========

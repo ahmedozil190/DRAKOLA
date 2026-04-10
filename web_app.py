@@ -34,6 +34,9 @@ async def get_settings_data(request):
             "bot_name": settings.bot_name or "Billion Bot",
             "total_global": settings.total_global_broadcasts or 0,
             "total_targeted": settings.total_targeted_broadcasts or 0,
+            "instruction_link": settings.instruction_link or "https://",
+            "rules_link": settings.rules_link or "https://",
+            "buy_points_link": settings.buy_points_link or "https://",
             "channels": [{"id": c.channel_id, "link": c.channel_link} for c in channels]
         })
 
