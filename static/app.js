@@ -2265,20 +2265,27 @@ function initAdminProfile(user) {
         }
     } else {
         const bgColor = getTelegramColor(user.id || user.user_id);
+        console.log(`[Avatar Sync] ID: ${user.id || user.user_id} -> Color: ${bgColor}`);
+        
         if (avatarCircle) {
-            avatarCircle.style.background = bgColor;
+            avatarCircle.style.backgroundImage = 'none';
+            avatarCircle.style.backgroundColor = bgColor;
+            avatarCircle.style.background = bgColor; // Ensure shorthand override
             avatarCircle.innerText = avatarChars;
             avatarCircle.style.boxShadow = `0 4px 15px ${bgColor}66`; 
         }
         if (profileAvatar) {
+            profileAvatar.style.backgroundImage = 'none';
+            profileAvatar.style.backgroundColor = bgColor;
             profileAvatar.style.background = bgColor;
             profileAvatar.innerText = avatarChars;
             profileAvatar.style.boxShadow = `0 8px 25px ${bgColor}66`;
         }
         if (profileGlow) {
-            // Match the deterministic color
+            profileGlow.style.backgroundImage = 'none';
+            profileGlow.style.backgroundColor = bgColor;
             profileGlow.style.background = bgColor;
-            profileGlow.style.opacity = '0.3';
+            profileGlow.style.opacity = '0.35';
         }
     }
 
