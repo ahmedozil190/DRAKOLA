@@ -119,8 +119,7 @@ header h1 {
 .avatar {
     width: 35px;
     height: 35px;
-    background: linear-gradient(135deg, #4f73ff, #a855f7);
-    /* Vibrant gradient */
+    background: linear-gradient(135deg, #3b82f6, #2563eb); 
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -128,8 +127,7 @@ header h1 {
     font-weight: 700;
     font-size: 0.9rem;
     color: #fff;
-    box-shadow: 0 0 15px rgba(79, 115, 255, 0.4);
-    /* Glowing effect */
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 /* Content Container */

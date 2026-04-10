@@ -122,6 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch fresh data in background
     loadInitialData(true);
+    
+    // v147: Force refresh profile immediately to sync Header Avatar (AH vs AM issue)
+    setTimeout(() => {
+        refreshAdminProfile();
+    }, 1500); 
 });
 
 // Sidebar & Navigation
