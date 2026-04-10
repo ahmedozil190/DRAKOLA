@@ -464,13 +464,13 @@
                 <!-- Main Settings Menu -->
                 <div id="settings-main-menu">
                     <div class="settings-menu-list">
-                        <!-- Bot Name Card (Red) -->
-                        <div class="settings-item" onclick="showSettingsSubView('bot-name')">
+                        <!-- Bot Profile Card (Red) -->
+                        <div class="settings-item" onclick="showSettingsSubView('bot-profile')">
                             <div class="settings-icon-box bg-red-soft">
                                 <i class="fas fa-robot"></i>
                             </div>
                             <div class="settings-info">
-                                <div class="settings-title">Bot Name</div>
+                                <div class="settings-title">Bot Profile & Links</div>
                             </div>
                             <i class="fas fa-chevron-right settings-chevron"></i>
                         </div>
@@ -496,27 +496,16 @@
                             </div>
                             <i class="fas fa-chevron-right settings-chevron"></i>
                         </div>
-
-                        <!-- Links Card (Green) -->
-                        <div class="settings-item" onclick="showSettingsSubView('bot-links')">
-                            <div class="settings-icon-box bg-green-soft" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                                <i class="fas fa-link"></i>
-                            </div>
-                            <div class="settings-info">
-                                <div class="settings-title">Bot Links</div>
-                            </div>
-                            <i class="fas fa-chevron-right settings-chevron"></i>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Subview: Bot Name -->
-                <div id="subview-bot-name" style="display: none;">
+                <!-- Subview: Bot Profile & Links -->
+                <div id="subview-bot-profile" style="display: none;">
                     <div class="subview-header">
                         <div class="back-btn-circle" onclick="hideSettingsSubView()">
                             <i class="fas fa-arrow-left"></i>
                         </div>
-                        <h2 style="font-weight: 700;">Bot Name</h2>
+                        <h2 style="font-weight: 700;">Bot Profile & Links</h2>
                     </div>
                     <div class="card"
                         style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
@@ -524,7 +513,19 @@
                             <label>Display Name (Inside Bot)</label>
                             <input type="text" id="bot-name-input" class="input-field" placeholder="e.g. Billion Bot">
                         </div>
-                        <button class="primary-btn" onclick="saveSettings()">Save Name</button>
+                        <div class="form-group">
+                            <label>Bot Instructions Link (روابط التعليمات)</label>
+                            <input type="text" id="instruction-link-input" class="input-field" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Rules Link (القوانين)</label>
+                            <input type="text" id="rules-link-input" class="input-field" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Buy Points Link (شراء النقاط)</label>
+                            <input type="text" id="buy-points-link-input" class="input-field" placeholder="https://...">
+                        </div>
+                        <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
                     </div>
                 </div>
 
@@ -602,31 +603,6 @@
                     </div>
                 </div>
 
-                <!-- Subview: Bot Links -->
-                <div id="subview-bot-links" style="display: none;">
-                    <div class="subview-header">
-                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
-                            <i class="fas fa-arrow-left"></i>
-                        </div>
-                        <h2 style="font-weight: 700;">Bot Links</h2>
-                    </div>
-                    <div class="card"
-                        style="margin-bottom: 25px; min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <div class="form-group">
-                            <label>Bot Instructions Link (روابط التعليمات)</label>
-                            <input type="text" id="instruction-link-input" class="input-field" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Rules Link (القوانين)</label>
-                            <input type="text" id="rules-link-input" class="input-field" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Buy Points Link (شراء النقاط)</label>
-                            <input type="text" id="buy-points-link-input" class="input-field" placeholder="https://...">
-                        </div>
-                        <button class="primary-btn" onclick="saveSettings()">Save Links</button>
-                    </div>
-                </div>
             </section>
 
             <!-- Broadcast View (v60) -->

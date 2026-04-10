@@ -509,10 +509,9 @@ function showSettingsSubView(viewId) {
     document.getElementById('settings-main-menu').style.display = 'none';
 
     // Hide all subviews first
-    document.getElementById('subview-bot-name').style.display = 'none';
+    document.getElementById('subview-bot-profile').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
-    document.getElementById('subview-bot-links').style.display = 'none';
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
@@ -524,10 +523,9 @@ function hideSettingsSubView() {
 
     tg.HapticFeedback.impactOccurred('light');
     document.getElementById('settings-main-menu').style.display = 'block';
-    document.getElementById('subview-bot-name').style.display = 'none';
+    document.getElementById('subview-bot-profile').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
-    document.getElementById('subview-bot-links').style.display = 'none';
 }
 
 // ========== Broadcast Logic (v60) ==========
