@@ -2413,10 +2413,11 @@ async function addAdmin() {
             showSuccessPopup("Admin Added!", "The user has been granted administrative permissions. ✨");
             loadAdmins();
         } else {
-            tg.showAlert(result.message || "Failed to add admin.");
+            showErrorPopup("User Not Found", result.message || "The user must start the bot first before being added as an admin.");
         }
     } catch (err) {
         console.error("Add admin error:", err);
+        showErrorPopup("Network Error", "Please check your connection and try again.");
     } finally {
         hideLoader();
     }
@@ -2444,11 +2445,11 @@ async function removeAdmin(userId) {
                     loadAdmins();
                 } else {
                     const result = await res.json();
-                    tg.showAlert(result.message || "Deletion failed.");
+                    showErrorPopup("Action Failed", result.message || "Could not remove administrator.");
                 }
             } catch (err) {
                 console.error("❌ Fetch error:", err);
-                tg.showAlert("Network error. Please try again.");
+                showErrorPopup("Network Error", "Please try again.");
             } finally {
                 hideLoader();
             }
