@@ -2260,7 +2260,7 @@ async function refreshAdminProfile() {
     }
 
     try {
-        const res = await fetch(`/api/admin/profile?user_id=${user.id}`);
+        const res = await fetch(`/api/admin/profile?user_id=${user.id}&t=${Date.now()}`);
         if (res.ok) {
             const freshUser = await res.json();
             initAdminProfile(freshUser);
@@ -2281,7 +2281,7 @@ let allAdmins = [];
 
 async function loadAdmins(resetPage = true) {
     try {
-        const res = await fetch('/api/admins');
+        const res = await fetch(`/api/admins?t=${Date.now()}`);
         allAdmins = await res.json();
         if (resetPage) currentAdminsPage = 1;
         renderAdmins();

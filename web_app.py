@@ -379,8 +379,24 @@ async def update_report_api(request):
 
 # --- Admins API ---
 async def get_admins_api(request):
+    bot = request.app['bot']
     async for session in get_session():
         admins = await crud.get_admins(session)
+        
+        # v137: Fresh sync - try to update admin info from TG in background
+        # since we only show 5-10 per page normally, we can afford a few get_chat calls
+        for admin in admins:
+            try:
+                # Try to get fresh info from TG
+                chat = await bot.get_chat(admin.user_id)
+                admin.first_name = chat.first_name
+                admin.username = chat.username
+            except Exception:
+                # If bot can't see user, we keep existing DB info
+                pass
+        
+        await session.commit()
+        
         return web.json_response([{
             "user_id": a.user_id,
             "first_name": a.first_name,
@@ -408,15 +424,22 @@ async def add_admin_api(request):
         # 2. If not in DB, try to fetch from Telegram (v136)
         try:
             chat = await bot.get_chat(user_id)
-            # Create user record in our DB
             user = await crud.get_or_create_user(session, user_id, chat.first_name, chat.username)
-            # Promote to admin
             user.is_admin = True
             await session.commit()
             return web.json_response({"status": "ok"})
         except Exception as e:
-            logging.error(f"Failed to fetch user {user_id} from Telegram: {e}")
-            return web.json_response({"status": "error", "message": f"User not found on Telegram: {str(e)}"}, status=404)
+            # v137: Fallback - Create with placeholder if "chat not found"
+            logging.warning(f"Chat not found for {user_id}, adding with placeholder: {e}")
+            try:
+                # Just create record with placeholder so they can be admin
+                user = await crud.get_or_create_user(session, user_id, f"Sub-Admin {user_id}", None)
+                user.is_admin = True
+                await session.commit()
+                return web.json_response({"status": "ok"})
+            except Exception as final_e:
+                logging.error(f"Final failure adding admin {user_id}: {final_e}")
+                return web.json_response({"status": "error", "message": f"Failed to add ID: {str(final_e)}"}, status=500)
 
 async def remove_admin_api(request):
     data = await request.json()
