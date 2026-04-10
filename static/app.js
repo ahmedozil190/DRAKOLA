@@ -983,13 +983,22 @@ function showConfirmPopup(title, message, onConfirm) {
         closeConfirmPopup(true);
     };
 
-    document.getElementById('confirm-modal').classList.add('active');
+    const modal = document.getElementById('confirm-modal');
+    modal.style.display = 'flex'; // Force display (v131)
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    
     tg.HapticFeedback.notificationOccurred('warning');
 }
 
 function closeConfirmPopup(confirmed = false) {
     if (!confirmed) tg.HapticFeedback.impactOccurred('light');
-    document.getElementById('confirm-modal').classList.remove('active');
+    const modal = document.getElementById('confirm-modal');
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none'; // Ensure hidden v131
+    }, 300);
     onConfirmAction = null;
 }
 
@@ -2270,45 +2279,43 @@ function renderAdmins(admins) {
     }
 
     admins.forEach(admin => {
-        const adminContainer = document.createElement('div');
-        adminContainer.style.background = 'rgba(255, 255, 255, 0.015)';
-        adminContainer.style.border = '1px solid rgba(255, 255, 255, 0.05)';
-        adminContainer.style.borderRadius = '24px';
-        adminContainer.style.padding = '20px';
-        adminContainer.style.marginBottom = '20px';
-        adminContainer.style.display = 'flex';
-        adminContainer.style.flexDirection = 'column';
-        adminContainer.style.gap = '15px';
+        const adminCard = document.createElement('div');
+        adminCard.className = 'user-card'; // Use same base class v131
+        adminCard.style.background = 'rgba(255, 255, 255, 0.02)';
+        adminCard.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+        adminCard.style.borderRadius = '24px';
+        adminCard.style.padding = '20px';
+        adminCard.style.marginBottom = '25px';
+        adminCard.style.display = 'flex';
+        adminCard.style.flexDirection = 'column';
+        adminCard.style.gap = '8px';
         
-        adminContainer.innerHTML = `
-            <!-- Row 1: Name -->
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
-                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Name</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${admin.first_name || 'Admin'}</span>
+        adminCard.innerHTML = `
+            <!-- Boxed Row 1: Name -->
+            <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Name</span>
+                <span style="font-size: 0.95rem; font-weight: 800; color: #fff;">${admin.first_name || 'Admin'}</span>
             </div>
 
-            <!-- Row 2: Username -->
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
-                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Username</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${admin.username ? '@'+admin.username : 'None'}</span>
+            <!-- Boxed Row 2: Username -->
+            <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Username</span>
+                <span style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">${admin.username ? '@'+admin.username : '---'}</span>
             </div>
 
-            <!-- Row 3: User ID -->
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
-                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">User ID</span>
-                <span style="font-size: 0.95rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${admin.user_id}</span>
+            <!-- Boxed Row 3: User ID -->
+            <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">User ID</span>
+                <span style="font-size: 0.95rem; font-weight: 800; color: #f59e0b; font-family: monospace;">${admin.user_id}</span>
             </div>
 
-            <!-- Divider -->
-            <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 5px 0;"></div>
-
-            <!-- Row 4: Action (Delete) -->
-            <button onclick="removeAdmin('${admin.user_id}')" 
-                style="width: 100%; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 16px; font-size: 0.9rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                Delete Administrator
-            </button>
+            <!-- Boxed Row 4: Delete Action -->
+            <div onclick="removeAdmin('${admin.user_id}')" 
+                 style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.15); padding: 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; margin-top: 5px;">
+                <span style="font-size: 0.85rem; color: #ef4444; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">Delete Administrator</span>
+            </div>
         `;
-        list.appendChild(adminContainer);
+        list.appendChild(adminCard);
     });
 }
 
@@ -2343,22 +2350,13 @@ async function addAdmin() {
 }
 
 async function removeAdmin(userId) {
-    // Aggressive Debug Alert (v130)
-    alert("System: removeAdmin triggered for ID: " + userId);
+    // Removed debug alert as requested (v131)
     console.log("🚀 removeAdmin triggered for ID:", userId);
     
-    const confirmModal = document.getElementById('confirm-modal');
-    if (!confirmModal) {
-        console.error("❌ Error: confirm-modal missing!");
-        alert("CRITICAL ERROR: Confirmation modal element not found!");
-        return;
-    }
-
     showConfirmPopup(
         "Remove Administrator",
         `Are you sure you want to revoke admin permissions for user ID: ${userId}?`,
         async () => {
-            console.log("✅ Confirmation received for:", userId);
             tg.HapticFeedback.impactOccurred('medium');
             showLoader(true);
             try {
@@ -2369,11 +2367,11 @@ async function removeAdmin(userId) {
                 });
                 
                 if (res.ok) {
-                    showSuccessPopup("Deleted!", "Administrator permissions revoked. ✨");
+                    showSuccessPopup("Deleted!", "Administrator revoked. ✨");
                     loadAdmins();
                 } else {
                     const result = await res.json();
-                    tg.showAlert(result.message || "Deletion failed on server.");
+                    tg.showAlert(result.message || "Deletion failed.");
                 }
             } catch (err) {
                 console.error("❌ Fetch error:", err);
