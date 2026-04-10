@@ -2223,35 +2223,44 @@ function getFilteredReports() {
 
 // --- Admin Profile Rendering ---
 function initAdminProfile(user) {
-    // v134: Get first 2 letters
     const avatarChars = user.first_name ? user.first_name.substring(0, 2).toUpperCase() : 'AD';
     const avatarCircle = document.getElementById('avatar-circle');
     const profileAvatar = document.getElementById('profile-avatar');
 
+    const resetAvatar = (el) => {
+        if (!el) return;
+        el.innerText = '';
+        el.style.backgroundImage = 'none';
+        el.style.background = ''; // Clear shorthand
+        el.style.backgroundColor = '';
+        el.style.backgroundSize = '';
+        el.style.backgroundPosition = '';
+        el.style.boxShadow = ''; // Clear custom glows if any
+    };
+
+    resetAvatar(avatarCircle);
+    resetAvatar(profileAvatar);
+
     if (user.photo_url) {
-        // Has photo: set background image, then fade in
         if (avatarCircle) {
-            avatarCircle.innerText = '';
             avatarCircle.style.backgroundImage = `url('${user.photo_url}')`;
             avatarCircle.style.backgroundSize = 'cover';
             avatarCircle.style.backgroundPosition = 'center';
+            avatarCircle.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.1)';
         }
         if (profileAvatar) {
-            profileAvatar.innerText = '';
             profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
             profileAvatar.style.backgroundSize = 'cover';
             profileAvatar.style.backgroundPosition = 'center';
         }
     } else {
-        // No photo: show deterministic color background with initials (v141)
         const bgColor = getTelegramColor(user.id || user.user_id);
         if (avatarCircle) {
-            avatarCircle.style.backgroundImage = 'none';
             avatarCircle.style.background = bgColor;
             avatarCircle.innerText = avatarChars;
+            avatarCircle.style.boxShadow = `0 4px 15px ${bgColor}44`; 
         }
         if (profileAvatar) {
-            profileAvatar.style.backgroundImage = 'none';
             profileAvatar.style.background = bgColor;
             profileAvatar.innerText = avatarChars;
         }
