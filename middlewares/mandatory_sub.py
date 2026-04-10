@@ -63,7 +63,7 @@ class MandatorySubMiddleware(BaseMiddleware):
                 
                 btns = []
                 for info in unsubscribed_info:
-                    btns.append([InlineKeyboardButton(text=f"➕ {info['name']}", url=info['link'])])
+                    btns.append([InlineKeyboardButton(text=f"{info['name']}", url=info['link'])])
                 
                 btns.append([InlineKeyboardButton(text="تم الاشتراك ✅", callback_data="check_mandatory")])
                 kbd = InlineKeyboardMarkup(inline_keyboard=btns)

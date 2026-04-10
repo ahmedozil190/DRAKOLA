@@ -495,7 +495,7 @@ async function saveSettings() {
         instruction_link: document.getElementById('instruction-link-input')?.value || "",
         rules_link: document.getElementById('rules-link-input')?.value || "",
         buy_points_link: document.getElementById('buy-points-link-input')?.value || "",
-        support_username: document.getElementById('support-username-input')?.value || "@A_M_E_15",
+        support_username: document.getElementById('support-username-input')?.value || "",
         referral_reward: parseInt(document.getElementById('referral-reward-input')?.value || 100),
         join_reward: parseInt(document.getElementById('join-reward-input')?.value || 10),
         member_cost: parseInt(document.getElementById('member-cost-input')?.value || 15),
