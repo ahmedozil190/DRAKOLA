@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def main_keyboard(points: int = 0, is_start: bool = False, instruction_link: str = "https://t.me/FFF22/1189", rules_link: str = "https://t.me/Billionbot0/2", buy_points_link: str = "https://t.me/q2qqqq/1045") -> InlineKeyboardMarkup:
+def main_keyboard(points: int = 0, is_start: bool = False, instruction_link: str = "", rules_link: str = "", buy_points_link: str = "") -> InlineKeyboardMarkup:
     """Returns the main menu keyboard using inline buttons aligned under the message."""
     btns = [
         [InlineKeyboardButton(text=f"عدد نقاطك : {points}", callback_data="my_points")],
