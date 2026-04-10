@@ -228,18 +228,40 @@ async def check_mandatory(call: CallbackQuery):
         user_id = call.from_user.id
         bot = call.bot
         
-        unsubscribed = []
+        unsubscribed_info = []
         for ch in channels:
             try:
                 member = await bot.get_chat_member(ch.channel_id, user_id)
                 if member.status in ["left", "kicked"]:
-                    unsubscribed.append(ch)
+                    try:
+                        chat = await bot.get_chat(ch.channel_id)
+                        name = chat.title or "قناة/مجموعة"
+                    except:
+                        name = "قناة/مجموعة"
+                    unsubscribed_info.append({"link": ch.channel_link, "name": name})
             except:
-                unsubscribed.append(ch)
+                unsubscribed_info.append({"link": ch.channel_link, "name": "القناة المطلوبة"})
         
-        if unsubscribed:
-            # Still not joined all
-            await call.answer("• عذراً، لم تشترك في كافة القنوات المطلوبة بعد! ⚠️", show_alert=True)
+        if unsubscribed_info:
+            first_channel_name = unsubscribed_info[0]["name"]
+            
+            text = "<b>• عذراً، يجب عليك الاشتراك في القنوات التالية لاستخدام البوت 🔐:</b>\n\n"
+            text += "- يرجى الاشتراك ثم الضغط على زر 'تم الاشتراك ✅' بالأسفل."
+            
+            from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+            btns = []
+            for info in unsubscribed_info:
+                btns.append([InlineKeyboardButton(text=f"{info['name']}", url=info['link'])])
+            
+            btns.append([InlineKeyboardButton(text="تم الاشتراك ✅", callback_data="check_mandatory")])
+            kbd = InlineKeyboardMarkup(inline_keyboard=btns)
+            
+            try:
+                await call.message.edit_text(text, reply_markup=kbd, parse_mode="HTML")
+            except:
+                pass
+                
+            await call.answer(f"يجب عليك الاشتراك في: {first_channel_name} ❌", show_alert=True)
             return
 
         # Success! Joined all.
