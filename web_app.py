@@ -415,32 +415,12 @@ async def add_admin_api(request):
         
     bot = request.app['bot']
     async for session in get_session():
-        # 1. Try to set admin directly if exists
+        # Promote admin only if user exists in DB (v139)
         user = await crud.set_user_admin(session, user_id, True)
         if user:
             return web.json_response({"status": "ok"})
-            
-        # 2. If not in DB, try to fetch from Telegram (v136)
-        try:
-            chat = await bot.get_chat(user_id)
-            # Combine first and last name (v138)
-            full_name = chat.first_name + (f" {chat.last_name}" if chat.last_name else "")
-            user = await crud.get_or_create_user(session, user_id, full_name, chat.username)
-            user.is_admin = True
-            await session.commit()
-            return web.json_response({"status": "ok"})
-        except Exception as e:
-            # v137: Fallback - Create with placeholder if "chat not found"
-            logging.warning(f"Chat not found for {user_id}, adding with placeholder: {e}")
-            try:
-                # Just create record with placeholder so they can be admin
-                user = await crud.get_or_create_user(session, user_id, f"Sub-Admin {user_id}", None)
-                user.is_admin = True
-                await session.commit()
-                return web.json_response({"status": "ok"})
-            except Exception as final_e:
-                logging.error(f"Final failure adding admin {user_id}: {final_e}")
-                return web.json_response({"status": "error", "message": f"Failed to add ID: {str(final_e)}"}, status=500)
+        else:
+            return web.json_response({"status": "error", "message": "User not found. They must start the bot first."}, status=404)
 
 async def remove_admin_api(request):
     data = await request.json()

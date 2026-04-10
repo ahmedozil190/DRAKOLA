@@ -2242,6 +2242,9 @@ function initAdminProfile(user) {
     if (profileAvatar) {
         setTimeout(() => { profileAvatar.style.opacity = '1'; }, 50);
     }
+    if (avatarCircle) {
+        setTimeout(() => { avatarCircle.style.opacity = '1'; }, 50);
+    }
 
     const fullName = user.first_name || 'Admin';
     document.getElementById('profile-name').innerText = fullName;
