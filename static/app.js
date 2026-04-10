@@ -2278,21 +2278,26 @@ function initAdminProfile(user) {
             profileGlow.style.background = 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)';
         }
     } else {
-        const bgColor = '#3b82f6'; // Premium Telegram Blue (Standardized v146)
+        const bgColor = '#60a5fa'; // User's preferred Light Blue (Standardized v149)
         
         if (avatarCircle) {
-            avatarCircle.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`; 
+            avatarCircle.style.backgroundImage = 'none';
+            avatarCircle.style.backgroundColor = bgColor;
+            avatarCircle.style.background = `linear-gradient(135deg, #60a5fa, #3b82f6)`; 
             avatarCircle.innerText = avatarChars;
-            avatarCircle.style.boxShadow = `0 4px 15px rgba(59, 130, 246, 0.4)`; 
+            avatarCircle.style.boxShadow = `0 4px 15px rgba(96, 165, 250, 0.4)`; 
         }
         if (profileAvatar) {
-            profileAvatar.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`;
+            profileAvatar.style.backgroundImage = 'none';
+            profileAvatar.style.backgroundColor = bgColor;
+            profileAvatar.style.background = `linear-gradient(135deg, #60a5fa, #3b82f6)`;
             profileAvatar.innerText = avatarChars;
-            profileAvatar.style.boxShadow = `0 8px 25px rgba(59, 130, 246, 0.4)`;
+            profileAvatar.style.boxShadow = `0 8px 25px rgba(96, 165, 250, 0.4)`;
         }
         if (profileGlow) {
-            profileGlow.style.background = `linear-gradient(135deg, #3b82f6, #2563eb)`;
-            profileGlow.style.opacity = '0.35';
+            profileGlow.style.backgroundImage = 'none';
+            profileGlow.style.background = `linear-gradient(135deg, #60a5fa, #3b82f6)`;
+            profileGlow.style.opacity = '0.4';
         }
     }
 
