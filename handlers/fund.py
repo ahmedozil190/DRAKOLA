@@ -22,8 +22,11 @@ async def start_funding(call: CallbackQuery, state: FSMContext):
         user = await crud.get_user(session, call.from_user.id)
         if not user: return
         
-        if user.points < 300:
-            text = "<b>• عليك تجميع نقاط اكثر من 300 نقطه </b>!"
+        settings = await crud.get_settings(session)
+        min_p = settings.min_points_to_order or 300
+        
+        if user.points < min_p:
+            text = f"<b>• عليك تجميع نقاط اكثر من {min_p} نقطه </b>!"
             kbd = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="تجميع النقاط", callback_data="collect_points")],
                 [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]
@@ -104,8 +107,9 @@ async def process_members_buttons(call: CallbackQuery, state: FSMContext):
                 await call.answer(f"نقاطك غير كافية لتمويل 10 أعضاء! (تحتاج {10 * cost_per} نقطة)", show_alert=True)
                 return
         
-        if members < 5:
-            await call.answer("عدد النقاط لا يكفي لتمويل الحد الأدنى (5 أعضاء)!", show_alert=True)
+        min_m = settings.min_order_members or 5
+        if members < min_m:
+            await call.answer(f"عدد النقاط لا يكفي لتمويل الحد الأدنى ({min_m} أعضاء)!", show_alert=True)
             return
             
         await send_type_selection(call, members, state)
@@ -117,8 +121,13 @@ async def process_members_input(message: Message, state: FSMContext):
         return
         
     members = int(message.text)
-    if members < 5:
-        await message.reply("الحد الأدنى للتمويل هو <b>5</b> مشتركين.", parse_mode="HTML")
+    min_m = 5
+    async for session in get_session():
+        settings = await crud.get_settings(session)
+        min_m = settings.min_order_members or 5
+
+    if members < min_m:
+        await message.reply(f"الحد الأدنى للتمويل هو <b>{min_m}</b> مشتركين.", parse_mode="HTML")
         return
         
     async for session in get_session():

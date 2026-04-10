@@ -361,6 +361,9 @@ function populateSettings(settings) {
         document.getElementById('referral-reward-input').value = settings.referral_reward || 100;
         document.getElementById('join-reward-input').value = settings.join_reward || 10;
         document.getElementById('member-cost-input').value = settings.member_cost || 15;
+        document.getElementById('min-order-members-input').value = settings.min_order_members || 5;
+        document.getElementById('min-points-to-order-input').value = settings.min_points_to_order || 300;
+        document.getElementById('leave-penalty-input').value = settings.leave_penalty_multiplier || 2;
     }
 
     // Broadcast Stats (v44)
@@ -495,7 +498,10 @@ async function saveSettings() {
         support_username: document.getElementById('support-username-input')?.value || "@A_M_E_15",
         referral_reward: parseInt(document.getElementById('referral-reward-input')?.value || 100),
         join_reward: parseInt(document.getElementById('join-reward-input')?.value || 10),
-        member_cost: parseInt(document.getElementById('member-cost-input')?.value || 15)
+        member_cost: parseInt(document.getElementById('member-cost-input')?.value || 15),
+        min_order_members: parseInt(document.getElementById('min-order-members-input')?.value || 5),
+        min_points_to_order: parseInt(document.getElementById('min-points-to-order-input')?.value || 300),
+        leave_penalty_multiplier: parseInt(document.getElementById('leave-penalty-input')?.value || 2)
     };
 
     tg.HapticFeedback.impactOccurred('medium');

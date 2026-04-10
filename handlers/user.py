@@ -205,12 +205,19 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
 
 @router.message(F.text == "/EeoK")
 async def cmd_eeok(message: Message):
-    text = "📍 **تعليمات بوت تمويل دراكولا:**\n\n"
-    text += "1. أجمع النقاط من خلال قسم 'تجميع النقاط' بالاشتراك في القنوات.\n"
-    text += "2. استخدم النقاط لتمويل قناتك أو مجموعتك من خلال قسم 'تمويل قناتك'.\n"
-    text += "3. يمكنك تحويل النقاط لأصدقائك عبر 'تحويل نقاط'.\n"
-    text += "4. الحد الأدنى للتمويل هو 300 نقطة."
-    await message.reply(text, parse_mode="Markdown")
+    async for session in get_session():
+        settings = await crud.get_settings(session)
+        min_p = settings.min_points_to_order or 300
+        support = settings.support_username or "@A_M_E_15"
+        
+        text = "📍 <b>تعليمات بوت تمويل دراكولا:</b>\n\n"
+        text += "1. أجمع النقاط من خلال قسم 'تجميع النقاط' بالاشتراك في القنوات.\n"
+        text += "2. استخدم النقاط لتمويل قناتك أو مجموعتك من خلال قسم 'تمويل قناتك'.\n"
+        text += "3. يمكنك تحويل النقاط لأصدقائك عبر 'تحويل نقاط'.\n"
+        text += f"4. الحد الأدنى للتمويل هو <b>{min_p}</b> نقطة.\n\n"
+        text += f"~ <b>للدعم الفني والاستفسار</b> : {support}"
+        
+        await message.reply(text, parse_mode="HTML")
 
 @router.callback_query(F.data == "account_info")
 async def account_info(call: CallbackQuery):
