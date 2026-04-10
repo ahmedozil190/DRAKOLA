@@ -406,6 +406,39 @@ async def remove_admin_api(request):
         await crud.set_user_admin(session, user_id, False)
         return web.json_response({"status": "ok"})
 
+async def get_admin_profile(request):
+    user_id = request.query.get('user_id')
+    if not user_id:
+        return web.json_response({"status": "error", "message": "Missing user_id"}, status=400)
+    
+    bot = request.app['bot']
+    try:
+        chat = await bot.get_chat(int(user_id))
+        
+        # Try to get photo
+        photo_url = None
+        try:
+            photos = await bot.get_user_profile_photos(int(user_id), limit=1)
+            if photos.total_count > 0:
+                file_id = photos.photos[0][-1].file_id
+                file = await bot.get_file(file_id)
+                # Note: this requires the bot's TOKEN if you want to construct the URL directly, 
+                # or we just rely on the bot token we have.
+                token = bot.token
+                photo_url = f"https://api.telegram.org/file/bot{token}/{file.file_path}"
+        except Exception:
+            pass
+            
+        return web.json_response({
+            "id": chat.id,
+            "first_name": chat.first_name,
+            "last_name": chat.last_name or "",
+            "username": chat.username or "",
+            "photo_url": photo_url
+        })
+    except Exception as e:
+        return web.json_response({"status": "error", "message": str(e)}, status=400)
+
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
     try:
@@ -470,6 +503,7 @@ def setup_web_app(bot):
     app.router.add_get('/api/admins', get_admins_api)
     app.router.add_post('/api/admins/add', add_admin_api)
     app.router.add_post('/api/admins/delete', remove_admin_api)
+    app.router.add_get('/api/admin/profile', get_admin_profile)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')

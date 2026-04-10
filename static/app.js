@@ -2202,18 +2202,28 @@ function initAdminProfile(user) {
     document.getElementById('profile-id').innerText = user.id;
 }
 
-function refreshAdminProfile() {
+async function refreshAdminProfile() {
     if (tg && tg.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
+
     const user = tg.initDataUnsafe?.user;
-    if (user) {
-        initAdminProfile(user);
-        if (tg && tg.HapticFeedback) {
-            setTimeout(() => tg.HapticFeedback.notificationOccurred('success'), 200);
+    if (!user) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/admin/profile?user_id=${user.id}`);
+        if (res.ok) {
+            const freshUser = await res.json();
+            initAdminProfile(freshUser);
+        } else {
+            // Fallback to initData if API fails
+            initAdminProfile(user);
         }
-    } else {
-        alert("Unable to fetch fresh data from Telegram.");
+    } catch (err) {
+        console.error("Profile refresh error:", err);
+        initAdminProfile(user);
     }
 }
 
@@ -2292,9 +2302,10 @@ async function addAdmin() {
 }
 
 async function removeAdmin(userId) {
+    // Exact Arabic confirmation message as requested (v125)
     showConfirmPopup(
-        "Remove Administrator",
-        `Are you sure you want to remove permissions for User ${userId}?`,
+        "حذف المسؤول",
+        `هل أنت متأكد أنك تريد إلغاء صلاحيات المسؤول عن المستخدم (${userId})؟`,
         async () => {
             tg.HapticFeedback.impactOccurred('medium');
             showLoader(true);
@@ -2304,15 +2315,17 @@ async function removeAdmin(userId) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_id: userId })
                 });
+                
                 if (res.ok) {
-                    showSuccessPopup("Permissions Removed", "The user is no longer an administrator.");
+                    showSuccessPopup("تم الحذف!", "تم إلغاء صلاحيات المسؤول بنجاح. ✨");
                     loadAdmins();
                 } else {
                     const result = await res.json();
-                    tg.showAlert(result.message || "Failed to remove admin.");
+                    tg.showAlert(result.message || "فشلت عملية الحذف.");
                 }
             } catch (err) {
                 console.error("Remove admin error:", err);
+                tg.showAlert("حدث خطأ أثناء الاتصال بالخادم.");
             } finally {
                 hideLoader();
             }
