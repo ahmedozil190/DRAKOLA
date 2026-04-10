@@ -2274,50 +2274,38 @@ function renderAdmins(admins) {
         adminContainer.style.background = 'rgba(255, 255, 255, 0.015)';
         adminContainer.style.border = '1px solid rgba(255, 255, 255, 0.05)';
         adminContainer.style.borderRadius = '24px';
-        adminContainer.style.padding = '15px';
+        adminContainer.style.padding = '20px';
         adminContainer.style.marginBottom = '20px';
         adminContainer.style.display = 'flex';
         adminContainer.style.flexDirection = 'column';
-        adminContainer.style.gap = '10px';
+        adminContainer.style.gap = '15px';
         
         adminContainer.innerHTML = `
             <!-- Row 1: Name -->
-            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
-                <div class="settings-icon-box bg-purple-soft" style="width: 38px; height: 38px; font-size: 1rem;">
-                    <i class="fas fa-user-tag"></i>
-                </div>
-                <div class="settings-info">
-                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Name</span>
-                    <div class="settings-title" style="font-size: 0.95rem;">${admin.first_name || 'Admin'}</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Name</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${admin.first_name || 'Admin'}</span>
             </div>
 
             <!-- Row 2: Username -->
-            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
-                <div class="settings-icon-box bg-blue-soft" style="width: 38px; height: 38px; font-size: 1rem;">
-                    <i class="fas fa-at"></i>
-                </div>
-                <div class="settings-info">
-                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Username</span>
-                    <div class="settings-title" style="font-size: 0.95rem; color: #60a5fa;">${admin.username ? '@'+admin.username : 'None'}</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Username</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #60a5fa;">${admin.username ? '@'+admin.username : 'None'}</span>
             </div>
 
             <!-- Row 3: User ID -->
-            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
-                <div class="settings-icon-box bg-red-soft" style="width: 38px; height: 38px; font-size: 1rem; background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                    <i class="fas fa-fingerprint"></i>
-                </div>
-                <div class="settings-info">
-                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">User ID</span>
-                    <div class="settings-title" style="font-size: 0.95rem; font-family: monospace; color: #f59e0b;">${admin.user_id}</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">User ID</span>
+                <span style="font-size: 0.95rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${admin.user_id}</span>
             </div>
+
+            <!-- Divider -->
+            <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 5px 0;"></div>
 
             <!-- Row 4: Action (Delete) -->
             <button onclick="removeAdmin('${admin.user_id}')" 
-                style="width: 100%; margin-top: 5px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 15px; font-size: 0.9rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fas fa-trash-alt"></i> Delete Administrator
+                style="width: 100%; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 16px; font-size: 0.9rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                Delete Administrator
             </button>
         `;
         list.appendChild(adminContainer);
@@ -2355,13 +2343,14 @@ async function addAdmin() {
 }
 
 async function removeAdmin(userId) {
+    // Aggressive Debug Alert (v130)
+    alert("System: removeAdmin triggered for ID: " + userId);
     console.log("🚀 removeAdmin triggered for ID:", userId);
     
-    // Check if the modal exists to prevent silent failure
     const confirmModal = document.getElementById('confirm-modal');
     if (!confirmModal) {
-        console.error("❌ Error: confirm-modal element not found in DOM!");
-        tg.showAlert("System error: Confirmation modal missing. Deletion cannot proceed.");
+        console.error("❌ Error: confirm-modal missing!");
+        alert("CRITICAL ERROR: Confirmation modal element not found!");
         return;
     }
 
@@ -2369,7 +2358,7 @@ async function removeAdmin(userId) {
         "Remove Administrator",
         `Are you sure you want to revoke admin permissions for user ID: ${userId}?`,
         async () => {
-            console.log("✅ Confirmation received. Sending delete request for:", userId);
+            console.log("✅ Confirmation received for:", userId);
             tg.HapticFeedback.impactOccurred('medium');
             showLoader(true);
             try {
@@ -2380,16 +2369,14 @@ async function removeAdmin(userId) {
                 });
                 
                 if (res.ok) {
-                    console.log("✨ Admin successfully removed from backend.");
-                    showSuccessPopup("Deleted!", "Administrator permissions have been revoked. ✨");
+                    showSuccessPopup("Deleted!", "Administrator permissions revoked. ✨");
                     loadAdmins();
                 } else {
                     const result = await res.json();
-                    console.error("❌ Backend error during deletion:", result);
-                    tg.showAlert(result.message || "Deletion failed on the server.");
+                    tg.showAlert(result.message || "Deletion failed on server.");
                 }
             } catch (err) {
-                console.error("❌ Fetch error during deletion:", err);
+                console.error("❌ Fetch error:", err);
                 tg.showAlert("Network error. Please try again.");
             } finally {
                 hideLoader();
