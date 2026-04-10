@@ -383,23 +383,22 @@ async def get_admins_api(request):
     async for session in get_session():
         admins = await crud.get_admins(session)
         
-        # v137: Fresh sync - try to update admin info from TG in background
-        # since we only show 5-10 per page normally, we can afford a few get_chat calls
+        # v137/v138: Fresh sync - try to update admin info from TG in background
         for admin in admins:
             try:
-                # Try to get fresh info from TG
                 chat = await bot.get_chat(admin.user_id)
-                admin.first_name = chat.first_name
+                # Combine first and last name for "Full Name" display (v138)
+                full_name = chat.first_name + (f" {chat.last_name}" if chat.last_name else "")
+                admin.first_name = full_name
                 admin.username = chat.username
             except Exception:
-                # If bot can't see user, we keep existing DB info
                 pass
         
         await session.commit()
         
         return web.json_response([{
             "user_id": a.user_id,
-            "first_name": a.first_name,
+            "first_name": a.first_name, # This now contains the full name
             "username": a.username
         } for a in admins])
 
@@ -424,7 +423,9 @@ async def add_admin_api(request):
         # 2. If not in DB, try to fetch from Telegram (v136)
         try:
             chat = await bot.get_chat(user_id)
-            user = await crud.get_or_create_user(session, user_id, chat.first_name, chat.username)
+            # Combine first and last name (v138)
+            full_name = chat.first_name + (f" {chat.last_name}" if chat.last_name else "")
+            user = await crud.get_or_create_user(session, user_id, full_name, chat.username)
             user.is_admin = True
             await session.commit()
             return web.json_response({"status": "ok"})
@@ -476,7 +477,7 @@ async def get_admin_profile(request):
             
         return web.json_response({
             "id": chat.id,
-            "first_name": chat.first_name,
+            "first_name": chat.first_name + (f" {chat.last_name}" if chat.last_name else ""),
             "last_name": chat.last_name or "",
             "username": chat.username or "",
             "photo_url": photo_url

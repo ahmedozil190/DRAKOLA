@@ -2243,10 +2243,10 @@ function initAdminProfile(user) {
         setTimeout(() => { profileAvatar.style.opacity = '1'; }, 50);
     }
 
-    const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    const fullName = user.first_name || 'Admin';
     document.getElementById('profile-name').innerText = fullName;
     document.getElementById('profile-username').innerText = user.username ? '@' + user.username : 'No Username';
-    document.getElementById('profile-id').innerText = user.id;
+    document.getElementById('profile-id').innerText = user.id || user.user_id;
 }
 
 async function refreshAdminProfile() {
