@@ -1094,49 +1094,31 @@
                 </div>
             </div>
 
-            <!-- Fields Container -->
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- Name Card -->
-                <div class="settings-item" style="cursor: default;">
-                    <div class="settings-icon-box bg-purple-soft">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="settings-info">
-                        <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Full Name</span>
-                        <div id="profile-name" class="settings-title">Admin Name</div>
-                    </div>
+            <!-- Fields Container (v133: No icons, label-left value-right) -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <!-- Full Name Row -->
+                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</span>
+                    <div id="profile-name" style="font-size: 0.95rem; font-weight: 800; color: #ffd700;">Admin Name</div>
                 </div>
 
-                <!-- Username Card -->
-                <div class="settings-item" style="cursor: default;">
-                    <div class="settings-icon-box bg-blue-soft">
-                        <i class="fas fa-at"></i>
-                    </div>
-                    <div class="settings-info">
-                        <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Username</span>
-                        <div id="profile-username" class="settings-title" style="color: #60a5fa;">@username</div>
-                    </div>
+                <!-- Username Row -->
+                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Username</span>
+                    <div id="profile-username" style="font-size: 0.95rem; font-weight: 800; color: #60a5fa;">@username</div>
                 </div>
 
-                <!-- ID Card -->
-                <div class="settings-item" style="cursor: default;">
-                    <div class="settings-icon-box bg-red-soft" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">
-                        <i class="fas fa-fingerprint"></i>
-                    </div>
-                    <div class="settings-info">
-                        <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Telegram ID</span>
-                        <div id="profile-id" class="settings-title" style="font-family: monospace; letter-spacing: 1px;">00000000</div>
-                    </div>
+                <!-- Telegram ID Row -->
+                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 14px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Telegram ID</span>
+                    <div id="profile-id" style="font-size: 0.95rem; font-weight: 800; color: #10b981; font-family: monospace; letter-spacing: 1px;">00000000</div>
                 </div>
             </div>
             
-            <!-- Add New Admin Card (v128) -->
-            <div class="card" style="margin-top: 35px; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px;">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
-                    <div style="width: 36px; height: 36px; background: rgba(16, 185, 129, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #10b981;">
-                        <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <h3 style="color: #fff; font-size: 1.1rem; font-weight: 700;">Add New Admin</h3>
+            <!-- Add New Admin Card (v133) -->
+            <div class="card" style="margin-top: 35px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 22px; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #94a3b8; font-size: 1rem; font-weight: 700;">Add New Admin</h3>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">

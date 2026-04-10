@@ -2307,10 +2307,10 @@ function renderAdmins() {
             <!-- Number Badge (same as user cards) -->
             <div class="user-card-index" style="width: 28px; height: 28px; font-size: 0.8rem; top: -14px;">${displayIndex}</div>
 
-            <!-- Boxed Row 1: Name -->
+            <!-- Boxed Row 1: Full Name -->
             <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Name</span>
-                <span style="font-size: 0.95rem; font-weight: 800; color: #fff;">${admin.first_name || 'Admin'}</span>
+                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Full Name</span>
+                <span style="font-size: 0.95rem; font-weight: 800; color: #ffd700;">${admin.first_name || 'Admin'}</span>
             </div>
 
             <!-- Boxed Row 2: Username -->
