@@ -183,7 +183,14 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
         greeting += "<b>•العدد الكلي المستخدمين = 5m 🎖</b>\n" 
         greeting += "<b>• ارسل أمر /EeoK تعليماتي 📍</b>"
         
-        await message.reply(greeting, parse_mode="HTML", reply_markup=main_keyboard(user.points, is_start=True))
+        settings = await crud.get_settings(session)
+        await message.reply(greeting, parse_mode="HTML", reply_markup=main_keyboard(
+            points=user.points, 
+            is_start=True,
+            instruction_link=settings.instruction_link or "https://t.me/FFF22/1189",
+            rules_link=settings.rules_link or "https://t.me/Billionbot0/2",
+            buy_points_link=settings.buy_points_link or "https://t.me/q2qqqq/1045"
+        ))
 
 @router.message(F.text == "/EeoK")
 async def cmd_eeok(message: Message):
