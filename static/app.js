@@ -2265,30 +2265,58 @@ function renderAdmins(admins) {
     list.innerHTML = '';
 
     if (admins.length === 0) {
-        list.innerHTML = `<div style="text-align: center; color: #475569; padding: 20px; font-size: 0.85rem; background: rgba(0,0,0,0.1); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.05);">No sub-admins added yet.</div>`;
+        list.innerHTML = `<div style="text-align: center; color: #475569; padding: 25px; font-size: 0.85rem; background: rgba(0,0,0,0.1); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.05);">No sub-admins added yet.</div>`;
         return;
     }
 
     admins.forEach(admin => {
-        const div = document.createElement('div');
-        div.style.background = 'rgba(255, 255, 255, 0.03)';
-        div.style.border = '1px solid rgba(255, 255, 255, 0.05)';
-        div.style.borderRadius = '12px';
-        div.style.padding = '12px 15px';
-        div.style.display = 'flex';
-        div.style.justifyContent = 'space-between';
-        div.style.alignItems = 'center';
-
-        div.innerHTML = `
-            <div>
-                <div style="color: #fff; font-weight: 700; font-size: 0.9rem;">${admin.first_name || 'Admin'}</div>
-                <div style="color: #64748b; font-size: 0.75rem;">${admin.username ? '@'+admin.username : 'ID: ' + admin.user_id}</div>
+        const card = document.createElement('div');
+        card.style.background = 'rgba(255, 255, 255, 0.02)';
+        card.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+        card.style.borderRadius = '20px';
+        card.style.padding = '20px';
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.gap = '12px';
+        card.style.transition = '0.3s';
+        
+        card.innerHTML = `
+            <!-- Row 1: Name -->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-signature" style="color: #60a5fa; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">الاسم (Name)</span>
+                </div>
+                <span style="font-size: 0.9rem; font-weight: 700; color: #fff;">${admin.first_name || 'Admin'}</span>
             </div>
-            <button onclick="removeAdmin('${admin.user_id}')" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.1); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;">
-                <i class="fas fa-trash-alt"></i>
-            </button>
+
+            <!-- Row 2: Username -->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-at" style="color: #a855f7; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">المعرف (Username)</span>
+                </div>
+                <span style="font-size: 0.85rem; font-weight: 600; color: #c084fc;">${admin.username ? '@'+admin.username : '---'}</span>
+            </div>
+
+            <!-- Row 3: User ID -->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-fingerprint" style="color: #f59e0b; font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">الايدي (User ID)</span>
+                </div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${admin.user_id}</span>
+            </div>
+
+            <!-- Row 4: Actions (Fixed Delete) -->
+            <div style="margin-top: 8px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: flex-end;">
+                <button onclick="removeAdmin('${admin.user_id}')" 
+                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.15); padding: 10px 20px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-trash-alt"></i> حذف المسؤول (Delete)
+                </button>
+            </div>
         `;
-        list.appendChild(div);
+        list.appendChild(card);
     });
 }
 
