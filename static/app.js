@@ -2270,53 +2270,57 @@ function renderAdmins(admins) {
     }
 
     admins.forEach(admin => {
-        const card = document.createElement('div');
-        card.style.background = 'rgba(255, 255, 255, 0.02)';
-        card.style.border = '1px solid rgba(255, 255, 255, 0.05)';
-        card.style.borderRadius = '20px';
-        card.style.padding = '20px';
-        card.style.display = 'flex';
-        card.style.flexDirection = 'column';
-        card.style.gap = '12px';
-        card.style.transition = '0.3s';
+        const adminContainer = document.createElement('div');
+        adminContainer.style.background = 'rgba(255, 255, 255, 0.015)';
+        adminContainer.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+        adminContainer.style.borderRadius = '24px';
+        adminContainer.style.padding = '15px';
+        adminContainer.style.marginBottom = '20px';
+        adminContainer.style.display = 'flex';
+        adminContainer.style.flexDirection = 'column';
+        adminContainer.style.gap = '10px';
         
-        card.innerHTML = `
+        adminContainer.innerHTML = `
             <!-- Row 1: Name -->
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-signature" style="color: #60a5fa; font-size: 0.9rem;"></i>
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">الاسم (Name)</span>
+            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
+                <div class="settings-icon-box bg-purple-soft" style="width: 38px; height: 38px; font-size: 1rem;">
+                    <i class="fas fa-user-tag"></i>
                 </div>
-                <span style="font-size: 0.9rem; font-weight: 700; color: #fff;">${admin.first_name || 'Admin'}</span>
+                <div class="settings-info">
+                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Name</span>
+                    <div class="settings-title" style="font-size: 0.95rem;">${admin.first_name || 'Admin'}</div>
+                </div>
             </div>
 
             <!-- Row 2: Username -->
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-at" style="color: #a855f7; font-size: 0.9rem;"></i>
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">المعرف (Username)</span>
+            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
+                <div class="settings-icon-box bg-blue-soft" style="width: 38px; height: 38px; font-size: 1rem;">
+                    <i class="fas fa-at"></i>
                 </div>
-                <span style="font-size: 0.85rem; font-weight: 600; color: #c084fc;">${admin.username ? '@'+admin.username : '---'}</span>
+                <div class="settings-info">
+                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Username</span>
+                    <div class="settings-title" style="font-size: 0.95rem; color: #60a5fa;">${admin.username ? '@'+admin.username : 'None'}</div>
+                </div>
             </div>
 
             <!-- Row 3: User ID -->
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-fingerprint" style="color: #f59e0b; font-size: 0.9rem;"></i>
-                    <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">الايدي (User ID)</span>
+            <div class="settings-item" style="cursor: default; margin-bottom: 0; padding: 12px 15px; background: rgba(0,0,0,0.2);">
+                <div class="settings-icon-box bg-red-soft" style="width: 38px; height: 38px; font-size: 1rem; background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                    <i class="fas fa-fingerprint"></i>
                 </div>
-                <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; font-family: monospace;">${admin.user_id}</span>
+                <div class="settings-info">
+                    <span style="display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">User ID</span>
+                    <div class="settings-title" style="font-size: 0.95rem; font-family: monospace; color: #f59e0b;">${admin.user_id}</div>
+                </div>
             </div>
 
-            <!-- Row 4: Actions (Fixed Delete) -->
-            <div style="margin-top: 8px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: flex-end;">
-                <button onclick="removeAdmin('${admin.user_id}')" 
-                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.15); padding: 10px 20px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-trash-alt"></i> حذف المسؤول (Delete)
-                </button>
-            </div>
+            <!-- Row 4: Action (Delete) -->
+            <button onclick="removeAdmin('${admin.user_id}')" 
+                style="width: 100%; margin-top: 5px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 15px; font-size: 0.9rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fas fa-trash-alt"></i> Delete Administrator
+            </button>
         `;
-        list.appendChild(card);
+        list.appendChild(adminContainer);
     });
 }
 
@@ -2351,11 +2355,21 @@ async function addAdmin() {
 }
 
 async function removeAdmin(userId) {
-    // Exact Arabic confirmation message as requested (v125)
+    console.log("🚀 removeAdmin triggered for ID:", userId);
+    
+    // Check if the modal exists to prevent silent failure
+    const confirmModal = document.getElementById('confirm-modal');
+    if (!confirmModal) {
+        console.error("❌ Error: confirm-modal element not found in DOM!");
+        tg.showAlert("System error: Confirmation modal missing. Deletion cannot proceed.");
+        return;
+    }
+
     showConfirmPopup(
-        "حذف المسؤول",
-        `هل أنت متأكد أنك تريد إلغاء صلاحيات المسؤول عن المستخدم (${userId})؟`,
+        "Remove Administrator",
+        `Are you sure you want to revoke admin permissions for user ID: ${userId}?`,
         async () => {
+            console.log("✅ Confirmation received. Sending delete request for:", userId);
             tg.HapticFeedback.impactOccurred('medium');
             showLoader(true);
             try {
@@ -2366,15 +2380,17 @@ async function removeAdmin(userId) {
                 });
                 
                 if (res.ok) {
-                    showSuccessPopup("تم الحذف!", "تم إلغاء صلاحيات المسؤول بنجاح. ✨");
+                    console.log("✨ Admin successfully removed from backend.");
+                    showSuccessPopup("Deleted!", "Administrator permissions have been revoked. ✨");
                     loadAdmins();
                 } else {
                     const result = await res.json();
-                    tg.showAlert(result.message || "فشلت عملية الحذف.");
+                    console.error("❌ Backend error during deletion:", result);
+                    tg.showAlert(result.message || "Deletion failed on the server.");
                 }
             } catch (err) {
-                console.error("Remove admin error:", err);
-                tg.showAlert("حدث خطأ أثناء الاتصال بالخادم.");
+                console.error("❌ Fetch error during deletion:", err);
+                tg.showAlert("Network error. Please try again.");
             } finally {
                 hideLoader();
             }
