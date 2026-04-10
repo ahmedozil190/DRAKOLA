@@ -2195,6 +2195,16 @@ function initAdminProfile(user) {
         
         profileAvatar.innerText = '';
         profileAvatar.style.backgroundImage = `url('${user.photo_url}')`;
+        profileAvatar.style.backgroundSize = 'cover';
+        profileAvatar.style.backgroundPosition = 'center';
+    } else {
+        // FIXED v126: Explicitly clear background if photo is removed
+        avatarCircle.style.backgroundImage = 'none';
+        profileAvatar.style.backgroundImage = 'none';
+        
+        // Ensure initials are visible
+        avatarCircle.innerText = avatarChar;
+        profileAvatar.innerText = avatarChar;
     }
 
     document.getElementById('profile-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
@@ -2263,7 +2273,7 @@ function renderAdmins(admins) {
                 <div style="color: #fff; font-weight: 700; font-size: 0.9rem;">${admin.first_name || 'Admin'}</div>
                 <div style="color: #64748b; font-size: 0.75rem;">${admin.username ? '@'+admin.username : 'ID: ' + admin.user_id}</div>
             </div>
-            <button onclick="removeAdmin(${admin.user_id})" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.1); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;">
+            <button onclick="removeAdmin('${admin.user_id}')" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.1); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;">
                 <i class="fas fa-trash-alt"></i>
             </button>
         `;
