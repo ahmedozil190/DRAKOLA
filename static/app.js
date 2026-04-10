@@ -13,6 +13,9 @@ let currentOrdersPage = 1;
 const ordersPerPage = 5;
 let allOrdersData = [];
 
+// --- Admin Profile Auto-Refresh (v135) ---
+let profileRefreshInterval = null;
+
 // --- Channels State (v58) ---
 let currentChannelsPage = 1;
 const channelsPerPage = 5;
@@ -238,21 +241,33 @@ function switchNav(viewId) {
     if (viewId === 'admin-profile') {
         refreshAdminProfile();
         loadAdmins();
-    } else if (viewId === 'users') {
-        loadUsers();
-    } else if (viewId === 'finance') {
-        currentFinancePage = 1;
-        loadFinanceData();
-    } else if (viewId === 'coupons') {
-        currentCouponsPage = 1;
-        loadCoupons();
-        const scroller = document.getElementById('app-content-scroller');
-        if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (viewId === 'orders') {
-        currentOrdersPage = 1;
-        loadOrders();
-    } else if (viewId === 'reports') {
-        loadReports();
+        // v135: Start auto-refresh every 30 seconds while on admin profile
+        if (profileRefreshInterval) clearInterval(profileRefreshInterval);
+        profileRefreshInterval = setInterval(() => {
+            refreshAdminProfile();
+        }, 30000);
+    } else {
+        // Stop auto-refresh when leaving admin profile page
+        if (profileRefreshInterval) {
+            clearInterval(profileRefreshInterval);
+            profileRefreshInterval = null;
+        }
+        if (viewId === 'users') {
+            loadUsers();
+        } else if (viewId === 'finance') {
+            currentFinancePage = 1;
+            loadFinanceData();
+        } else if (viewId === 'coupons') {
+            currentCouponsPage = 1;
+            loadCoupons();
+            const scroller = document.getElementById('app-content-scroller');
+            if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'orders') {
+            currentOrdersPage = 1;
+            loadOrders();
+        } else if (viewId === 'reports') {
+            loadReports();
+        }
     }
 
     // Update UI Active States
