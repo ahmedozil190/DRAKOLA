@@ -214,10 +214,36 @@ async def cmd_eeok(message: Message):
         text += "1. أجمع النقاط من خلال قسم 'تجميع النقاط' بالاشتراك في القنوات.\n"
         text += "2. استخدم النقاط لتمويل قناتك أو مجموعتك من خلال قسم 'تمويل قناتك'.\n"
         text += "3. يمكنك تحويل النقاط لأصدقائك عبر 'تحويل نقاط'.\n"
-        text += f"4. الحد الأدنى للتمويل هو <b>{min_p}</b> نقطة.\n\n"
-        text += f"~ <b>للدعم الفني والاستفسار</b> : {support}"
+        text += f"4. الحد الأدنى للتمويل هو <b>{min_p}</b> نقطة."
+        
+        if support and support.strip():
+            text += f"\n\n~ <b>للدعم الفني والاستفسار</b> : {support}"
         
         await message.reply(text, parse_mode="HTML")
+        
+@router.callback_query(F.data == "check_mandatory")
+async def check_mandatory(call: CallbackQuery):
+    # This handler is only reached if the middleware passes (i.e., user joined all channels)
+    # The middleware already allows this callback data to reach here if it wants.
+    # Actually, we should check again here just to be sure, or let the middleware handle it.
+    # Since the middleware blocks, this handler will only execute IF they are subscribed.
+    
+    # We just send the main menu again
+    async for session in get_session():
+        user = await crud.get_user(session, call.from_user.id)
+        settings = await crud.get_settings(session)
+        await call.message.delete()
+        await call.message.answer(
+            f"<b>تم التحقق بنجاح! شكراً لك على الاشتراك ✅</b>\n\nيمكنك الآن البدء باستخدام البوت.",
+            parse_mode="HTML",
+            reply_markup=main_keyboard(
+                points=user.points,
+                instruction_link=settings.instruction_link,
+                rules_link=settings.rules_link,
+                buy_points_link=settings.buy_points_link
+            )
+        )
+        await call.answer()
 
 @router.callback_query(F.data == "account_info")
 async def account_info(call: CallbackQuery):

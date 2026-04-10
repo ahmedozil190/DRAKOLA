@@ -61,11 +61,17 @@ async def on_chat_member_update(update: ChatMemberUpdated):
             
             # 5. Optionally notify the user
             try:
+                # Prepare blue link for channel/group
+                chat = update.chat
+                url = f"https://t.me/{chat.username}" if chat.username else f"https://t.me/c/{str(chat.id).replace('-100', '')}/1"
+                chat_link = f"<a href='{url}'>{chat.title or 'القناة/المجموعة'}</a>"
+                
                 await update.bot.send_message(
                     user_id,
-                    f"⚠️ <b>تنبيه مغادرة</b> : لقد قمت بمغادرة القناة/المجموعة المموله <b>{update.chat.title or ''}</b>.\n"
+                    f"⚠️ <b>تنبيه مغادرة</b> : لقد قمت بمغادرة {chat_link}.\n"
                     f"تم خصم <b>{penalty_points}</b> نقطه من رصيدك كعقوبة.",
-                    parse_mode="HTML"
+                    parse_mode="HTML",
+                    disable_web_page_preview=True
                 )
             except Exception:
                 pass

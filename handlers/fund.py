@@ -26,7 +26,7 @@ async def start_funding(call: CallbackQuery, state: FSMContext):
         min_p = settings.min_points_to_order or 300
         
         if user.points < min_p:
-            text = f"<b>• عليك تجميع نقاط اكثر من {min_p} نقطه </b>!"
+            text = f"• <b>عليك تجميع نقاط اكثر من {min_p} نقطه </b>!"
             kbd = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="تجميع النقاط", callback_data="collect_points")],
                 [InlineKeyboardButton(text="• رجوع •", callback_data="cancel_action")]

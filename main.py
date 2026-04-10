@@ -78,6 +78,11 @@ async def main():
     await set_commands(bot)
     dp = Dispatcher()
     
+    # Register Middlewares
+    from middlewares.mandatory_sub import MandatorySubMiddleware
+    dp.message.outer_middleware(MandatorySubMiddleware())
+    dp.callback_query.outer_middleware(MandatorySubMiddleware())
+    
     # Include handler routers
     dp.include_router(handlers.user.router)
     dp.include_router(handlers.actions.router)

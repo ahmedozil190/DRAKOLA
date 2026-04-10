@@ -93,7 +93,7 @@ class GlobalSettings(Base):
     referral_reward = Column(Integer, default=100)
     join_reward = Column(Integer, default=10)
     member_cost = Column(Integer, default=15)
-    support_username = Column(String, default="@A_M_E_15")
+    support_username = Column(String, default="")
     min_order_members = Column(Integer, default=5)
     min_points_to_order = Column(Integer, default=300)
     leave_penalty_multiplier = Column(Integer, default=2)
