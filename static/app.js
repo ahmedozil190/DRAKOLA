@@ -585,30 +585,37 @@ function showSettingsSubView(viewId) {
     tg.HapticFeedback.impactOccurred('medium');
     document.getElementById('settings-main-menu').style.display = 'none';
 
-    // Hide all subviews first
-    document.getElementById('subview-bot-profile').style.display = 'none';
-    document.getElementById('subview-prices').style.display = 'none';
-    document.getElementById('subview-channels-config').style.display = 'none';
-    document.getElementById('subview-points').style.display = 'none';
-    document.getElementById('subview-penalty').style.display = 'none';
-    document.getElementById('subview-migration').style.display = 'none';
+    // Hide all subviews first (v148: Safe null-checks)
+    const subViews = [
+        'subview-bot-profile', 'subview-prices', 'subview-channels-config',
+        'subview-points', 'subview-penalty', 'subview-migration'
+    ];
+    subViews.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
 
     // Show selected subview
-    document.getElementById(`subview-${viewId}`).style.display = 'block';
+    const target = document.getElementById(`subview-${viewId}`);
+    if (target) target.style.display = 'block';
 }
 
 function hideSettingsSubView() {
     // If we're already on the main menu, don't do anything
-    if (document.getElementById('settings-main-menu').style.display === 'block') return;
+    const mainMenu = document.getElementById('settings-main-menu');
+    if (!mainMenu || mainMenu.style.display === 'block') return;
 
     tg.HapticFeedback.impactOccurred('light');
-    document.getElementById('settings-main-menu').style.display = 'block';
-    document.getElementById('subview-bot-profile').style.display = 'none';
-    document.getElementById('subview-prices').style.display = 'none';
-    document.getElementById('subview-points').style.display = 'none';
-    document.getElementById('subview-channels-config').style.display = 'none';
-    document.getElementById('subview-penalty').style.display = 'none';
-    document.getElementById('subview-migration').style.display = 'none';
+    mainMenu.style.display = 'block';
+
+    const subViews = [
+        'subview-bot-profile', 'subview-prices', 'subview-channels-config',
+        'subview-points', 'subview-penalty', 'subview-migration'
+    ];
+    subViews.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
 }
 
 // ========== Broadcast Logic (v60) ==========
