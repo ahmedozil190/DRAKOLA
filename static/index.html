@@ -1082,8 +1082,8 @@
         <section id="admin-profile-section" class="view-section">
             
             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; position: relative;">
-                <!-- Glowing background effect under avatar -->
-                <div style="position: absolute; top: 10px; width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); filter: blur(30px); opacity: 0.5; z-index: 0; border-radius: 50%;"></div>
+                <!-- Glowing background effect under avatar (v143: synced ID) -->
+                <div id="profile-avatar-glow" style="position: absolute; top: 10px; width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); filter: blur(30px); opacity: 0.5; z-index: 0; border-radius: 50%;"></div>
                 
                 <!-- Avatar: starts invisible to avoid flash, shown by JS after photo loads (v134) -->
                 <div id="profile-avatar" style="position: relative; z-index: 1; width: 110px; height: 110px; border-radius: 50%; background: transparent; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; border: 4px solid rgba(255, 255, 255, 0.15); background-size: cover; background-position: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s ease;">
