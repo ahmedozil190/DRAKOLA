@@ -2198,3 +2198,18 @@ function initAdminProfile(user) {
     document.getElementById('profile-username').innerText = user.username ? '@' + user.username : 'No Username';
     document.getElementById('profile-id').innerText = user.id;
 }
+
+function refreshAdminProfile() {
+    if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        initAdminProfile(user);
+        if (tg && tg.HapticFeedback) {
+            setTimeout(() => tg.HapticFeedback.notificationOccurred('success'), 200);
+        }
+    } else {
+        alert("Unable to fetch fresh data from Telegram.");
+    }
+}
