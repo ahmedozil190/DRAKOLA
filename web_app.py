@@ -377,6 +377,35 @@ async def update_report_api(request):
         await crud.update_report_status(session, int(data['order_id']), data['status'])
         return web.json_response({"status": "ok"})
 
+# --- Admins API ---
+async def get_admins_api(request):
+    async for session in get_session():
+        admins = await crud.get_admins(session)
+        return web.json_response([{
+            "user_id": a.user_id,
+            "first_name": a.first_name,
+            "username": a.username
+        } for a in admins])
+
+async def add_admin_api(request):
+    data = await request.json()
+    user_id = int(data.get('user_id'))
+    async for session in get_session():
+        user = await crud.set_user_admin(session, user_id, True)
+        if user:
+            return web.json_response({"status": "ok"})
+        return web.json_response({"status": "error", "message": "User not found. They must start the bot first."}, status=404)
+
+async def remove_admin_api(request):
+    data = await request.json()
+    user_id = int(data.get('user_id'))
+    if user_id == ADMIN_ID:
+        return web.json_response({"status": "error", "message": "Cannot remove the Super Admin."}, status=400)
+        
+    async for session in get_session():
+        await crud.set_user_admin(session, user_id, False)
+        return web.json_response({"status": "ok"})
+
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
     try:
@@ -436,6 +465,11 @@ def setup_web_app(bot):
     app.router.add_post('/api/orders/update', update_order_api)
     app.router.add_get('/api/reports', get_reports_api)
     app.router.add_post('/api/reports/update', update_report_api)
+    
+    # Admins API
+    app.router.add_get('/api/admins', get_admins_api)
+    app.router.add_post('/api/admins/add', add_admin_api)
+    app.router.add_post('/api/admins/delete', remove_admin_api)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')

@@ -10,15 +10,19 @@ from models import User, Order
 router = Router()
 
 # Admin Dashboard URL now comes from config.py
-def is_admin(user_id: int):
-    return user_id == ADMIN_ID
+async def is_admin(user_id: int, session):
+    if user_id == ADMIN_ID:
+        return True
+    user = await crud.get_user(session, user_id)
+    return user.is_admin if user else False
 
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
-    if not is_admin(message.from_user.id):
-        return
-        
     async for session in get_session():
+        if not await is_admin(message.from_user.id, session):
+            return
+        
+        users_count = await session.scalar(select(func.count()).select_from(User))
         users_count = await session.scalar(select(func.count()).select_from(User))
         orders_count = await session.scalar(select(func.count()).select_from(Order))
         
@@ -35,16 +39,18 @@ async def admin_panel(message: Message):
 
 @router.callback_query(F.data == "admin_broadcast_legacy")
 async def admin_broadcast_legacy_start(call: CallbackQuery):
-    if not is_admin(call.from_user.id): return
-    await call.message.answer("📢 أرسل الرسالة التي تريد إذاعتها لجميع المستخدمين (نص فقط):")
-    await call.answer()
+    async for session in get_session():
+        if not await is_admin(call.from_user.id, session): return
+        await call.message.answer("📢 أرسل الرسالة التي تريد إذاعتها لجميع المستخدمين (نص فقط):")
+        await call.answer()
 
 
 
 @router.message(Command("add_points"))
 async def admin_add_points(message: Message):
-    if not is_admin(message.from_user.id):
-        return
+    async for session in get_session():
+        if not await is_admin(message.from_user.id, session):
+            return
         
     args = message.text.split()
     try:
@@ -67,8 +73,9 @@ async def admin_add_points(message: Message):
 
 @router.message(Command("broadcast"))
 async def admin_broadcast_cmd(message: Message):
-    if not is_admin(message.from_user.id): return
-    text_to_send = message.text.replace("/broadcast", "").strip()
+    async for session in get_session():
+        if not await is_admin(message.from_user.id, session): return
+        text_to_send = message.text.replace("/broadcast", "").strip()
     if not text_to_send:
         await message.reply("يرجى كتابة الرسالة بعد الأمر.")
         return

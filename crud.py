@@ -12,6 +12,19 @@ async def get_all_users(session: AsyncSession, limit: int = 100, offset: int = 0
     )
     return result.scalars().all()
 
+async def get_admins(session: AsyncSession):
+    result = await session.execute(
+        select(User).where(User.is_admin == True).order_by(User.user_id.desc())
+    )
+    return result.scalars().all()
+
+async def set_user_admin(session: AsyncSession, user_id: int, status: bool):
+    user = await get_user(session, user_id)
+    if user:
+        user.is_admin = status
+        await session.commit()
+    return user
+
 async def toggle_ban_user(session: AsyncSession, user_id: int):
     user = await get_user(session, user_id)
     if user:

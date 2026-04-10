@@ -20,10 +20,16 @@ class MandatorySubMiddleware(BaseMiddleware):
         user_id = event.from_user.id
         bot = data['bot']
         
-        # 1. Exempt Admins and Start Command (deep linking)
+        # 1. Base Admin Exclusion
         if user_id == ADMIN_ID:
             return await handler(event, data)
-        
+                
+        # Deep check for added admins (v124)
+        async for session in get_session():
+            db_user = await crud.get_user(session, user_id)
+            if db_user and db_user.is_admin:
+                return await handler(event, data)
+
         if isinstance(event, Message) and event.text:
             if event.text.startswith("/admin") or event.text.startswith("/id"):
                 return await handler(event, data)

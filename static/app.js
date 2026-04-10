@@ -235,7 +235,10 @@ function switchNav(viewId) {
     pageTitle.innerText = titles[viewId];
 
     // Reload Data for specific sections if needed (Pagination already reset to 1)
-    if (viewId === 'users') {
+    if (viewId === 'admin-profile') {
+        refreshAdminProfile();
+        loadAdmins();
+    } else if (viewId === 'users') {
         loadUsers();
     } else if (viewId === 'finance') {
         currentFinancePage = 1;
@@ -2212,4 +2215,107 @@ function refreshAdminProfile() {
     } else {
         alert("Unable to fetch fresh data from Telegram.");
     }
+}
+
+// --- Admin Management Functions (v124) ---
+async function loadAdmins() {
+    try {
+        const res = await fetch('/api/admins');
+        const admins = await res.json();
+        renderAdmins(admins);
+    } catch (err) {
+        console.error("Admins load error:", err);
+    }
+}
+
+function renderAdmins(admins) {
+    const list = document.getElementById('admins-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    if (admins.length === 0) {
+        list.innerHTML = `<div style="text-align: center; color: #475569; padding: 20px; font-size: 0.85rem; background: rgba(0,0,0,0.1); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.05);">No sub-admins added yet.</div>`;
+        return;
+    }
+
+    admins.forEach(admin => {
+        const div = document.createElement('div');
+        div.style.background = 'rgba(255, 255, 255, 0.03)';
+        div.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+        div.style.borderRadius = '12px';
+        div.style.padding = '12px 15px';
+        div.style.display = 'flex';
+        div.style.justifyContent = 'space-between';
+        div.style.alignItems = 'center';
+
+        div.innerHTML = `
+            <div>
+                <div style="color: #fff; font-weight: 700; font-size: 0.9rem;">${admin.first_name || 'Admin'}</div>
+                <div style="color: #64748b; font-size: 0.75rem;">${admin.username ? '@'+admin.username : 'ID: ' + admin.user_id}</div>
+            </div>
+            <button onclick="removeAdmin(${admin.user_id})" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.1); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        `;
+        list.appendChild(div);
+    });
+}
+
+async function addAdmin() {
+    const idInput = document.getElementById('new-admin-id');
+    const userId = idInput.value;
+    if (!userId) return tg.showAlert("Please enter a User ID!");
+
+    tg.HapticFeedback.impactOccurred('medium');
+    showLoader(true);
+
+    try {
+        const res = await fetch('/api/admins/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId })
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            idInput.value = '';
+            showSuccessPopup("Admin Added!", "The user has been granted administrative permissions. ✨");
+            loadAdmins();
+        } else {
+            tg.showAlert(result.message || "Failed to add admin.");
+        }
+    } catch (err) {
+        console.error("Add admin error:", err);
+    } finally {
+        hideLoader();
+    }
+}
+
+async function removeAdmin(userId) {
+    showConfirmPopup(
+        "Remove Administrator",
+        `Are you sure you want to remove permissions for User ${userId}?`,
+        async () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            showLoader(true);
+            try {
+                const res = await fetch('/api/admins/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                if (res.ok) {
+                    showSuccessPopup("Permissions Removed", "The user is no longer an administrator.");
+                    loadAdmins();
+                } else {
+                    const result = await res.json();
+                    tg.showAlert(result.message || "Failed to remove admin.");
+                }
+            } catch (err) {
+                console.error("Remove admin error:", err);
+            } finally {
+                hideLoader();
+            }
+        }
+    );
 }
