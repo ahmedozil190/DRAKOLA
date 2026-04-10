@@ -7,7 +7,8 @@
     <title>Gmail Farmer Plus Style Dashboard</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=56">
+    <link rel="stylesheet" href="static/style.css?v=57">
+    <script src="static/app.js?v=76"></script>
     <style>
         .user-card {
             position: relative;
@@ -572,6 +573,17 @@
                             </div>
                             <div class="settings-info">
                                 <div class="settings-title">Penalty System</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
+
+                        <!-- Migration & Backup Card (Green) - v148 -->
+                        <div class="settings-item" onclick="showSettingsSubView('migration')">
+                            <div class="settings-icon-box" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Cloud Migration & Backup</div>
                             </div>
                             <i class="fas fa-chevron-right settings-chevron"></i>
                         </div>

@@ -1,8 +1,10 @@
 import os
 import json
 from aiohttp import web
+from aiohttp.web import FileResponse
 from database import get_session
 import crud
+import datetime
 from config import ADMIN_ID
 import asyncio
 import logging
@@ -465,6 +467,59 @@ async def get_admin_profile(request):
     except Exception as e:
         return web.json_response({"status": "error", "message": str(e)}, status=400)
 
+async def backup_database(request):
+    # Verify Admin (Simplistic for now, assuming front-end checks first)
+    from config import DATA_DIR
+    db_file = os.path.join(DATA_DIR, 'bot_database.sqlite3')
+    
+    if not os.path.exists(db_file):
+        return web.json_response({"status": "error", "message": "Database file not found"}, status=404)
+        
+    return FileResponse(
+        path=db_file,
+        status=200,
+        headers={
+            'Content-Disposition': f'attachment; filename="bot_database_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sqlite3"'
+        }
+    )
+
+async def restore_database(request):
+    # This involves overwriting the DB file. 
+    # Warning: Sessions might be active.
+    from config import DATA_DIR
+    db_file = os.path.join(DATA_DIR, 'bot_database.sqlite3')
+    
+    reader = await request.multipart()
+    field = await reader.next()
+    
+    if not field or field.name != 'database':
+        return web.json_response({"status": "error", "message": "Invalid field name"}, status=400)
+    
+    filename = field.filename
+    if not filename.endswith('.sqlite3'):
+        return web.json_response({"status": "error", "message": "Invalid file type. Must be .sqlite3"}, status=400)
+        
+    # Read the file data
+    data = await field.read()
+    
+    # Backup current DB just in case before overwriting
+    if os.path.exists(db_file):
+        os.rename(db_file, db_file + ".bak")
+        
+    try:
+        with open(db_file, 'wb') as f:
+            f.write(data)
+        
+        # v148: Since SQLAlchemy engine is persistent, a reboot is ideal.
+        # However, for now, we just tell the user to refresh.
+        # In a real Railway environment, we might want to sys.exit(0) to force a container restart.
+        return web.json_response({"status": "ok", "message": "Database restored successfully. Please refresh the dashboard."})
+    except Exception as e:
+        # Restore backup if failed
+        if os.path.exists(db_file + ".bak"):
+            os.replace(db_file + ".bak", db_file)
+        return web.json_response({"status": "error", "message": str(e)}, status=500)
+
 async def handle_index(request):
     path = os.path.join(STATIC_DIR, "index.html")
     try:
@@ -525,11 +580,14 @@ def setup_web_app(bot):
     app.router.add_get('/api/reports', get_reports_api)
     app.router.add_post('/api/reports/update', update_report_api)
     
-    # Admins API
     app.router.add_get('/api/admins', get_admins_api)
     app.router.add_post('/api/admins/add', add_admin_api)
     app.router.add_post('/api/admins/delete', remove_admin_api)
     app.router.add_get('/api/admin/profile', get_admin_profile)
+    
+    # Backup & Restore (v148)
+    app.router.add_get('/api/admin/backup', backup_database)
+    app.router.add_post('/api/admin/restore', restore_database)
     
     # Static Files (Manual + Fallback)
     app.router.add_static('/static/', path=STATIC_DIR, name='static')

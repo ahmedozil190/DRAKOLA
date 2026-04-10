@@ -591,6 +591,7 @@ function showSettingsSubView(viewId) {
     document.getElementById('subview-channels-config').style.display = 'none';
     document.getElementById('subview-points').style.display = 'none';
     document.getElementById('subview-penalty').style.display = 'none';
+    document.getElementById('subview-migration').style.display = 'none';
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
@@ -607,6 +608,7 @@ function hideSettingsSubView() {
     document.getElementById('subview-points').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
     document.getElementById('subview-penalty').style.display = 'none';
+    document.getElementById('subview-migration').style.display = 'none';
 }
 
 // ========== Broadcast Logic (v60) ==========
@@ -2517,6 +2519,56 @@ async function removeAdmin(userId) {
                 showErrorPopup("Network Error", "Please try again.");
             } finally {
                 hideLoader();
+            }
+        }
+    );
+}
+
+// ========== Cloud Migration & Backup (v148) ==========
+
+function downloadBackup() {
+    tg.HapticFeedback.impactOccurred('medium');
+    window.location.href = '/api/admin/backup';
+}
+
+async function uploadBackup() {
+    const fileInput = document.getElementById('restore-file-input');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        showErrorPopup("Missing File", "Please select a .sqlite3 file first.");
+        return;
+    }
+
+    tg.HapticFeedback.notificationOccurred('warning');
+    tg.showConfirm(
+        "CAUTION: This will overwrite ALL current dashboard data and cannot be undone. Are you sure you want to proceed?",
+        async (confirmed) => {
+            if (confirmed) {
+                showLoader(true);
+                try {
+                    const formData = new FormData();
+                    formData.append('database', file);
+
+                    const res = await fetch('/api/admin/restore', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        const result = await res.json();
+                        showSuccessPopup("Restored!", result.message || "Data migration successful. ✨");
+                        fileInput.value = ''; // Reset input
+                    } else {
+                        const result = await res.json();
+                        showErrorPopup("Restore Failed", result.message || "Could not restore the database.");
+                    }
+                } catch (err) {
+                    console.error("❌ Restore error:", err);
+                    showErrorPopup("Network Error", "Please check your connection and try again.");
+                } finally {
+                    hideLoader();
+                }
             }
         }
     );
