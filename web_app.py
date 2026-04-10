@@ -36,7 +36,11 @@ async def get_settings_data(request):
             "total_targeted": settings.total_targeted_broadcasts or 0,
             "instruction_link": settings.instruction_link or "https://",
             "rules_link": settings.rules_link or "https://",
-            "buy_points_link": settings.buy_points_link or "https://",
+            "buy_points_link": settings.buy_points_link or "",
+            "referral_reward": settings.referral_reward or 100,
+            "join_reward": settings.join_reward or 10,
+            "member_cost": settings.member_cost or 15,
+            "support_username": settings.support_username or "@A_M_E_15",
             "channels": [{"id": c.channel_id, "link": c.channel_link} for c in channels]
         })
 

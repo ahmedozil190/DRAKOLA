@@ -90,6 +90,10 @@ class GlobalSettings(Base):
     instruction_link = Column(String, default="")
     rules_link = Column(String, default="")
     buy_points_link = Column(String, default="")
+    referral_reward = Column(Integer, default=100)
+    join_reward = Column(Integer, default=10)
+    member_cost = Column(Integer, default=15)
+    support_username = Column(String, default="@A_M_E_15")
 
 class FinancialRecord(Base):
     __tablename__ = "financial_records"

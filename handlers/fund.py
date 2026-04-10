@@ -32,8 +32,11 @@ async def start_funding(call: CallbackQuery, state: FSMContext):
             await call.answer()
             return
             
+        settings = await crud.get_settings(session)
+        cost_per = settings.member_cost or 15
+        
         text = "• <b>ارسل عدد الاعضاء المراد تمويلهم او يمكنك الاختيار من الازرار 🌐</b>\n\n"
-        text += "- <b>ملاحضة</b> : كل 1 عضو يساوي <b>15</b> نقطه \n\n"
+        text += f"- <b>ملاحضة</b> : كل 1 عضو يساوي <b>{cost_per}</b> نقطه \n\n"
         text += f"<b>- عدد نقاطك : {user.points}</b>"
         
         kbd = InlineKeyboardMarkup(inline_keyboard=[
@@ -89,13 +92,16 @@ async def process_members_buttons(call: CallbackQuery, state: FSMContext):
         user = await crud.get_user(session, call.from_user.id)
         if not user: return
         
+        settings = await crud.get_settings(session)
+        cost_per = settings.member_cost or 15
+        
         members = 0
         if call.data == "fund_max":
-            members = user.points // 15
+            members = user.points // cost_per
         elif call.data == "fund_10":
             members = 10
-            if user.points < 150:
-                await call.answer("نقاطك غير كافية لتمويل 10 أعضاء!", show_alert=True)
+            if user.points < (10 * cost_per):
+                await call.answer(f"نقاطك غير كافية لتمويل 10 أعضاء! (تحتاج {10 * cost_per} نقطة)", show_alert=True)
                 return
         
         if members < 5:
@@ -117,7 +123,9 @@ async def process_members_input(message: Message, state: FSMContext):
         
     async for session in get_session():
         user = await crud.get_user(session, message.from_user.id)
-        cost = members * 15
+        settings = await crud.get_settings(session)
+        cost_per = settings.member_cost or 15
+        cost = members * cost_per
         if user.points < cost:
             await message.reply(f"نقاطك غير كافية لتمويل {members} عضو.\nالتكلفة: {cost} نقطة\nرصيدك: {user.points}")
             return
@@ -153,9 +161,12 @@ async def process_topup(call: CallbackQuery, state: FSMContext):
     order_id = int(call.data.replace("topup_order_", ""))
     data = await state.get_data()
     members = data.get('members', 0)
-    cost = members * 15
     
     async for session in get_session():
+        settings = await crud.get_settings(session)
+        cost_per = settings.member_cost or 15
+        cost = members * cost_per
+        
         user = await crud.get_user(session, call.from_user.id)
         if user.points < cost:
             await call.answer("رصيدك غير كافٍ لإتمام التزويد!", show_alert=True)
@@ -227,10 +238,14 @@ async def process_chat(message: Message, state: FSMContext):
             return
 
         members = data['members']
-        cost = members * 15
-        reward_per_member = 10
-        
         async for session in get_session():
+            settings = await crud.get_settings(session)
+            cost_per = settings.member_cost or 15
+            join_reward = settings.join_reward or 10
+            
+            cost = members * cost_per
+            reward_per_member = join_reward
+            
             user = await crud.get_user(session, message.from_user.id)
             if user.points < cost:
                 await message.reply("<b>عذراً، رصيدك غير كافٍ لإتمام هذه العملية.</b>", parse_mode="HTML")
@@ -304,9 +319,13 @@ async def process_group_funding(message: Message, state: FSMContext):
             return
 
         members = data['members']
-        cost = members * 15
-        
         async for session in get_session():
+            settings = await crud.get_settings(session)
+            cost_per = settings.member_cost or 15
+            join_reward = settings.join_reward or 10
+            
+            cost = members * cost_per
+            
             user = await crud.get_user(session, message.from_user.id)
             if user.points < cost:
                 await message.answer("<b>رصيدك غير كافٍ!</b>", parse_mode="HTML")
@@ -330,7 +349,7 @@ async def process_group_funding(message: Message, state: FSMContext):
                     chat_name=message.chat.title,
                     chat_type="group",
                     required_members=members,
-                    reward_per_member=10
+                    reward_per_member=join_reward
                 )
                 session.add(order)
                 

@@ -496,6 +496,17 @@
                             </div>
                             <i class="fas fa-chevron-right settings-chevron"></i>
                         </div>
+
+                        <!-- Points & Rewards Card (Yellow) -->
+                        <div class="settings-item" onclick="showSettingsSubView('points')">
+                            <div class="settings-icon-box bg-yellow-soft" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="settings-info">
+                                <div class="settings-title">Points & Rewards</div>
+                            </div>
+                            <i class="fas fa-chevron-right settings-chevron"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -525,6 +536,10 @@
                             <label>Buy Points Link</label>
                             <input type="text" id="buy-points-link-input" class="input-field" placeholder="https://...">
                         </div>
+                        <div class="form-group">
+                            <label>Support Username</label>
+                            <input type="text" id="support-username-input" class="input-field" placeholder="@username">
+                        </div>
                         <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
                     </div>
                 </div>
@@ -550,6 +565,32 @@
                         <div class="form-group">
                             <label>Min Transfer Amount</label>
                             <input type="number" id="min-transfer-input" class="input-field">
+                        </div>
+                        <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
+                    </div>
+                </div>
+
+                <!-- Subview: Points & Rewards -->
+                <div id="subview-points" style="display: none;">
+                    <div class="subview-header">
+                        <div class="back-btn-circle" onclick="hideSettingsSubView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <h2 style="font-weight: 700;">Points & Rewards</h2>
+                    </div>
+                    <div class="card"
+                        style="min-height: auto; padding: 25px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="form-group">
+                            <label>Referral Reward (نقاط الإحالة)</label>
+                            <input type="number" id="referral-reward-input" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Channel Join Reward (مكافأة الاشتراك)</label>
+                            <input type="number" id="join-reward-input" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Member Cost (تكلفة العضو للتمويل)</label>
+                            <input type="number" id="member-cost-input" class="input-field">
                         </div>
                         <button class="primary-btn" onclick="saveSettings()">Save Configuration</button>
                     </div>

@@ -353,6 +353,14 @@ function populateSettings(settings) {
         document.getElementById('instruction-link-input').value = (iLink === "https://") ? "" : iLink;
         document.getElementById('rules-link-input').value = (rLink === "https://") ? "" : rLink;
         document.getElementById('buy-points-link-input').value = (bLink === "https://") ? "" : bLink;
+        document.getElementById('support-username-input').value = settings.support_username || "@A_M_E_15";
+    }
+
+    // Points & Rewards
+    if (document.getElementById('referral-reward-input')) {
+        document.getElementById('referral-reward-input').value = settings.referral_reward || 100;
+        document.getElementById('join-reward-input').value = settings.join_reward || 10;
+        document.getElementById('member-cost-input').value = settings.member_cost || 15;
     }
 
     // Broadcast Stats (v44)
@@ -481,9 +489,13 @@ async function saveSettings() {
         daily_gift_amount: parseFloat(document.getElementById('daily-gift-input').value),
         min_transfer_amount: parseFloat(document.getElementById('min-transfer-input').value),
         bot_name: document.getElementById('bot-name-input')?.value || "Billion Bot",
-        instruction_link: document.getElementById('instruction-link-input')?.value || "https://",
-        rules_link: document.getElementById('rules-link-input')?.value || "https://",
-        buy_points_link: document.getElementById('buy-points-link-input')?.value || "https://"
+        instruction_link: document.getElementById('instruction-link-input')?.value || "",
+        rules_link: document.getElementById('rules-link-input')?.value || "",
+        buy_points_link: document.getElementById('buy-points-link-input')?.value || "",
+        support_username: document.getElementById('support-username-input')?.value || "@A_M_E_15",
+        referral_reward: parseInt(document.getElementById('referral-reward-input')?.value || 100),
+        join_reward: parseInt(document.getElementById('join-reward-input')?.value || 10),
+        member_cost: parseInt(document.getElementById('member-cost-input')?.value || 15)
     };
 
     tg.HapticFeedback.impactOccurred('medium');
@@ -516,6 +528,7 @@ function showSettingsSubView(viewId) {
     document.getElementById('subview-bot-profile').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
+    document.getElementById('subview-points').style.display = 'none';
 
     // Show selected subview
     document.getElementById(`subview-${viewId}`).style.display = 'block';
@@ -529,6 +542,7 @@ function hideSettingsSubView() {
     document.getElementById('settings-main-menu').style.display = 'block';
     document.getElementById('subview-bot-profile').style.display = 'none';
     document.getElementById('subview-prices').style.display = 'none';
+    document.getElementById('subview-points').style.display = 'none';
     document.getElementById('subview-channels-config').style.display = 'none';
 }
 

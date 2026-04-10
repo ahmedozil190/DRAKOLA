@@ -145,10 +145,13 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                     user.referred_by = referrer_id
                     
                     referrer = await crud.get_user(session, referrer_id)
+                    settings = await crud.get_settings(session)
+                    ref_reward = settings.referral_reward or 100
+                    
                     if referrer:
-                        referrer.points += 100
+                        referrer.points += ref_reward
                         try:
-                            referrer.total_earned = (referrer.total_earned or 0) + 100  # v73
+                            referrer.total_earned = (referrer.total_earned or 0) + ref_reward  # v73
                         except Exception:
                             pass
                         referrer.invites_count = (referrer.invites_count or 0) + 1
@@ -159,7 +162,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                         new_user_id = message.from_user.id
                         referrer_text = (
                             f"🎉 هنيئاً لك! <a href='tg://user?id={new_user_id}'>{new_user_name}</a> قام بالانضمام عبر رابط الدعوة الخاص بك\n"
-                            f"وقد حصلت على <b>100</b> نقطة/نقاط كمكافأة! ✨\n\n"
+                            f"وقد حصلت على <b>{ref_reward}</b> نقطة/نقاط كمكافأة! ✨\n\n"
                             f"- رصيدك الحالي من النقاط هو: {referrer.points}"
                         )
                         try:
@@ -172,7 +175,7 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
                             pass
                         
                         # Message to NEW USER (the referred one) - reply to /start
-                        referred_text = "• لقد دخلت بنجاح عبر الرابط الذي قدمه صديقك كدعوة، ونتيجة لذلك، حصل صديقك على 100 نقطة/نقاط كمكافأة ✨."
+                        referred_text = f"• لقد دخلت بنجاح عبر الرابط الذي قدمه صديقك كدعوة، ونتيجة لذلك، حصل صديقك على {ref_reward} نقطة/نقاط كمكافأة ✨."
                         await message.reply(referred_text)
                         
                         # Welcome message (separate) - reply to /start

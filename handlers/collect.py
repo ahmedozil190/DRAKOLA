@@ -24,15 +24,18 @@ async def show_no_channels(message=None, callback_query=None):
         await callback_query.message.edit_text(text, parse_mode="HTML", reply_markup=kbd)
 
 @router.callback_query(F.data == "collect_points")
-async def collect_points(call: CallbackQuery):
-    text = "<b>مرحبا بك في قسم تجميع النقاط 📥 .</b>\n\n"
-    text += "• <b>يمكنك الحصول على نقاط بطريقتين :</b>\n\n"
-    text += "1 - عن طريق الاشتراك في القنوات او المجموعات\n\n"
-    text += "2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على 100 نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
-    text += "\n<b>~ اذ كانت طريقه التجميع صعبه راسل المطور لشراء النقاط 💰 .</b>\n\n"
-    text += "<b>~ المطـور :</b> @A_M_E_15"
-    
-    await call.message.edit_text(text, parse_mode="HTML", reply_markup=collect_menu_keyboard())
+    async for session in get_session():
+        settings = await crud.get_settings(session)
+        support = settings.support_username or "@A_M_E_15"
+        
+        text = "<b>مرحبا بك في قسم تجميع النقاط 📥 .</b>\n\n"
+        text += "• <b>يمكنك الحصول على نقاط بطريقتين :</b>\n\n"
+        text += "1 - عن طريق الاشتراك في القنوات او المجموعات\n\n"
+        text += "2 - عن طريق مشاركة رابط الدعوة الى اصدقائك و سوف تحصل على 100 نقطه عند دخول اي شخص الى الرابط الخاص بك\n\n"
+        text += f"\n<b>~ اذ كانت طريقه التجميع صعبه راسل المطور لشراء النقاط 💰 .</b>\n\n"
+        text += f"<b>~ المطـور :</b> {support}"
+        
+        await call.message.edit_text(text, parse_mode="HTML", reply_markup=collect_menu_keyboard())
     await call.answer()
 
 @router.callback_query(F.data == "join_channels_turbo")
@@ -85,7 +88,9 @@ async def send_turbo_channels(user_id: int, bot, message=None, callback_query=No
             return
 
         order_ids = ",".join([str(o.id) for o in valid_orders])
-        total_reward = len(valid_orders) * 10
+        settings = await crud.get_settings(session)
+        join_reward = settings.join_reward or 10
+        total_reward = len(valid_orders) * join_reward
         
         text = "• <b>اشترك في جميع القنوات التي تظهر في الازرار ادناه ✈️</b>\n"
         text += f"<b>- لكي تحصل على : {total_reward} نقطه</b>"
@@ -150,6 +155,8 @@ async def turbo_verify(call: CallbackQuery):
     
     try:
         async for session in get_session():
+            settings = await crud.get_settings(session)
+            join_reward = settings.join_reward or 10
             user = await crud.get_user(session, call.from_user.id)
             if not user: continue
             
@@ -165,9 +172,10 @@ async def turbo_verify(call: CallbackQuery):
                             sub = Subscription(user_id=call.from_user.id, order_id=order.id)
                             session.add(sub)
                         
-                        user.points = (user.points or 0) + 10
+                        
+                        user.points = (user.points or 0) + join_reward
                         try:
-                            user.total_earned = (user.total_earned or 0) + 10  # v73
+                            user.total_earned = (user.total_earned or 0) + join_reward  # v73
                         except Exception:
                             pass
                         order.current_members = (order.current_members or 0) + 1
@@ -177,7 +185,7 @@ async def turbo_verify(call: CallbackQuery):
                         session.add(user)
                         session.add(order)
                         success_count += 1
-                        total_reward += 10
+                        total_reward += join_reward
                 except:
                     pass
             
@@ -280,11 +288,13 @@ async def send_next_channel(user_id: int, bot, message=None, callback_query=None
             
             user = await crud.get_user(session, user_id)
             user_points = user.points if user else 0
+            settings = await crud.get_settings(session)
+            join_reward = settings.join_reward or 10
             
             chat_type_text = "المجموعة" if chat.type in ["group", "supergroup"] else "القناة"
             
             text = f"• <b>اشترك في {chat_type_text} : </b><a href='{url}'>{order_to_show.chat_name}</a>\n\n"
-            text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b>10<b> نقطه 🌎</b>\n\n"
+            text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b>{join_reward}<b> نقطه 🌎</b>\n\n"
             text += f"• نقاطك الحاليه : <b>{user_points}</b>"
             
             kbd = InlineKeyboardMarkup(inline_keyboard=[
@@ -327,9 +337,11 @@ async def skip_channel(call: CallbackQuery):
                             session.add(sub)
                         
                         user = await crud.get_user(session, call.from_user.id)
-                        user.points = (user.points or 0) + 10
+                        settings = await crud.get_settings(session)
+                        join_reward = settings.join_reward or 10
+                        user.points = (user.points or 0) + join_reward
                         try:
-                            user.total_earned = (user.total_earned or 0) + 10  # v73
+                            user.total_earned = (user.total_earned or 0) + join_reward  # v73
                         except Exception:
                             pass
                         order.current_members = (order.current_members or 0) + 1
@@ -337,7 +349,7 @@ async def skip_channel(call: CallbackQuery):
                             order.status = 'completed'
                         await session.commit()
                         try:
-                            await call.answer("تم التحقق! حصلت على 10 نقاط ✅", show_alert=True)
+                            await call.answer(f"تم التحقق! حصلت على {join_reward} نقاط ✅", show_alert=True)
                         except: pass
                 except:
                     pass
@@ -386,9 +398,9 @@ async def verify_sub(call: CallbackQuery):
                     sub = Subscription(user_id=call.from_user.id, order_id=order.id)
                     session.add(sub)
                 
-                user.points = (user.points or 0) + 10
+                user.points = (user.points or 0) + join_reward
                 try:
-                    user.total_earned = (user.total_earned or 0) + 10  # v73
+                    user.total_earned = (user.total_earned or 0) + join_reward  # v73
                 except Exception:
                     pass
                 order.current_members = (order.current_members or 0) + 1
@@ -404,7 +416,7 @@ async def verify_sub(call: CallbackQuery):
                     print(f"Error in milestone notification (single): {e}")
 
                 try:
-                    await call.answer("تم التحقق! حصلت على 10 نقاط ✅", show_alert=True)
+                    await call.answer(f"تم التحقق! حصلت على {join_reward} نقاط ✅", show_alert=True)
                 except: pass
                 await send_next_channel(call.from_user.id, call.bot, callback_query=call, skip_id=order.id)
                 return 
@@ -415,7 +427,7 @@ async def verify_sub(call: CallbackQuery):
                 chat_type_text = "المجموعة" if chat.type in ["group", "supergroup"] else "القناة"
                 
                 text = f"• <b>اشترك في {chat_type_text} : </b><a href='{url}'>{order.chat_name}</a>\n\n"
-                text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b>10<b> نقطه 🌎</b>\n\n"
+                text += f"<b>- من ثم اضغط على تحقق لكي تحصل على </b>{join_reward}<b> نقطه 🌎</b>\n\n"
                 text += f"• نقاطك الحاليه : <b>{user.points}</b>\n\n"
                 text += "<b>• اشترك في القناة اولا ❗️</b>"
                 

@@ -45,6 +45,10 @@ async def init_db():
             ("global_settings", "instruction_link", "TEXT DEFAULT ''"),
             ("global_settings", "rules_link", "TEXT DEFAULT ''"),
             ("global_settings", "buy_points_link", "TEXT DEFAULT ''"),
+            ("global_settings", "referral_reward", "INTEGER DEFAULT 100"),
+            ("global_settings", "join_reward", "INTEGER DEFAULT 10"),
+            ("global_settings", "member_cost", "INTEGER DEFAULT 15"),
+            ("global_settings", "support_username", "TEXT DEFAULT '@A_M_E_15'"),
             ("financial_records", "record_type", "TEXT DEFAULT 'sale'")
         ]
         
