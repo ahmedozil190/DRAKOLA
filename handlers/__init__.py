@@ -4,3 +4,5 @@ from . import fund
 from . import collect
 from . import admin
 from . import inline
+from . import penalty
+
