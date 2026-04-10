@@ -14,13 +14,18 @@ def main_keyboard(points: int = 0, is_start: bool = False, instruction_link: str
     
     # These 4 bottom buttons only show up on /start
     if is_start:
+        def get_btn(label, link):
+            if not link or len(link) < 10 or link == "https://":
+                return InlineKeyboardButton(text=label, callback_data="link_coming_soon")
+            return InlineKeyboardButton(text=label, url=link)
+
         btns.append([
             InlineKeyboardButton(text="رابط الدعوة ♾", callback_data="invite_link"), 
-            InlineKeyboardButton(text="التعليمات البوت 🛠", url=instruction_link)
+            get_btn("التعليمات البوت 🛠", instruction_link)
         ])
         btns.append([
-            InlineKeyboardButton(text="القوانين ⛔️", url=rules_link), 
-            InlineKeyboardButton(text="شراء نقاط 💰💎", url=buy_points_link)
+            get_btn("القوانين ⛔️", rules_link), 
+            get_btn("شراء نقاط 💰💎", buy_points_link)
         ])
         
     return InlineKeyboardMarkup(inline_keyboard=btns)

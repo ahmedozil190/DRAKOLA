@@ -13,6 +13,11 @@ router = Router()
 class TransferState(StatesGroup):
     waiting_for_amount = State()
 
+@router.callback_query(F.data == "link_coming_soon")
+async def link_coming_soon(call: CallbackQuery):
+    await call.answer("سيتم تفعيل هذه الميزة قريباً... ⏳", show_alert=True)
+
+
 @router.callback_query(F.data == "daily_gift")
 async def daily_gift(call: CallbackQuery):
     async for session in get_session():

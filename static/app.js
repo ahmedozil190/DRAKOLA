@@ -346,9 +346,13 @@ function populateSettings(settings) {
     
     // Bot Links
     if (document.getElementById('instruction-link-input')) {
-        document.getElementById('instruction-link-input').value = settings.instruction_link || "https://";
-        document.getElementById('rules-link-input').value = settings.rules_link || "https://";
-        document.getElementById('buy-points-link-input').value = settings.buy_points_link || "https://";
+        const iLink = settings.instruction_link || "";
+        const rLink = settings.rules_link || "";
+        const bLink = settings.buy_points_link || "";
+
+        document.getElementById('instruction-link-input').value = (iLink === "https://") ? "" : iLink;
+        document.getElementById('rules-link-input').value = (rLink === "https://") ? "" : rLink;
+        document.getElementById('buy-points-link-input').value = (bLink === "https://") ? "" : bLink;
     }
 
     // Broadcast Stats (v44)

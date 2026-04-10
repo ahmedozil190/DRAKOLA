@@ -25,7 +25,14 @@ async def cancel_action_callback(call: CallbackQuery, state: FSMContext):
         greeting += "<b>•العدد الكلي المستخدمين = 5m 🎖</b>\n" 
         greeting += "<b>• ارسل أمر /EeoK تعليماتي 📍</b>"
         
-        await call.message.edit_text(greeting, parse_mode="HTML", reply_markup=main_keyboard(user.points if user else 0, is_start=False))
+        settings = await crud.get_settings(session)
+        await call.message.edit_text(greeting, parse_mode="HTML", reply_markup=main_keyboard(
+            points=user.points if user else 0, 
+            is_start=False,
+            instruction_link=settings.instruction_link,
+            rules_link=settings.rules_link,
+            buy_points_link=settings.buy_points_link
+        ))
     await call.answer()
 
 @router.message(CommandStart())
@@ -185,25 +192,12 @@ async def cmd_start(message: Message, state: FSMContext, command: CommandObject)
         
         settings = await crud.get_settings(session)
         
-        # Validating URLs because empty or incomplete URLs like "https://" crash Telegram API
-        inst_link = settings.instruction_link
-        if not inst_link or len(inst_link) < 10 or inst_link == "https://":
-            inst_link = "https://t.me/FFF22/1189"
-            
-        rules_link = settings.rules_link
-        if not rules_link or len(rules_link) < 10 or rules_link == "https://":
-            rules_link = "https://t.me/Billionbot0/2"
-            
-        buy_link = settings.buy_points_link
-        if not buy_link or len(buy_link) < 10 or buy_link == "https://":
-            buy_link = "https://t.me/q2qqqq/1045"
-            
         await message.reply(greeting, parse_mode="HTML", reply_markup=main_keyboard(
             points=user.points, 
             is_start=True,
-            instruction_link=inst_link,
-            rules_link=rules_link,
-            buy_points_link=buy_link
+            instruction_link=settings.instruction_link,
+            rules_link=settings.rules_link,
+            buy_points_link=settings.buy_points_link
         ))
 
 @router.message(F.text == "/EeoK")
