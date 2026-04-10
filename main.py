@@ -48,10 +48,11 @@ async def init_db():
             ("global_settings", "referral_reward", "INTEGER DEFAULT 100"),
             ("global_settings", "join_reward", "INTEGER DEFAULT 10"),
             ("global_settings", "member_cost", "INTEGER DEFAULT 15"),
-            ("global_settings", "support_username", "TEXT DEFAULT '@A_M_E_15'"),
+            ("global_settings", "support_username", "TEXT DEFAULT ''"),
             ("global_settings", "min_order_members", "INTEGER DEFAULT 5"),
             ("global_settings", "min_points_to_order", "INTEGER DEFAULT 300"),
             ("global_settings", "leave_penalty_multiplier", "INTEGER DEFAULT 2"),
+            ("global_settings", "penalty_enabled", "INTEGER DEFAULT 1"),
             ("financial_records", "record_type", "TEXT DEFAULT 'sale'")
         ]
         
