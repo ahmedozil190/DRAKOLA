@@ -353,7 +353,7 @@ function populateSettings(settings) {
         document.getElementById('instruction-link-input').value = (iLink === "https://") ? "" : iLink;
         document.getElementById('rules-link-input').value = (rLink === "https://") ? "" : rLink;
         document.getElementById('buy-points-link-input').value = (bLink === "https://") ? "" : bLink;
-        document.getElementById('support-username-input').value = settings.support_username || "@A_M_E_15";
+        document.getElementById('support-username-input').value = settings.support_username || "";
     }
 
     // Points & Rewards

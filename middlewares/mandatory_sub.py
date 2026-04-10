@@ -25,7 +25,7 @@ class MandatorySubMiddleware(BaseMiddleware):
             return await handler(event, data)
         
         if isinstance(event, Message) and event.text:
-            if event.text.startswith("/start") or event.text.startswith("/admin") or event.text.startswith("/id"):
+            if event.text.startswith("/admin") or event.text.startswith("/id"):
                 return await handler(event, data)
             
         # 2. Skip for callback data starting with 'check_mandatory' or 'rules_' etc if needed

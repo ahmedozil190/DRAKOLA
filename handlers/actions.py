@@ -179,7 +179,7 @@ async def revoke_voucher(call: CallbackQuery):
         # CASE: Successfully revoked - SEND as a NEW REPLY to the original message
         await call.message.bot.send_message(
             call.from_user.id, 
-            f"- <b>تم تعطيل الرابط ، واسترداد <b>{voucher.amount}</b> نقطة</b>", 
+            f"- <b>تم تعطيل الرابط , وسترداد {voucher.amount} نقطة</b>", 
             parse_mode="HTML", 
             reply_markup=kbd,
             reply_to_message_id=reply_to_id

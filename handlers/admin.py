@@ -63,7 +63,7 @@ async def admin_add_points(message: Message):
             return
         user.points += amount
         await session.commit()
-        await message.reply(f"✅ تمت إضافة <b>{amount}</b> نقطة بنجاح.\nرصيد المستخدم الحالى: <b>{user.points}</b>", parse_mode="HTML")
+        await message.reply(f"✅ تمت إضافة {amount} نقطة بنجاح.\nرصيد المستخدم الحالى: {user.points}")
 
 @router.message(Command("broadcast"))
 async def admin_broadcast_cmd(message: Message):
