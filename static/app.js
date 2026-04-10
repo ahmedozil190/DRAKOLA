@@ -2257,40 +2257,56 @@ async function refreshAdminProfile() {
     }
 }
 
-// --- Admin Management Functions (v124) ---
+// --- Admin Management Functions (v132 - Paginated) ---
+let currentAdminsPage = 1;
+const ADMINS_PER_PAGE = 5;
+let allAdmins = [];
+
 async function loadAdmins() {
     try {
         const res = await fetch('/api/admins');
-        const admins = await res.json();
-        renderAdmins(admins);
+        allAdmins = await res.json();
+        currentAdminsPage = 1;
+        renderAdmins();
     } catch (err) {
         console.error("Admins load error:", err);
     }
 }
 
-function renderAdmins(admins) {
+function renderAdmins() {
     const list = document.getElementById('admins-list');
     if (!list) return;
     list.innerHTML = '';
 
-    if (admins.length === 0) {
+    if (allAdmins.length === 0) {
         list.innerHTML = `<div style="text-align: center; color: #475569; padding: 25px; font-size: 0.85rem; background: rgba(0,0,0,0.1); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.05);">No sub-admins added yet.</div>`;
+        const paginationContainer = document.getElementById('admins-pagination-container');
+        if (paginationContainer) paginationContainer.style.display = 'none';
         return;
     }
 
-    admins.forEach(admin => {
+    const totalPages = Math.ceil(allAdmins.length / ADMINS_PER_PAGE);
+    const start = (currentAdminsPage - 1) * ADMINS_PER_PAGE;
+    const paged = allAdmins.slice(start, start + ADMINS_PER_PAGE);
+
+    paged.forEach((admin, idx) => {
+        const displayIndex = start + idx + 1;
         const adminCard = document.createElement('div');
-        adminCard.className = 'user-card'; // Use same base class v131
+        adminCard.className = 'user-card';
         adminCard.style.background = 'rgba(255, 255, 255, 0.02)';
         adminCard.style.border = '1px solid rgba(255, 255, 255, 0.05)';
         adminCard.style.borderRadius = '24px';
         adminCard.style.padding = '20px';
-        adminCard.style.marginBottom = '25px';
+        adminCard.style.marginBottom = '0';
         adminCard.style.display = 'flex';
         adminCard.style.flexDirection = 'column';
         adminCard.style.gap = '8px';
-        
+        adminCard.style.position = 'relative';
+
         adminCard.innerHTML = `
+            <!-- Number Badge (same as user cards) -->
+            <div class="user-card-index" style="width: 28px; height: 28px; font-size: 0.8rem; top: -14px;">${displayIndex}</div>
+
             <!-- Boxed Row 1: Name -->
             <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Name</span>
@@ -2317,7 +2333,44 @@ function renderAdmins(admins) {
         `;
         list.appendChild(adminCard);
     });
+
+    // Update pagination
+    const paginationContainer = document.getElementById('admins-pagination-container');
+    const pageInfo = document.getElementById('admins-page-info');
+    const prevBtn = document.getElementById('admins-prev-btn');
+    const nextBtn = document.getElementById('admins-next-btn');
+
+    if (totalPages > 1) {
+        paginationContainer.style.display = 'flex';
+        pageInfo.innerText = `Page ${currentAdminsPage} of ${totalPages}`;
+        prevBtn.disabled = currentAdminsPage === 1;
+        prevBtn.style.opacity = currentAdminsPage === 1 ? '0.3' : '1';
+        nextBtn.disabled = currentAdminsPage === totalPages;
+        nextBtn.style.opacity = currentAdminsPage === totalPages ? '0.3' : '1';
+    } else {
+        paginationContainer.style.display = 'none';
+    }
 }
+
+function prevAdminsPage() {
+    if (currentAdminsPage > 1) {
+        currentAdminsPage--;
+        tg.HapticFeedback.impactOccurred('light');
+        renderAdmins();
+        scrollToFirstCard('admins-list');
+    }
+}
+
+function nextAdminsPage() {
+    const totalPages = Math.ceil(allAdmins.length / ADMINS_PER_PAGE);
+    if (currentAdminsPage < totalPages) {
+        currentAdminsPage++;
+        tg.HapticFeedback.impactOccurred('light');
+        renderAdmins();
+        scrollToFirstCard('admins-list');
+    }
+}
+
 
 async function addAdmin() {
     const idInput = document.getElementById('new-admin-id');
