@@ -261,7 +261,7 @@ async def check_mandatory(call: CallbackQuery):
             except:
                 pass
                 
-            await call.answer(f"يجب عليك الاشتراك في: {first_channel_name} ❌", show_alert=True)
+            await call.answer(f"❌ يجب عليك الاشتراك في: {first_channel_name}", show_alert=True)
             return
 
         # Success! Joined all.
