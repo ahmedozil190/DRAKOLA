@@ -510,10 +510,21 @@ async def restore_database(request):
         with open(db_file, 'wb') as f:
             f.write(data)
         
-        # v148: Since SQLAlchemy engine is persistent, a reboot is ideal.
-        # However, for now, we just tell the user to refresh.
-        # In a real Railway environment, we might want to sys.exit(0) to force a container restart.
-        return web.json_response({"status": "ok", "message": "Database restored successfully. Please refresh the dashboard."})
+        # v149: Extremely Important Fix - SQLite Inode/Locking Issue
+        # We must forcefully restart the python process after restoring the database.
+        # Otherwise, SQLAlchemy's active sessions will continue writing to the old file
+        # descriptor in memory, ignoring the newly uploaded file!
+        async def restart_server():
+            await asyncio.sleep(1.5) # Give enough time for the HTTP response to be sent
+            import os
+            import sys
+            print("🔄 Triggering auto-restart to apply restored database...")
+            # Use os._exit to immediately kill and let Railway/Supervisor restart it
+            os._exit(0)
+            
+        asyncio.create_task(restart_server())
+
+        return web.json_response({"status": "ok", "message": "Database restored successfully. Bot is restarting..."})
     except Exception as e:
         # Restore backup if failed
         if os.path.exists(db_file + ".bak"):
